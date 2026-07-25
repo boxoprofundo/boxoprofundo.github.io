@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy Holidays &mdash; Michael Boxer</title>
+<style>
+  :root {
+    --ink: #f3f6fb;
+    --muted: #b9c6d6;
+    --gold: #e8c26a;
+    --pine: #1f3d33;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: Georgia, serif;
+    color: var(--ink);
+    background: radial-gradient(1200px 800px at 50% -10%, #24506b 0%, #16344a 45%, #0c2233 100%);
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+    overflow-x: hidden;
+  }
+
+  /* Falling snow */
+  .snow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .flake {
+    position: absolute;
+    top: -5vh;
+    color: #ffffff;
+    opacity: .85;
+    animation: fall linear infinite;
+    text-shadow: 0 0 6px rgba(255,255,255,.4);
+  }
+  @keyframes fall {
+    0%   { transform: translateX(0) translateY(-5vh) rotate(0deg); }
+    100% { transform: translateX(3vw) translateY(105vh) rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flake { animation: none; display: none; }
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+    background: rgba(12, 34, 51, .55);
+    border: 1px solid rgba(232, 194, 106, .35);
+    border-radius: 16px;
+    padding: 3rem 2rem 2.5rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    backdrop-filter: blur(2px);
+  }
+
+  .wreath { font-size: 2.6rem; line-height: 1; margin-bottom: .75rem; }
+
+  h1 {
+    font-size: 2.4rem;
+    margin: 0 0 .4rem;
+    letter-spacing: .5px;
+    color: #fff;
+  }
+  .season {
+    color: var(--gold);
+    font-style: italic;
+    font-size: 1.15rem;
+    margin: 0 0 1.75rem;
+  }
+
+  .message {
+    color: var(--muted);
+    line-height: 1.75;
+    font-size: 1.05rem;
+    margin: 0 auto 1.75rem;
+    max-width: 44ch;
+  }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1.75rem auto;
+    border: 0;
+  }
+
+  .signoff { color: var(--ink); font-size: 1.05rem; margin: 0; }
+  .signoff strong { color: #fff; }
+
+  .home {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: .95rem;
+    border-bottom: 1px solid rgba(232, 194, 106, .4);
+    padding-bottom: 1px;
+  }
+  .home:hover { color: #fff; border-color: #fff; }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    color: rgba(185, 198, 214, .6);
+    font-size: .85rem;
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="snow" aria-hidden="true"></div>
+
+<main class="card">
+  <div class="wreath">&#127876;</div>
+  <h1>Happy Holidays</h1>
+  <p class="season">&#10052;&#65039; Wishing you warmth this winter &#10052;&#65039;</p>
+
+  <p class="message">
+    As the year winds down, thank you for being part of it. Here's to
+    quiet mornings, good company, and a fresh start on the way. May your
+    holidays be bright and your new year full of small joys.
+  </p>
+
+  <hr class="divider">
+
+  <p class="signoff">With warm wishes,<br><strong>Michael Boxer</strong></p>
+
+  <a class="home" href="index.html">&larr; Back to home</a>
+</main>
+
+<script>
+  // Generate gentle falling snowflakes
+  (function () {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var snow = document.querySelector('.snow');
+    var glyphs = ['❄', '❅', '❆', '·'];
+    var count = 40;
+    for (var i = 0; i < count; i++) {
+      var f = document.createElement('span');
+      f.className = 'flake';
+      f.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+      f.style.left = (Math.random() * 100) + 'vw';
+      f.style.fontSize = (Math.random() * 1.1 + 0.5) + 'rem';
+      f.style.opacity = (Math.random() * 0.6 + 0.3).toFixed(2);
+      var dur = (Math.random() * 8 + 7);           // 7s - 15s
+      f.style.animationDuration = dur + 's';
+      f.style.animationDelay = (-Math.random() * dur) + 's';
+      snow.appendChild(f);
+    }
+  })();
+</script>
+
+<footer>&copy; 2026 Michael Boxer</footer>
+</body>
+</html>
