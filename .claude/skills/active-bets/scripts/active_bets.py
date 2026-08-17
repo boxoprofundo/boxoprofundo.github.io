@@ -546,10 +546,48 @@ def render_speech(bets: list[dict], settled_count: int = 0) -> str:
 # --------------------------------------------------------------------------
 
 
+BET_FIELDS = ("bet_id", "book", "placed_at", "event_at", "sport", "league",
+              "event", "bet_type", "market", "selection", "line", "status")
+
+
+def coerce_bet(raw: dict) -> dict:
+    """Accept a loosely-shaped bet record and fill it out to the full schema.
+
+    The renderer is the valuable half of this script -- turning odds and money
+    into speech is the same job no matter where the bets came from. Keeping
+    this entry point means a Pikkit profile page, a screenshot, or anything
+    else can be normalized by hand and still come out sounding identical to
+    the CSV path, instead of growing a second, drifting phrasing layer.
+    """
+    bet = {field: str(raw.get(field, "") or "").strip() for field in BET_FIELDS}
+    odds = raw.get("odds")
+    bet["odds"] = odds if isinstance(odds, int) else parse_odds(str(odds or ""))
+    for money in ("stake", "payout"):
+        value = raw.get(money)
+        bet[money] = (float(value) if isinstance(value, (int, float))
+                      else parse_money(str(value or "")))
+    if bet["payout"] is None and bet["stake"] is not None and bet["odds"] is not None:
+        o = bet["odds"]
+        bet["payout"] = round(bet["stake"] * (1 + (o / 100 if o > 0 else 100 / abs(o))), 2)
+    bet["legs"] = [{
+        "selection": str(leg.get("selection", "") or "").strip(),
+        "line": str(leg.get("line", "") or "").strip(),
+        "market": str(leg.get("market", "") or "").strip(),
+        "event": str(leg.get("event", "") or "").strip(),
+        "odds": (leg.get("odds") if isinstance(leg.get("odds"), int)
+                 else parse_odds(str(leg.get("odds") or ""))),
+    } for leg in (raw.get("legs") or [])]
+    bet["is_open"] = is_open(bet["status"])
+    return bet
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("csv_path", type=Path, help="Pikkit CSV export")
+    ap.add_argument("csv_path", nargs="?", type=Path, help="Pikkit CSV export")
+    ap.add_argument("--from-json", metavar="PATH",
+                    help="read normalized bet records (JSON array) instead of a "
+                         "CSV; use '-' for stdin")
     ap.add_argument("--json", action="store_true", help="emit normalized records")
     ap.add_argument("--all", action="store_true", help="include settled bets")
     ap.add_argument("--book", help="filter to one sportsbook (substring match)")
@@ -558,11 +596,24 @@ def main() -> int:
                     help="print detected header mapping and exit")
     args = ap.parse_args()
 
-    if not args.csv_path.exists():
+    if args.from_json:
+        raw = (sys.stdin.read() if args.from_json == "-"
+               else Path(args.from_json).read_text(encoding="utf-8"))
+        try:
+            records = json.loads(raw)
+        except json.JSONDecodeError as exc:
+            print(f"Could not parse JSON: {exc}", file=sys.stderr)
+            return 1
+        if isinstance(records, dict):
+            records = records.get("bets", [records])
+        bets, mapping = [coerce_bet(r) for r in records], {}
+    elif not args.csv_path:
+        ap.error("give a CSV path or --from-json")
+    elif not args.csv_path.exists():
         print(f"No such file: {args.csv_path}", file=sys.stderr)
         return 1
-
-    bets, mapping = load_bets(args.csv_path)
+    else:
+        bets, mapping = load_bets(args.csv_path)
 
     if args.columns:
         missing = [f for f in COLUMN_ALIASES if f not in mapping]
