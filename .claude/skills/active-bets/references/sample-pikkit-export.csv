@@ -1,0 +1,11 @@
+bet_id,sportsbook,date_placed,event_start,sport,league,event,bet_type,market,selection,line,odds,stake,potential_payout,status
+1001,DraftKings,2026-08-16 19:12:00,2026-08-17 19:05:00,Baseball,MLB,Yankees vs Red Sox,Straight,Moneyline,New York Yankees,,-150,100,166.67,pending
+1002,FanDuel,2026-08-16 20:30:00,2026-08-17 20:10:00,Baseball,MLB,Dodgers vs Padres,Straight,Total,Dodgers vs Padres Over,o8.5,-110,50,95.45,pending
+1003,BetMGM,2026-08-15 14:02:00,2026-08-17 13:00:00,Baseball,MLB,Aaron Judge Home Run,Straight,Player Prop,Aaron Judge to hit a home run,,+310,25,102.50,pending
+1004,FanDuel,2026-08-16 21:45:00,2026-08-17 19:05:00,Baseball,MLB,,Parlay,,,,+652,20,150.40,pending
+1004,FanDuel,2026-08-16 21:45:00,2026-08-17 19:05:00,Baseball,MLB,Yankees vs Red Sox,Parlay,Spread,New York Yankees,-1.5,+135,,,pending
+1004,FanDuel,2026-08-16 21:45:00,2026-08-17 20:10:00,Baseball,MLB,Dodgers vs Padres,Parlay,Moneyline,Los Angeles Dodgers,,-140,,,pending
+1004,FanDuel,2026-08-16 21:45:00,2026-08-17 22:40:00,Baseball,MLB,Astros vs Mariners,Parlay,Total,Astros vs Mariners Under,u7.5,+105,,,pending
+1005,Caesars,2026-08-14 18:00:00,2026-08-15 19:00:00,Baseball,MLB,Braves vs Phillies,Straight,Moneyline,Atlanta Braves,,+120,75,165.00,won
+1006,BetRivers,2026-08-13 12:30:00,2026-08-14 19:00:00,Baseball,MLB,Cubs vs Cardinals,Straight,Run Line,Chicago Cubs,+1.5,-105,60,117.14,lost
+1007,Hard Rock Bet,2026-08-16 11:00:00,2026-08-18 13:00:00,Tennis,ATP,Alcaraz vs Sinner,Straight,Moneyline,Carlos Alcaraz,,+100,40,80.00,pending
