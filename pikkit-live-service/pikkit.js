@@ -172,6 +172,11 @@ function simplifyBet(bet) {
           : null,
     oddsDecimal: bet.odds,
     oddsAmerican: toAmerican(bet.odds),
+    // Total returned if the bet cashes: stake back plus the profit.
+    payout:
+      typeof bet.amount === 'number' && typeof bet.odds === 'number' && bet.odds > 1
+        ? Math.round(bet.amount * bet.odds * 100) / 100
+        : null,
     tags: Array.isArray(bet.user_tags) ? bet.user_tags.map((t) => t.display_value || t.hash || t) : [],
     picks: picks.map((p) => ({
       name: p.pick_name,

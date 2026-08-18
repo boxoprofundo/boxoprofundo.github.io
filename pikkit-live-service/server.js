@@ -68,7 +68,7 @@ app.get(['/', '/live-summary'], async (req, res) => {
             bet.type === 'parlay' ? `${bet.picks.length}-leg parlay` : 'Straight bet',
             bet.oddsAmerican,
             bet.stake != null
-              ? `$${bet.stake}${bet.toWin != null ? ` to win $${bet.toWin.toFixed(2)}` : ''}`
+              ? `$${bet.stake}${bet.payout != null ? ` pays $${bet.payout.toFixed(2)}` : ''}`
               : null,
           ]
             .filter(Boolean)
