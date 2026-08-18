@@ -1,10 +1,9 @@
 # pikkit-live-service
 
-> **Status:** rewritten to use Pikkit's JSON API instead of browser scraping,
-> and **run end-to-end against a real account** on 2026-08-18 —
-> `/live-summary` returns HTTP 200 in 0.66s with live scoreboards. Not yet
-> deployed to Railway. See **[Verification status](#verification-status)** for
-> exactly what is and isn't proven.
+> **Status: deployed and verified in production** on 2026-08-18. Running on
+> Railway; `/whoami` and `/live-summary` confirmed against the real account
+> and live scoreboards from the deployed URL. See
+> **[Verification status](#verification-status)** for details.
 
 An on-demand HTTP service: call it, and it asks Pikkit which of your bets are
 currently live or open, and pairs that with current live scoreboards for the
