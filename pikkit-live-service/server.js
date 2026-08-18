@@ -53,7 +53,7 @@ app.get(['/', '/live-summary'], async (req, res) => {
       const gameStatus = (pick) => {
         const g = findGame(pick);
         if (!g) return 'no score available for this game';
-        if (g.state === 'pre') return `${g.matchup} — it hasn't started yet`;
+        if (g.state === 'pre') return `${g.matchup} — Hasn't started yet`;
         return g.line; // in progress (score + inning/clock) or final
       };
 
