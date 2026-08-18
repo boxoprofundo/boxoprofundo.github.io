@@ -29,7 +29,14 @@ function simplifyEvent(ev) {
   const homeName = (home && home.team && home.team.displayName) || '?';
   const awayScore = away && away.score != null ? away.score : '-';
   const homeScore = home && home.score != null ? home.score : '-';
-  return `${awayName} ${awayScore} @ ${homeName} ${homeScore} — ${status}`;
+  const state =
+    (comp && comp.status && comp.status.type && comp.status.type.state) ||
+    (ev.status && ev.status.type && ev.status.type.state) ||
+    'unknown';
+  return {
+    line: `${awayName} ${awayScore} @ ${homeName} ${homeScore} — ${status}`,
+    state, // 'pre' (scheduled), 'in' (live now), 'post' (final)
+  };
 }
 
 async function fetchLeague(league) {
@@ -38,14 +45,14 @@ async function fetchLeague(league) {
   try {
     const resp = await fetch(league.url, { signal: controller.signal });
     if (!resp.ok) {
-      return [`error fetching ${league.key}: HTTP ${resp.status}`];
+      return [{ line: `error fetching ${league.key}: HTTP ${resp.status}`, state: 'error' }];
     }
     const data = await resp.json();
     const events = data.events || [];
-    if (events.length === 0) return ['no games currently scheduled/live'];
+    if (events.length === 0) return [{ line: 'no games currently scheduled/live', state: 'none' }];
     return events.map(simplifyEvent);
   } catch (e) {
-    return [`error fetching ${league.key}: ${e.message}`];
+    return [{ line: `error fetching ${league.key}: ${e.message}`, state: 'error' }];
   } finally {
     clearTimeout(timeout);
   }

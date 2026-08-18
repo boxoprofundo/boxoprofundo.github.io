@@ -25,10 +25,35 @@ app.get(['/', '/live-summary'], async (req, res) => {
   }
 
   try {
-    const [live, scoreboards] = await Promise.all([
+    const [live, rawBoards] = await Promise.all([
       getLiveBets(process.env.PIKKIT_SESSION_ID),
       getSimplifiedScoreboards(),
     ]);
+
+    // format=text: a compact human-readable digest -- open/live bets plus
+    // ONLY the games in progress right now (a phone's text-to-speech reading
+    // 50 scheduled college games is useless).
+    if (req.query.format === 'text') {
+      const inProgress = [];
+      for (const [league, games] of Object.entries(rawBoards)) {
+        for (const g of games) {
+          if (g.state === 'in') inProgress.push(`${league.toUpperCase()}: ${g.line}`);
+        }
+      }
+      const parts = [
+        `YOUR BETS (${live.count} open/live):`,
+        live.summary,
+        '',
+        inProgress.length ? 'GAMES IN PROGRESS:' : 'No games in progress right now.',
+        ...inProgress,
+      ];
+      return res.type('text/plain').send(parts.join('\n'));
+    }
+
+    const scoreboards = {};
+    for (const [league, games] of Object.entries(rawBoards)) {
+      scoreboards[league] = games.map((g) => g.line);
+    }
 
     res.json({
       ok: true,
