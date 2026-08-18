@@ -65,6 +65,44 @@ app.get('/whoami', async (req, res) => {
   }
 });
 
+// TEMPORARY diagnostic: what statuses do this account's recent bets actually
+// carry? Pulls bets with NO status filter and reports just status fields --
+// no stakes or bet details. Remove once the live/open filter is confirmed.
+app.get('/diag-statuses', async (req, res) => {
+  if (!authorized(req)) {
+    return res.status(401).json({ ok: false, error: 'unauthorized' });
+  }
+  try {
+    const sessionId = process.env.PIKKIT_SESSION_ID;
+    const headers = { Authorization: sessionId, Accept: 'application/json' };
+    const base = 'https://prod-website.pikkit.app';
+
+    const [betsResp, filtersResp] = await Promise.all([
+      fetch(`${base}/user/bets?offset=0&limit=30`, { headers }),
+      fetch(`${base}/user/bets/filters`, { headers }),
+    ]);
+    const rawBets = betsResp.ok ? await betsResp.json() : `HTTP ${betsResp.status}`;
+    const filters = filtersResp.ok ? await filtersResp.json() : `HTTP ${filtersResp.status}`;
+
+    const arr = Array.isArray(rawBets) ? rawBets : Object.values(rawBets || {});
+    const bets = arr
+      .filter((b) => b && typeof b === 'object')
+      .map((b) => ({
+        status: b.status,
+        type: b.type,
+        is_live: b.is_live,
+        future: b.future,
+        firstPick: Array.isArray(b.picks) && b.picks[0] ? b.picks[0].pick_name : null,
+      }));
+    const statusCounts = {};
+    for (const b of bets) statusCounts[b.status] = (statusCounts[b.status] || 0) + 1;
+
+    res.json({ ok: true, statusCounts, bets, availableFilters: filters });
+  } catch (e) {
+    res.status(502).json({ ok: false, error: e.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`pikkit-live-service listening on port ${PORT}`);
 });
