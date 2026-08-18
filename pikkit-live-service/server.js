@@ -1,6 +1,5 @@
 const express = require('express');
-const { chromium } = require('playwright');
-const { scrapeLiveBets } = require('./scraper');
+const { getLiveBets, validateSession, PikkitError } = require('./pikkit');
 const { getSimplifiedScoreboards } = require('./scores');
 
 const app = express();
@@ -8,50 +7,61 @@ const PORT = process.env.PORT || 3000;
 
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
+function authorized(req) {
+  return Boolean(process.env.SERVICE_TOKEN) && req.query.token === process.env.SERVICE_TOKEN;
+}
+
 // GET /live-summary?token=YOUR_SERVICE_TOKEN
 //
-// Synchronous, on-demand endpoint: every call launches a fresh headless
-// browser, logs into Pikkit, grabs the live-bets page's text, and pairs it
-// with a simplified live scoreboard bundle for the major leagues. No
-// caching, no schedule -- it only runs when called, since that's all
-// this is meant to do.
+// On-demand, no caching, no schedule. Calls Pikkit's JSON API for whatever
+// bets are currently live or open, and pairs them with simplified live
+// scoreboards for the major US leagues.
 //
-// Expect this to take roughly 10-25 seconds per call (real login + page
-// load). If it becomes a problem, the timeout on whatever is calling this
-// should be generous (30s+).
+// Typically ~1-2s (it's two sets of plain HTTP calls -- there is no browser
+// involved; see pikkit.js for why the original scraping approach was dropped).
 app.get('/live-summary', async (req, res) => {
-  if (!process.env.SERVICE_TOKEN || req.query.token !== process.env.SERVICE_TOKEN) {
-    return res.status(401).json({ error: 'unauthorized' });
+  if (!authorized(req)) {
+    return res.status(401).json({ ok: false, error: 'unauthorized' });
   }
 
-  let browser;
   try {
-    browser = await chromium.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
-    const page = await browser.newPage();
-
-    const [{ text, debug }, scoreboards] = await Promise.all([
-      scrapeLiveBets(page),
+    const [live, scoreboards] = await Promise.all([
+      getLiveBets(process.env.PIKKIT_SESSION_ID),
       getSimplifiedScoreboards(),
     ]);
 
     res.json({
       ok: true,
-      scrapedAt: new Date().toISOString(),
-      pikkitRawText: text,
+      fetchedAt: new Date().toISOString(),
+      liveBetCount: live.count,
+      liveBets: live.bets,
+      liveBetsText: live.summary,
       scoreboards,
-      debug,
     });
   } catch (e) {
-    res.status(500).json({
+    const isPikkit = e instanceof PikkitError;
+    res.status(isPikkit && e.sessionExpired ? 401 : 502).json({
       ok: false,
       error: e.message,
-      debug: e.debug || null,
+      sessionExpired: isPikkit ? e.sessionExpired : false,
     });
-  } finally {
-    if (browser) await browser.close().catch(() => {});
+  }
+});
+
+// GET /whoami?token=... -- cheap way to check the Pikkit session is still
+// valid without pulling bets or scoreboards.
+app.get('/whoami', async (req, res) => {
+  if (!authorized(req)) {
+    return res.status(401).json({ ok: false, error: 'unauthorized' });
+  }
+  try {
+    res.json({ ok: true, user: await validateSession(process.env.PIKKIT_SESSION_ID) });
+  } catch (e) {
+    res.status(e instanceof PikkitError && e.sessionExpired ? 401 : 502).json({
+      ok: false,
+      error: e.message,
+      sessionExpired: e instanceof PikkitError ? e.sessionExpired : false,
+    });
   }
 });
 

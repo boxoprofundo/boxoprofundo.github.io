@@ -1,16 +1,16 @@
 {
   "name": "pikkit-live-service",
-  "version": "1.0.0",
-  "description": "On-demand service: logs into Pikkit, scrapes live bets, and returns them alongside simplified live scoreboards.",
+  "version": "2.0.0",
+  "description": "On-demand service: reads live/open bets from Pikkit's JSON API and returns them alongside simplified live scoreboards.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "debug": "node local-debug.js"
   },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
-    "express": "^4.19.2",
-    "playwright": "^1.48.0"
+    "express": "^4.19.2"
   }
 }

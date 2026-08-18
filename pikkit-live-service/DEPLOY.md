@@ -1,111 +1,113 @@
 # Deploying to Railway
 
-> **Status:** this service has **not** been deployed or run against the real
-> app.pikkit.com. The session that was supposed to do that had its egress
-> blocked for `app.pikkit.com`, `railway.app`/`backboard.railway.app`, and
-> `site.api.espn.com` (only package registries and GitHub are reachable), so
-> steps 3-6 of the original plan have to run from your machine. Everything
-> below is the exact sequence to do that.
+This service is a small Node app with one dependency (`express`) and no
+browser. Builds take seconds and it runs fine on the smallest instance.
 
-## 0. Prereqs (once)
+## 0. Get your Pikkit session
+
+Pikkit can't be logged into programmatically (phone + SMS 2FA behind
+Cloudflare Turnstile — see [README.md](README.md)), so the service reuses a
+session from a browser you already logged in with.
+
+1. Log in at <https://app.pikkit.com>.
+2. DevTools → **Application** → **Cookies** → `app.pikkit.com` → `session_id`.
+3. Copy the value. Treat it like a password.
+
+Sanity-check it locally before deploying anything:
+
+```bash
+npm install
+read -rs PIKKIT_SESSION_ID && export PIKKIT_SESSION_ID
+node local-debug.js
+```
+
+That prints who the session belongs to and any live/open bets. `SCORES=1` also
+dumps the scoreboards. Using `read -rs` keeps the value out of your shell
+history.
+
+## Option A — deploy from the Railway dashboard (no CLI, no Node needed)
+
+If you don't have Node installed locally, skip the CLI entirely — Railway can
+build straight from GitHub in the browser.
+
+1. <https://railway.com> → **New Project** → **Deploy from GitHub repo**
+2. Pick `boxoprofundo/boxoprofundo.github.io`, branch
+   `claude/pikkit-live-bets-railway-132nbq`
+3. **Settings → Root Directory** → set to `pikkit-live-service`
+   (the repo root is a personal website; without this Railway builds the wrong
+   thing)
+4. **Variables** → add `PIKKIT_SESSION_ID` and `SERVICE_TOKEN`
+5. **Settings → Networking** → **Generate Domain**
+6. Open `https://<domain>/health` in a browser — expect `{"ok":true}`
+
+Then jump to [step 4](#4-test).
+
+## Option B — CLI
+
+### 1. Prereqs
 
 ```bash
 npm i -g @railway/cli
-railway login          # opens a browser
-railway whoami         # confirm the right account
-railway list           # check existing projects so you don't collide
+railway login            # add --browserless for a device-code flow
+railway whoami           # confirm the right account
+railway list             # check existing projects so you don't collide
 ```
 
-## 1. Create the project and deploy
+### 2. Create the project and deploy
 
 From inside `pikkit-live-service/`:
 
 ```bash
-railway init            # choose "Empty Project", name it e.g. pikkit-live-service
-railway up              # builds the Dockerfile (installs Chromium) and deploys
+railway init             # choose "Empty Project", name it e.g. pikkit-live-service
+railway up               # builds the Dockerfile and deploys
 ```
 
-## 2. Set the environment variables
+### 3. Set the environment variables
 
-**Do not paste your password into a chat — set it directly.** Either use the
-Railway dashboard (Project → Variables), or run these locally:
+Never paste secrets as literals — prompt for them so they stay out of history:
 
 ```bash
-railway variables --set "PIKKIT_EMAIL=you@example.com"
+read -rs PIKKIT_SESSION_ID && railway variables --set "PIKKIT_SESSION_ID=$PIKKIT_SESSION_ID" && unset PIKKIT_SESSION_ID
 
-# Prompt for the password so it never lands in your shell history:
-read -rs PIKKIT_PASSWORD && railway variables --set "PIKKIT_PASSWORD=$PIKKIT_PASSWORD" && unset PIKKIT_PASSWORD
-
-# Your own random endpoint secret (nothing to do with your Pikkit password):
+# Your own random endpoint secret (nothing to do with Pikkit):
 railway variables --set "SERVICE_TOKEN=$(openssl rand -hex 24)"
 
 # Read it back so you know what to put in the curl below:
 railway variables | grep SERVICE_TOKEN
 ```
 
-> Older Railway CLI versions used `railway variables set KEY=value` (no `--set`).
-> If the above errors, run `railway variables --help` and use whichever form
-> your version supports.
+> Older Railway CLI versions used `railway variables set KEY=value` (no
+> `--set`). If the above errors, check `railway variables --help`.
 
-Setting variables triggers a redeploy. Then expose the service publicly:
-
-```bash
-railway domain          # prints the generated https://<something>.up.railway.app
-```
-
-## 3. Test it
+Setting variables triggers a redeploy. Then expose it publicly:
 
 ```bash
-curl --max-time 90 "https://<your-domain>.up.railway.app/health"
-
-curl --max-time 90 "https://<your-domain>.up.railway.app/live-summary?token=<SERVICE_TOKEN>"
+railway domain           # prints https://<something>.up.railway.app
 ```
 
-The first call takes 10-25s (real login + page load). Give it a generous timeout.
-
-## 4. When the first run fails
-
-It very likely will — the login/nav selectors in `scraper.js` are guesses that
-have never been checked against the real page. The error response carries a
-`debug` object:
+## 4. Test
 
 ```bash
-curl -s --max-time 90 "https://<domain>/live-summary?token=<TOKEN>" > resp.json
-
-# what failed and where:
-python3 -c "import json;d=json.load(open('resp.json'));print(d['error']);print(d.get('debug',{}).get('label'),d.get('debug',{}).get('url'),d.get('debug',{}).get('title'))"
-
-# see exactly what the headless browser saw:
-python3 -c "import json,base64;d=json.load(open('resp.json'));open('debug.png','wb').write(base64.b64decode(d['debug']['screenshotBase64']))"
+curl --max-time 30 "https://<your-domain>/health"
+curl --max-time 30 "https://<your-domain>/whoami?token=<SERVICE_TOKEN>"
+curl --max-time 30 "https://<your-domain>/live-summary?token=<SERVICE_TOKEN>"
 ```
 
-`debug.label` tells you which checkpoint blew up:
+Expect ~1–2s. `/whoami` is the fastest way to tell a dead session from a
+broken deploy.
 
-| label | meaning |
+Any of these can also just be opened in a browser tab — they're plain GETs.
+
+## 5. Troubleshooting
+
+| symptom | meaning |
 |---|---|
-| `initial-navigation-failed` | couldn't even load the page (site down, egress blocked, Cloudflare) |
-| `login-form-not-found` | loaded, but no email/password field matched the guessed selectors |
-| `login-appears-to-have-failed` | submitted, but a password field is still visible → wrong creds, CAPTCHA, or 2FA |
+| `401` + `"sessionExpired": true` | the `session_id` expired or is wrong → grab a fresh cookie (step 0) and re-set the variable |
+| `401 unauthorized` (no `sessionExpired`) | wrong or missing `?token=` — that's `SERVICE_TOKEN`, not Pikkit |
+| `502` + a Pikkit API message | Pikkit returned an unexpected status; the message includes their response |
+| `liveBetCount: 0` | **not an error** — you have no live or open bets right now |
+| build succeeds but `/health` 404s | Root Directory isn't set to `pikkit-live-service` |
 
-### Faster loop: debug locally instead of redeploying
-
-Redeploying to read a screenshot is slow. Use the local harness against the
-real site from your own machine:
-
-```bash
-npm install
-npx playwright install chromium
-export PIKKIT_EMAIL=you@example.com
-read -rs PIKKIT_PASSWORD && export PIKKIT_PASSWORD
-HEADED=1 node local-debug.js     # watch it drive a real browser window
-PAUSE=1 HEADED=1 node local-debug.js   # Playwright Inspector: pick selectors by hand
-```
-
-Fix the selector lists at the top of `scraper.js` (`EMAIL_SELECTORS`,
-`PASSWORD_SELECTORS`) and the `goToLiveBets()` "Live" tab locator until
-`node local-debug.js` prints your real bets. Then `railway up` again.
-
-If the screenshot shows a **CAPTCHA or a 2FA prompt**, this approach is dead as
-designed — headless login can't get past it. Fallbacks at that point: reuse a
-saved browser session (`storageState`) captured from a real logged-in browser,
-or drop back to pasting bet info in manually.
+If Pikkit changes the API shape, `pikkit.js` is the only file that needs to
+change; `GET /user/bets/filters` is the authoritative source for valid
+`bet_statuses` values.

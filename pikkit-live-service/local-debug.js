@@ -1,68 +1,53 @@
 /**
- * Local selector-debugging harness. NOT used by the deployed service.
+ * Fast local check, no deploy needed.
  *
- * Run this on YOUR machine (where app.pikkit.com is actually reachable) to
- * see what the scraper sees, so you can fix the guessed selectors in
- * scraper.js against the real page.
+ *   export PIKKIT_SESSION_ID=...      # the `session_id` cookie from a
+ *                                     # logged-in app.pikkit.com browser tab
+ *   node local-debug.js
  *
- *   npm install
- *   npx playwright install chromium
- *   PIKKIT_EMAIL=you@example.com PIKKIT_PASSWORD='...' node local-debug.js
- *
- * Flags (env vars):
- *   HEADED=1   open a real visible browser window so you can watch/interact
- *   PAUSE=1    drop into Playwright Inspector before the run (pick selectors
- *              interactively, step through, copy working locators)
- *
- * On success it prints the scraped page text. On failure it writes
- * debug.png and prints the page URL/title -- the same payload the deployed
- * service returns in its `debug` field.
+ * Prints who the session belongs to, then whatever bets are live/open.
+ * An empty list is a correct result, not a failure -- it just means nothing
+ * is running right now.
  */
 
-const fs = require('fs');
-const { chromium } = require('playwright');
-const { scrapeLiveBets } = require('./scraper');
-
-if (!process.env.PIKKIT_EMAIL || !process.env.PIKKIT_PASSWORD) {
-  console.error('Set PIKKIT_EMAIL and PIKKIT_PASSWORD in your environment first.');
-  console.error("Tip: don't put them on the command line if you share shell history --");
-  console.error('use `read -s PIKKIT_PASSWORD && export PIKKIT_PASSWORD` instead.');
-  process.exit(1);
-}
+const { getLiveBets, validateSession, PikkitError } = require('./pikkit');
+const { getSimplifiedScoreboards } = require('./scores');
 
 (async () => {
-  const browser = await chromium.launch({
-    headless: !process.env.HEADED,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
-  const page = await browser.newPage();
+  const sessionId = process.env.PIKKIT_SESSION_ID;
+  if (!sessionId) {
+    console.error('PIKKIT_SESSION_ID is not set.\n');
+    console.error('Get it from a logged-in app.pikkit.com tab:');
+    console.error('  DevTools -> Application -> Cookies -> app.pikkit.com -> session_id');
+    process.exit(1);
+  }
 
   try {
-    if (process.env.PAUSE) await page.pause();
-    const { text, debug } = await scrapeLiveBets(page);
-    console.log('=== SCRAPE SUCCEEDED ===');
-    console.log('final url:  ', debug.url);
-    console.log('final title:', debug.title);
-    console.log('--- visible page text ---');
-    console.log(text);
-    fs.writeFileSync('pikkit-page-text.txt', text);
-    console.log('\n(also written to pikkit-page-text.txt)');
+    const user = await validateSession(sessionId);
+    console.log(`session OK -> ${user.name} (@${user.username}), balance $${user.balance}\n`);
   } catch (e) {
-    console.error('=== SCRAPE FAILED ===');
-    console.error('message:', e.message);
-    if (e.debug) {
-      console.error('label:  ', e.debug.label);
-      console.error('url:    ', e.debug.url);
-      console.error('title:  ', e.debug.title);
-      if (e.debug.screenshotBase64) {
-        fs.writeFileSync('debug.png', Buffer.from(e.debug.screenshotBase64, 'base64'));
-        console.error('screenshot written to debug.png');
-      }
-    } else {
-      console.error('(no debug payload attached to this error)');
+    console.error('session check FAILED:', e.message);
+    process.exit(1);
+  }
+
+  try {
+    const live = await getLiveBets(sessionId);
+    console.log(`=== LIVE / OPEN BETS (${live.count}) ===`);
+    console.log(live.summary);
+  } catch (e) {
+    console.error('live bets FAILED:', e.message);
+    if (e instanceof PikkitError && e.sessionExpired) {
+      console.error('-> grab a fresh session_id cookie and retry.');
     }
-    process.exitCode = 1;
-  } finally {
-    await browser.close().catch(() => {});
+    process.exit(1);
+  }
+
+  if (process.env.SCORES) {
+    const boards = await getSimplifiedScoreboards();
+    console.log('\n=== SCOREBOARDS ===');
+    for (const [league, lines] of Object.entries(boards)) {
+      console.log(`${league}: ${lines.length} line(s)`);
+      lines.slice(0, 3).forEach((l) => console.log(`  ${l}`));
+    }
   }
 })();
