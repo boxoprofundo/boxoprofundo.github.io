@@ -33,9 +33,15 @@ function simplifyEvent(ev) {
     (comp && comp.status && comp.status.type && comp.status.type.state) ||
     (ev.status && ev.status.type && ev.status.type.state) ||
     'unknown';
+  const awayAbbr = (away && away.team && away.team.abbreviation) || '';
+  const homeAbbr = (home && home.team && home.team.abbreviation) || '';
   return {
     line: `${awayName} ${awayScore} @ ${homeName} ${homeScore} — ${status}`,
     state, // 'pre' (scheduled), 'in' (live now), 'post' (final)
+    // Team abbreviations (e.g. STL, CIN) -- lets bets, whose game context
+    // uses abbreviations, be matched to their scoreboard game.
+    abbrevs: [awayAbbr.toUpperCase(), homeAbbr.toUpperCase()].filter(Boolean),
+    matchup: `${awayName} at ${homeName}`,
   };
 }
 

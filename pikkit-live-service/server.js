@@ -30,24 +30,54 @@ app.get(['/', '/live-summary'], async (req, res) => {
       getSimplifiedScoreboards(),
     ]);
 
-    // format=text: a compact human-readable digest -- open/live bets plus
-    // ONLY the games in progress right now (a phone's text-to-speech reading
-    // 50 scheduled college games is useless).
+    // format=text: a bet-first, human-readable digest. Each bet leg is
+    // matched to its scoreboard game (by the team abbreviations in the leg's
+    // game context) and annotated with the current score and inning/clock,
+    // or "hasn't started yet" for scheduled games.
     if (req.query.format === 'text') {
-      const inProgress = [];
-      for (const [league, games] of Object.entries(rawBoards)) {
-        for (const g of games) {
-          if (g.state === 'in') inProgress.push(`${league.toUpperCase()}: ${g.line}`);
+      const games = [];
+      for (const arr of Object.values(rawBoards)) {
+        for (const g of arr) if (g.abbrevs && g.abbrevs.length === 2) games.push(g);
+      }
+
+      // A leg's context looks like "STL - CIN"; require BOTH team
+      // abbreviations to match one game so nothing is matched by accident.
+      const findGame = (pick) => {
+        const tokens = `${pick.context || ''} ${pick.name || ''}`
+          .toUpperCase()
+          .split(/[^A-Z0-9]+/)
+          .filter((t) => t.length >= 2 && t.length <= 5);
+        return games.find((g) => g.abbrevs.every((a) => tokens.includes(a))) || null;
+      };
+
+      const gameStatus = (pick) => {
+        const g = findGame(pick);
+        if (!g) return 'no score available for this game';
+        if (g.state === 'pre') return `${g.matchup} — it hasn't started yet`;
+        return g.line; // in progress (score + inning/clock) or final
+      };
+
+      const lines = [];
+      if (live.bets.length === 0) {
+        lines.push('No live or open bets right now.');
+      } else {
+        lines.push(`You have ${live.count} open bet${live.count === 1 ? '' : 's'}.`);
+        for (const bet of live.bets) {
+          lines.push('');
+          const head = [
+            bet.type === 'parlay' ? `${bet.picks.length}-leg parlay` : 'Straight bet',
+            bet.oddsAmerican,
+            bet.stake != null ? `$${bet.stake}` : null,
+          ]
+            .filter(Boolean)
+            .join(', ');
+          lines.push(`${head}:`);
+          for (const p of bet.picks) {
+            lines.push(`  ${p.name}: ${gameStatus(p)}`);
+          }
         }
       }
-      const parts = [
-        `YOUR BETS (${live.count} open/live):`,
-        live.summary,
-        '',
-        inProgress.length ? 'GAMES IN PROGRESS:' : 'No games in progress right now.',
-        ...inProgress,
-      ];
-      return res.type('text/plain').send(parts.join('\n'));
+      return res.type('text/plain').send(lines.join('\n'));
     }
 
     const scoreboards = {};
