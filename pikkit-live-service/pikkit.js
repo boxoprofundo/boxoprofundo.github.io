@@ -180,7 +180,9 @@ function summarizeBet(bet) {
   const head = [
     bet.type === 'parlay' ? `${bet.picks.length}-leg parlay` : 'straight',
     bet.oddsAmerican || (bet.oddsDecimal != null ? `${bet.oddsDecimal}d` : null),
-    bet.stake != null ? `${money(bet.stake)} to win ${money(bet.toWin)}` : null,
+    bet.stake != null
+      ? `${money(bet.stake)}${bet.toWin != null ? ` to win ${money(bet.toWin)}` : ''}`
+      : null,
     bet.status,
     bet.placedLive ? '(placed live)' : null,
   ]
