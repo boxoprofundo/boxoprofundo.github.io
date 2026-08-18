@@ -19,7 +19,7 @@ function authorized(req) {
 //
 // Typically ~1-2s (it's two sets of plain HTTP calls -- there is no browser
 // involved; see pikkit.js for why the original scraping approach was dropped).
-app.get('/live-summary', async (req, res) => {
+app.get(['/', '/live-summary'], async (req, res) => {
   if (!authorized(req)) {
     return res.status(401).json({ ok: false, error: 'unauthorized' });
   }
