@@ -1,0 +1,8 @@
+{
+  "name": "refresh-pikkit-session",
+  "private": true,
+  "description": "Helper for the refresh-pikkit-session skill: captures a fresh Pikkit session_id from a human-completed login.",
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}
