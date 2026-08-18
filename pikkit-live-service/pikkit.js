@@ -212,14 +212,28 @@ async function validateSession(sessionId) {
  * answer, not an error.
  */
 async function getLiveBets(sessionId, { limit = 100 } = {}) {
-  // Built by hand, not with URLSearchParams: that percent-encodes the comma
-  // to %2C, and the form actually verified against the live API uses a
-  // literal comma (bet_statuses=live,PLACED). Not worth gambling that their
-  // backend decodes it the same way -- send exactly what is known to work.
-  const query = `bet_statuses=${LIVE_STATUSES}&offset=0&limit=${encodeURIComponent(limit)}`;
-  const raw = await apiGet(`/user/bets?${query}`, sessionId);
-  const arr = Array.isArray(raw) ? raw : Object.values(raw || {});
-  const bets = arr.filter((b) => b && typeof b === 'object').map(simplifyBet);
+  // One request PER status, merged client-side. The comma-list form
+  // (bet_statuses=live,PLACED) silently matches ZERO bets -- found in
+  // production against an account that verifiably had 7 PLACED bets open.
+  // Single-status queries are the only form actually proven to work.
+  const perStatus = await Promise.all(
+    LIVE_STATUSES.split(',').map(async (status) => {
+      const query = `bet_statuses=${status}&offset=0&limit=${encodeURIComponent(limit)}`;
+      const raw = await apiGet(`/user/bets?${query}`, sessionId);
+      return Array.isArray(raw) ? raw : Object.values(raw || {});
+    })
+  );
+  const seen = new Set();
+  const bets = perStatus
+    .flat()
+    .filter((b) => b && typeof b === 'object')
+    .filter((b) => {
+      const id = b._id || JSON.stringify(b);
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    })
+    .map(simplifyBet);
 
   return {
     count: bets.length,
