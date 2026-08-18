@@ -67,7 +67,9 @@ app.get(['/', '/live-summary'], async (req, res) => {
           const head = [
             bet.type === 'parlay' ? `${bet.picks.length}-leg parlay` : 'Straight bet',
             bet.oddsAmerican,
-            bet.stake != null ? `$${bet.stake}` : null,
+            bet.stake != null
+              ? `$${bet.stake}${bet.toWin != null ? ` to win $${bet.toWin.toFixed(2)}` : ''}`
+              : null,
           ]
             .filter(Boolean)
             .join(', ');

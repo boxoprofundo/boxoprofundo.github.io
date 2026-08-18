@@ -162,7 +162,14 @@ function simplifyBet(bet) {
     placedLive: !!bet.is_live,
     isFuture: !!bet.future,
     stake: bet.amount,
-    toWin: typeof bet.profit === 'number' ? bet.profit : null,
+    // Pikkit only fills profit in after settling. For open bets, compute the
+    // potential win from the decimal odds: stake * (odds - 1).
+    toWin:
+      typeof bet.profit === 'number'
+        ? bet.profit
+        : typeof bet.amount === 'number' && typeof bet.odds === 'number' && bet.odds > 1
+          ? Math.round(bet.amount * (bet.odds - 1) * 100) / 100
+          : null,
     oddsDecimal: bet.odds,
     oddsAmerican: toAmerican(bet.odds),
     tags: Array.isArray(bet.user_tags) ? bet.user_tags.map((t) => t.display_value || t.hash || t) : [],
