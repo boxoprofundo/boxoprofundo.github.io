@@ -38,6 +38,7 @@ const API_BASE = 'https://prod-website.pikkit.app';
 // Note: the `is_live` field on a bet means "was placed while in-play", NOT
 // "is live now" -- do not filter on it.
 const LIVE_STATUSES = 'live,PLACED';
+const SETTLED_STATUSES = 'SETTLED_WIN,SETTLED_LOSS,SETTLED_PUSH,SETTLED_VOID';
 
 class PikkitError extends Error {
   constructor(message, { status = null, sessionExpired = false } = {}) {
@@ -177,6 +178,12 @@ function simplifyBet(bet) {
       typeof bet.amount === 'number' && typeof bet.odds === 'number' && bet.odds > 1
         ? Math.round(bet.amount * bet.odds * 100) / 100
         : null,
+    // Settle/placement timestamps. The exact field name was never observable
+    // in captured responses, so try the plausible spellings; consumers must
+    // tolerate null.
+    settledAt:
+      bet.time_settled || bet.settled_at || bet.settle_date || bet.graded_at || null,
+    placedAt: bet.time_placed || bet.placed_at || bet.created_at || null,
     tags: Array.isArray(bet.user_tags) ? bet.user_tags.map((t) => t.display_value || t.hash || t) : [],
     picks: picks.map((p) => ({
       name: p.pick_name,
@@ -225,20 +232,20 @@ async function validateSession(sessionId) {
  * Returns { bets, summary, count } -- an empty list is a valid, correct
  * answer, not an error.
  */
-async function getLiveBets(sessionId, { limit = 100 } = {}) {
-  // One request PER status, merged client-side. The comma-list form
-  // (bet_statuses=live,PLACED) silently matches ZERO bets -- found in
-  // production against an account that verifiably had 7 PLACED bets open.
-  // Single-status queries are the only form actually proven to work.
+// One request PER status, merged client-side. The comma-list form
+// (bet_statuses=live,PLACED) silently matches ZERO bets -- found in
+// production against an account that verifiably had 7 PLACED bets open.
+// Single-status queries are the only form actually proven to work.
+async function fetchByStatuses(sessionId, statuses, limit) {
   const perStatus = await Promise.all(
-    LIVE_STATUSES.split(',').map(async (status) => {
+    statuses.split(',').map(async (status) => {
       const query = `bet_statuses=${status}&offset=0&limit=${encodeURIComponent(limit)}`;
       const raw = await apiGet(`/user/bets?${query}`, sessionId);
       return Array.isArray(raw) ? raw : Object.values(raw || {});
     })
   );
   const seen = new Set();
-  const bets = perStatus
+  return perStatus
     .flat()
     .filter((b) => b && typeof b === 'object')
     .filter((b) => {
@@ -248,7 +255,10 @@ async function getLiveBets(sessionId, { limit = 100 } = {}) {
       return true;
     })
     .map(simplifyBet);
+}
 
+async function getLiveBets(sessionId, { limit = 100 } = {}) {
+  const bets = await fetchByStatuses(sessionId, LIVE_STATUSES, limit);
   return {
     count: bets.length,
     bets,
@@ -258,11 +268,22 @@ async function getLiveBets(sessionId, { limit = 100 } = {}) {
   };
 }
 
+/** Most recently settled bets (won/lost/push/void), newest first as Pikkit
+ * returns them. Date filtering ("settled today") happens downstream, where
+ * the caller knows the user's timezone. */
+async function getSettledBets(sessionId, { limit = 15 } = {}) {
+  const bets = await fetchByStatuses(sessionId, SETTLED_STATUSES, limit);
+  return { count: bets.length, bets };
+}
+
 module.exports = {
   API_BASE,
   LIVE_STATUSES,
+  SETTLED_STATUSES,
   PikkitError,
   getLiveBets,
+  getSettledBets,
+  summarizeBet,
   validateSession,
   toAmerican,
 };

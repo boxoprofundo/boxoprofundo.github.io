@@ -1,5 +1,5 @@
 const express = require('express');
-const { getLiveBets, validateSession, PikkitError } = require('./pikkit');
+const { getLiveBets, getSettledBets, validateSession, PikkitError } = require('./pikkit');
 const { getSimplifiedScoreboards } = require('./scores');
 
 const app = express();
@@ -25,10 +25,25 @@ app.get(['/', '/live-summary'], async (req, res) => {
   }
 
   try {
-    const [live, rawBoards] = await Promise.all([
+    const [live, settled, rawBoards] = await Promise.all([
       getLiveBets(process.env.PIKKIT_SESSION_ID),
+      getSettledBets(process.env.PIKKIT_SESSION_ID),
       getSimplifiedScoreboards(),
     ]);
+
+    // "Settled today" in the bettor's timezone (US Eastern). If Pikkit's
+    // settle-timestamp field wasn't recognized (settledAt null on every
+    // bet), fall back to the recent settled list rather than hiding wins
+    // and losses -- consumers can still cross-check against today's finals.
+    const nyDate = (d) =>
+      new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(d);
+    const today = nyDate(new Date());
+    const anyDates = settled.bets.some((b) => b.settledAt && !isNaN(new Date(b.settledAt)));
+    const settledToday = anyDates
+      ? settled.bets.filter(
+          (b) => b.settledAt && !isNaN(new Date(b.settledAt)) && nyDate(new Date(b.settledAt)) === today
+        )
+      : settled.bets;
 
     // format=text: a bet-first, human-readable digest. Each bet leg is
     // matched to its scoreboard game (by the team abbreviations in the leg's
@@ -57,6 +72,7 @@ app.get(['/', '/live-summary'], async (req, res) => {
         return g.line; // in progress (score + inning/clock) or final
       };
 
+      const settleWord = { SETTLED_WIN: 'WON', SETTLED_LOSS: 'LOST', SETTLED_PUSH: 'PUSH', SETTLED_VOID: 'VOID' };
       const lines = [];
       if (live.bets.length === 0) {
         lines.push('No live or open bets right now.');
@@ -79,6 +95,21 @@ app.get(['/', '/live-summary'], async (req, res) => {
           }
         }
       }
+      lines.push('');
+      if (settledToday.length === 0) {
+        lines.push('No bets settled today.');
+      } else {
+        lines.push(anyDates ? 'SETTLED TODAY:' : 'RECENTLY SETTLED (dates unavailable):');
+        for (const bet of settledToday) {
+          const legs = bet.picks.map((p) => p.name).join(', ');
+          const word = settleWord[bet.status] || bet.status;
+          const net =
+            typeof bet.toWin === 'number' ? ` $${Math.abs(bet.toWin).toFixed(2)}` : '';
+          lines.push(
+            `  ${bet.type === 'parlay' ? `${bet.picks.length}-leg parlay` : 'Straight'}, $${bet.stake} (${legs}): ${word}${net}`
+          );
+        }
+      }
       return res.type('text/plain').send(lines.join('\n'));
     }
 
@@ -93,6 +124,9 @@ app.get(['/', '/live-summary'], async (req, res) => {
       liveBetCount: live.count,
       liveBets: live.bets,
       liveBetsText: live.summary,
+      settledTodayCount: settledToday.length,
+      settledToday,
+      settledDatesAvailable: anyDates,
       scoreboards,
     });
   } catch (e) {
@@ -154,7 +188,23 @@ app.get('/diag-statuses', async (req, res) => {
     const statusCounts = {};
     for (const b of bets) statusCounts[b.status] = (statusCounts[b.status] || 0) + 1;
 
-    res.json({ ok: true, statusCounts, bets, availableFilters: filters });
+    // Full key list plus any date-looking values from one settled bet, to
+    // pin down which field carries the settle timestamp.
+    const sample = arr.find((b) => b && typeof b === 'object' && String(b.status).startsWith('SETTLED'));
+    const sampleBetFields = sample
+      ? {
+          keys: Object.keys(sample),
+          dateLike: Object.fromEntries(
+            Object.entries(sample).filter(
+              ([, v]) =>
+                (typeof v === 'string' && /\d{4}-\d{2}-\d{2}|\d{10,}/.test(v)) ||
+                (typeof v === 'number' && v > 1e12)
+            )
+          ),
+        }
+      : null;
+
+    res.json({ ok: true, statusCounts, bets, sampleBetFields, availableFilters: filters });
   } catch (e) {
     res.status(502).json({ ok: false, error: e.message });
   }
