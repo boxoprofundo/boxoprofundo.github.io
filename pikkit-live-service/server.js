@@ -31,17 +31,18 @@ app.get(['/', '/live-summary'], async (req, res) => {
       getSimplifiedScoreboards(),
     ]);
 
-    // "Settled today" in the bettor's timezone (US Eastern). If Pikkit's
-    // settle-timestamp field wasn't recognized (settledAt null on every
-    // bet), fall back to the recent settled list rather than hiding wins
-    // and losses -- consumers can still cross-check against today's finals.
+    // "Settled today" in the bettor's timezone (US Eastern). Pikkit provides
+    // no settle timestamp at all, so this uses the placement time recovered
+    // from the bet's ObjectId: a settled bet that was PLACED today settled
+    // today. Known edge: a bet placed before midnight that settles after
+    // won't appear the next day.
     const nyDate = (d) =>
       new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(d);
     const today = nyDate(new Date());
-    const anyDates = settled.bets.some((b) => b.settledAt && !isNaN(new Date(b.settledAt)));
+    const anyDates = settled.bets.some((b) => b.placedAt && !isNaN(new Date(b.placedAt)));
     const settledToday = anyDates
       ? settled.bets.filter(
-          (b) => b.settledAt && !isNaN(new Date(b.settledAt)) && nyDate(new Date(b.settledAt)) === today
+          (b) => b.placedAt && !isNaN(new Date(b.placedAt)) && nyDate(new Date(b.placedAt)) === today
         )
       : settled.bets;
 

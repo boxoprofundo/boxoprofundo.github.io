@@ -147,6 +147,12 @@ function flattenContext(fragments) {
     .trim();
 }
 
+/** MongoDB ObjectIds embed their creation time in the first 4 bytes. */
+function objectIdTime(id) {
+  if (typeof id !== 'string' || !/^[0-9a-f]{24}$/i.test(id)) return null;
+  return new Date(parseInt(id.slice(0, 8), 16) * 1000).toISOString();
+}
+
 function money(n) {
   if (typeof n !== 'number' || !isFinite(n)) return null;
   const sign = n < 0 ? '-' : '';
@@ -178,12 +184,12 @@ function simplifyBet(bet) {
       typeof bet.amount === 'number' && typeof bet.odds === 'number' && bet.odds > 1
         ? Math.round(bet.amount * bet.odds * 100) / 100
         : null,
-    // Settle/placement timestamps. The exact field name was never observable
-    // in captured responses, so try the plausible spellings; consumers must
-    // tolerate null.
-    settledAt:
-      bet.time_settled || bet.settled_at || bet.settle_date || bet.graded_at || null,
-    placedAt: bet.time_placed || bet.placed_at || bet.created_at || null,
+    // Pikkit's bet objects carry NO explicit timestamps (confirmed against
+    // production: no date-like field exists on a settled bet). But _id is a
+    // MongoDB ObjectId, whose first 4 bytes are the creation time -- i.e.
+    // when the bet was placed/synced. That's the only date signal available.
+    placedAt: objectIdTime(bet._id),
+    settledAt: null,
     tags: Array.isArray(bet.user_tags) ? bet.user_tags.map((t) => t.display_value || t.hash || t) : [],
     picks: picks.map((p) => ({
       name: p.pick_name,
