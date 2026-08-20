@@ -33,10 +33,18 @@ function simplifyEvent(ev) {
     (comp && comp.status && comp.status.type && comp.status.type.state) ||
     (ev.status && ev.status.type && ev.status.type.state) ||
     'unknown';
+  // In-progress baseball carries a situation block; surface the outs next to
+  // the inning ("Top 5th, 2 outs"). Only when ESPN actually provides it --
+  // never invented.
+  let statusDetail = status;
+  const situation = comp && comp.situation;
+  if (state === 'in' && situation && typeof situation.outs === 'number') {
+    statusDetail = `${status}, ${situation.outs} out${situation.outs === 1 ? '' : 's'}`;
+  }
   const awayAbbr = (away && away.team && away.team.abbreviation) || '';
   const homeAbbr = (home && home.team && home.team.abbreviation) || '';
   return {
-    line: `${awayName} ${awayScore} @ ${homeName} ${homeScore} — ${status}`,
+    line: `${awayName} ${awayScore} @ ${homeName} ${homeScore} — ${statusDetail}`,
     state, // 'pre' (scheduled), 'in' (live now), 'post' (final)
     // Team abbreviations (e.g. STL, CIN) -- lets bets, whose game context
     // uses abbreviations, be matched to their scoreboard game.
