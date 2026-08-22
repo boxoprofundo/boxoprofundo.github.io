@@ -181,7 +181,28 @@ app.get(['/', '/live-summary'], async (req, res) => {
         return min;
       };
 
-      const all = [...live.bets, ...settledToday];
+      // Identical tickets (same picks, same open/settled outcome) combine
+      // into one line with stakes and payouts summed -- the same bet placed
+      // at two books, or repeated, reads as a single position.
+      const merged = new Map();
+      for (const b of [...live.bets, ...settledToday]) {
+        const key = JSON.stringify([
+          b.type,
+          String(b.status).startsWith('SETTLED') ? b.status : 'OPEN',
+          b.picks.map((pk) => [pk.name, pk.context]),
+        ]);
+        const prev = merged.get(key);
+        if (!prev) {
+          merged.set(key, { ...b });
+          continue;
+        }
+        prev.stake = (prev.stake ?? 0) + (b.stake ?? 0);
+        prev.payout =
+          prev.payout != null || b.payout != null ? (prev.payout ?? 0) + (b.payout ?? 0) : null;
+        prev.toWin =
+          prev.toWin != null || b.toWin != null ? (prev.toWin ?? 0) + (b.toWin ?? 0) : null;
+      }
+      const all = [...merged.values()];
       const straights = all.filter((b) => b.type !== 'parlay');
       const parlays = all.filter((b) => b.type === 'parlay');
       for (const group of [straights, parlays]) {
