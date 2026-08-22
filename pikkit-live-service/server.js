@@ -38,18 +38,26 @@ app.get(['/', '/live-summary'], async (req, res) => {
     // won't appear the next day.
     const nyDate = (d) =>
       new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(d);
-    const today = nyDate(new Date());
+    const now = new Date();
+    const today = nyDate(now);
+    // Between midnight and 5am Eastern, yesterday's slate is still "tonight":
+    // include bets from yesterday too, so late West Coast finishes don't
+    // vanish at 12:01am.
+    const nyHour = Number(
+      new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hour12: false }).format(now)
+    );
+    const windowDates = new Set([today]);
+    if (nyHour < 5) windowDates.add(nyDate(new Date(now.getTime() - 24 * 3600 * 1000)));
     const anyDates = settled.bets.some((b) => b.placedAt && !isNaN(new Date(b.placedAt)));
     const settledToday = anyDates
       ? settled.bets.filter(
-          (b) => b.placedAt && !isNaN(new Date(b.placedAt)) && nyDate(new Date(b.placedAt)) === today
+          (b) => b.placedAt && !isNaN(new Date(b.placedAt)) && windowDates.has(nyDate(new Date(b.placedAt)))
         )
       : settled.bets;
 
-    // format=text: a bet-first, human-readable digest. Each bet leg is
-    // matched to its scoreboard game (by the team abbreviations in the leg's
-    // game context) and annotated with the current score and inning/clock,
-    // or "hasn't started yet" for scheduled games.
+    // format=text: plain English, one short paragraph per bet. The wager,
+    // then where its game stands. Ordered by start time; parlays always
+    // last. Today's settled results are mixed in alongside the open bets.
     if (req.query.format === 'text') {
       const games = [];
       for (const arr of Object.values(rawBoards)) {
@@ -61,57 +69,132 @@ app.get(['/', '/live-summary'], async (req, res) => {
       const findGame = (pick) => {
         const tokens = `${pick.context || ''} ${pick.name || ''}`
           .toUpperCase()
-          .split(/[^A-Z0-9]+/)
+          .split(/[^A-Z0-9+.]+/)
           .filter((t) => t.length >= 2 && t.length <= 5);
         return games.find((g) => g.abbrevs.every((a) => tokens.includes(a))) || null;
       };
 
-      const gameStatus = (pick) => {
-        const g = findGame(pick);
-        if (!g) return 'no score available for this game';
-        if (g.state === 'pre') return `${g.matchup} — Hasn't started yet`;
-        return g.line; // in progress (score + inning/clock) or final
+      const fmt = (n) => (Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`);
+
+      // "Top 3rd, 2 outs" -> "with 2 outs in the top of the 3rd"
+      // "Bot 4th"         -> "in the bottom of the 4th"
+      // non-baseball ("Q3 8:41") -> "(Q3 8:41)" -- never invented.
+      const situationPhrase = (detail) => {
+        const m = /^(Top|Bot|Bottom|Mid|End)\s+(\d+\w{2})(?:,\s*(\d+)\s*outs?)?$/i.exec(detail || '');
+        if (!m) return detail ? `(${detail})` : '';
+        const half = { top: 'top', bot: 'bottom', bottom: 'bottom', mid: 'middle', end: 'end' }[m[1].toLowerCase()];
+        const inning = m[2];
+        if (half === 'middle' || half === 'end' || m[3] == null) return `in the ${half} of the ${inning}`;
+        const outs = Number(m[3]);
+        const outsTxt = outs === 0 ? 'nobody out' : outs === 1 ? '1 out' : `${outs} outs`;
+        return `with ${outsTxt} in the ${half} of the ${inning}`;
       };
 
-      const settleWord = { SETTLED_WIN: 'WON', SETTLED_LOSS: 'LOST', SETTLED_PUSH: 'PUSH', SETTLED_VOID: 'VOID' };
-      const lines = [];
-      if (live.bets.length === 0) {
-        lines.push('No live or open bets right now.');
-      } else {
-        lines.push(`You have ${live.count} open bet${live.count === 1 ? '' : 's'}.`);
-        for (const bet of live.bets) {
-          lines.push('');
-          const head = [
-            bet.type === 'parlay' ? `${bet.picks.length}-leg parlay` : 'Straight bet',
-            bet.oddsAmerican,
-            bet.stake != null
-              ? `$${bet.stake}${bet.payout != null ? ` pays $${bet.payout.toFixed(2)}` : ''}`
-              : null,
-          ]
-            .filter(Boolean)
-            .join(', ');
-          lines.push(`${head}:`);
-          for (const p of bet.picks) {
-            lines.push(`  ${p.name}: ${gameStatus(p)}`);
+      // Which side of the matched game did this pick take? ("SF · Moneyline"
+      // -> away/home index; "CHI +1.5 · Spread" keeps "+1.5" as a modifier;
+      // "Over 8.5 · Total" has no side.)
+      const pickSide = (pick, g) => {
+        const teamPart = String(pick.name || '').split('\u00b7')[0].trim();
+        const words = teamPart.split(/\s+/);
+        const abbr = (words[0] || '').toUpperCase();
+        const modifier = words.slice(1).join(' ');
+        if (g && abbr === g.away.abbr) return { idx: 0, modifier };
+        if (g && abbr === g.home.abbr) return { idx: 1, modifier };
+        return null;
+      };
+
+      const teamStatus = (subject, preSubject, g, idx) => {
+        const mine = idx === 0 ? g.away : g.home;
+        const opp = idx === 0 ? g.home : g.away;
+        if (g.state === 'pre') return `${preSubject} game against the ${opp.name} hasn't started yet.`;
+        const scores = `${mine.score}-${opp.score}`;
+        const ms = Number(mine.score);
+        const os = Number(opp.score);
+        if (g.state === 'post') {
+          if (ms > os) return `${subject} beat the ${opp.name} ${scores}.`;
+          if (ms < os) return `${subject} lost to the ${opp.name} ${scores}.`;
+          return `${subject} tied the ${opp.name} ${scores}.`;
+        }
+        const phrase = situationPhrase(g.detail);
+        const tail = phrase ? ` ${phrase}` : '';
+        if (ms > os) return `${subject} are beating the ${opp.name} ${scores}${tail}.`;
+        if (ms < os) return `${subject} are losing to the ${opp.name} ${scores}${tail}.`;
+        return `${subject} are tied with the ${opp.name} ${scores}${tail}.`;
+      };
+
+      const gameStatus = (g) => {
+        if (g.state === 'pre') return `That game hasn't started yet.`;
+        const scores = `${g.away.name} ${g.away.score}, ${g.home.name} ${g.home.score}`;
+        if (g.state === 'post') return `Final score: ${scores}.`;
+        const phrase = situationPhrase(g.detail);
+        return `The score is ${scores}${phrase ? ` ${phrase}` : ''}.`;
+      };
+
+      const settleFallback = (bet) => {
+        if (bet.status === 'SETTLED_WIN')
+          return `That bet won${typeof bet.toWin === 'number' ? ` ${fmt(Math.abs(bet.toWin))}` : ''}.`;
+        if (bet.status === 'SETTLED_LOSS') return 'That bet lost.';
+        if (bet.status === 'SETTLED_PUSH') return 'That bet pushed -- stake returned.';
+        if (bet.status === 'SETTLED_VOID') return 'That bet was voided -- stake returned.';
+        return "I can't find a score for that game.";
+      };
+
+      const betParagraph = (bet) => {
+        const head = `Bet ${fmt(bet.stake ?? 0)}${bet.payout != null ? ` to win ${fmt(bet.payout)}` : ''}`;
+        if (bet.type !== 'parlay') {
+          const p = bet.picks[0] || { name: 'unknown pick' };
+          const g = findGame(p);
+          const side = g && pickSide(p, g);
+          if (side) {
+            const mine = side.idx === 0 ? g.away : g.home;
+            const onWhat = `the ${mine.name}${side.modifier ? ` ${side.modifier}` : ''}`;
+            return `${head} on ${onWhat}. ${teamStatus('They', 'Their', g, side.idx)}`;
+          }
+          if (g) return `${head} on ${p.name} in ${g.away.name} at ${g.home.name}. ${gameStatus(g)}`;
+          return `${head} on ${p.name}. ${settleFallback(bet)}`;
+        }
+        const lines = [`${head} on a ${bet.picks.length}-leg parlay:`];
+        for (const p of bet.picks) {
+          const g = findGame(p);
+          const side = g && pickSide(p, g);
+          if (side) {
+            const mine = side.idx === 0 ? g.away : g.home;
+            const subject = `The ${mine.name}${side.modifier ? ` (${side.modifier})` : ''}`;
+            lines.push(teamStatus(subject, subject, g, side.idx));
+          } else if (g) {
+            lines.push(`${p.name}: ${gameStatus(g)}`);
+          } else {
+            lines.push(`${p.name}: no score available.`);
           }
         }
-      }
-      lines.push('');
-      if (settledToday.length === 0) {
-        lines.push('No bets settled today.');
-      } else {
-        lines.push(anyDates ? 'SETTLED TODAY:' : 'RECENTLY SETTLED (dates unavailable):');
-        for (const bet of settledToday) {
-          const legs = bet.picks.map((p) => p.name).join(', ');
-          const word = settleWord[bet.status] || bet.status;
-          const net =
-            typeof bet.toWin === 'number' ? ` $${Math.abs(bet.toWin).toFixed(2)}` : '';
-          lines.push(
-            `  ${bet.type === 'parlay' ? `${bet.picks.length}-leg parlay` : 'Straight'}, $${bet.stake} (${legs}): ${word}${net}`
-          );
+        return lines.join('\n');
+      };
+
+      const LAST = Number.MAX_SAFE_INTEGER;
+      const startTime = (bet) => {
+        let min = LAST;
+        for (const p of bet.picks) {
+          const g = findGame(p);
+          const t = g && g.start ? Date.parse(g.start) : NaN;
+          if (!isNaN(t)) min = Math.min(min, t);
         }
+        return min;
+      };
+
+      const all = [...live.bets, ...settledToday];
+      const straights = all.filter((b) => b.type !== 'parlay');
+      const parlays = all.filter((b) => b.type === 'parlay');
+      for (const group of [straights, parlays]) {
+        const keyed = group.map((b) => [startTime(b), b]);
+        keyed.sort((a, b) => a[0] - b[0]);
+        group.length = 0;
+        group.push(...keyed.map(([, b]) => b));
       }
-      return res.type('text/plain').send(lines.join('\n'));
+
+      const paragraphs = [...straights, ...parlays].map(betParagraph);
+      return res
+        .type('text/plain')
+        .send(paragraphs.length ? paragraphs.join('\n\n') : 'No bets today.');
     }
 
     const scoreboards = {};

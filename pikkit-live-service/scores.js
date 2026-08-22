@@ -50,6 +50,10 @@ function simplifyEvent(ev) {
     // uses abbreviations, be matched to their scoreboard game.
     abbrevs: [awayAbbr.toUpperCase(), homeAbbr.toUpperCase()].filter(Boolean),
     matchup: `${awayName} at ${homeName}`,
+    start: ev.date || (comp && comp.date) || null,
+    detail: statusDetail,
+    away: { name: awayName, abbr: awayAbbr.toUpperCase(), score: awayScore },
+    home: { name: homeName, abbr: homeAbbr.toUpperCase(), score: homeScore },
   };
 }
 
