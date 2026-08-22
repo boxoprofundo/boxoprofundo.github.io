@@ -140,7 +140,7 @@ app.get(['/', '/live-summary'], async (req, res) => {
       };
 
       const betParagraph = (bet) => {
-        const head = `Bet ${fmt(bet.stake ?? 0)}${bet.payout != null ? ` to win ${fmt(bet.payout)}` : ''}`;
+        const head = `You bet ${fmt(bet.stake ?? 0)}${bet.payout != null ? ` to win ${fmt(bet.payout)}` : ''}`;
         if (bet.type !== 'parlay') {
           const p = bet.picks[0] || { name: 'unknown pick' };
           const g = findGame(p);
