@@ -43,12 +43,17 @@
     <input id="sg-key" type="text" autocomplete="off" placeholder="client_id">
   </div>
   <p class="note">With keys saved here, every Search fetches prices live at that moment.</p>
-  <div class="field">
-    <label for="gh-token">GitHub token
-      <small>(lets the "Refresh prices" button start the scraper from this page — a
-      fine-grained token with <em>Actions: Read and write</em> on the ticket-scraper
-      repo. Without it the button opens the GitHub page where you press Run instead.)</small></label>
-    <input id="gh-token" type="password" autocomplete="off" placeholder="github_pat_…">
+  <div class="field" id="gh-token-field">
+    <label for="gh-token">Access key for the Refresh button
+      <small>(one-time setup so this page can run the price scraper and read its
+      results by itself:
+      <a href="https://github.com/settings/tokens/new?scopes=repo,workflow&amp;description=Yankees%20ticket%20refresh%20button"
+         target="_blank" rel="noopener">open this pre-filled page</a>,
+      choose <em>No expiration</em>, press the green <em>Generate token</em> button,
+      copy the long code it shows, paste it below and Save. That's it — after this,
+      everything happens from this page. The key is stored only in this browser;
+      repeat the paste once per device you use.)</small></label>
+    <input id="gh-token" type="password" autocomplete="off" placeholder="ghp_…">
   </div>
   <p class="note">StubHub, Vivid Seats, TickPick and XP don't offer public browser-accessible
   APIs, so for those the app builds direct search links for each game with your quantity

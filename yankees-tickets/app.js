@@ -69,14 +69,28 @@
     month: "numeric", day: "numeric", year: "numeric",
   });
 
-  // Prices collected outside the browser — by the manual GitHub Action or by
-  // any scraper that writes the Quote shape documented in providers.js.
+  // Prices collected outside the browser, freshest source first:
+  // 1. published/ in the scraper repo, read via the GitHub API with the
+  //    access key — this is where every scrape run drops its results, so
+  //    with a key the site needs no separate publish step at all;
+  // 2. this site's own data/ files (for visitors without a key).
   // A quantity-specific file (listings-4.json for blocks of 4) wins over the
   // generic listings.json; a 404 just means no collector has run yet.
   async function fetchCachedListings(qty) {
-    for (const name of [`data/listings-${qty}.json`, "data/listings.json"]) {
+    const { ghToken } = loadSettings();
+    const sources = [];
+    for (const name of [`listings-${qty}.json`, "listings.json"]) {
+      if (ghToken) {
+        sources.push({
+          url: `${SCRAPER_API}/contents/published/${name}?ref=main`,
+          opts: { headers: ghHeaders(ghToken, true), cache: "no-cache" },
+        });
+      }
+      sources.push({ url: `data/${name}`, opts: { cache: "no-cache" } });
+    }
+    for (const s of sources) {
       try {
-        const res = await fetch(name, { cache: "no-cache" });
+        const res = await fetch(s.url, s.opts);
         if (!res.ok) continue;
         return await res.json();
       } catch {
@@ -119,57 +133,116 @@
   /* --------------------------- refresh prices --------------------------- */
 
   const SCRAPER_REPO = "boxoprofundo/ticket-scraper";
+  const SCRAPER_API = `https://api.github.com/repos/${SCRAPER_REPO}`;
   const SCRAPE_WORKFLOW = "yankees-scrape.yml";
-  const SCRAPE_ACTIONS_URL =
-    `https://github.com/${SCRAPER_REPO}/actions/workflows/${SCRAPE_WORKFLOW}`;
+  const POLL_MS = 20000;
 
-  // Starts the scraper on GitHub's servers for the current block size. With
-  // a token saved in Settings it's one click from here; otherwise we open
-  // GitHub's own Run workflow page.
+  function ghHeaders(token, raw) {
+    return {
+      Accept: raw ? "application/vnd.github.raw+json" : "application/vnd.github+json",
+      Authorization: "Bearer " + token,
+    };
+  }
+
+  // One button does the whole loop: start the scraper on GitHub's servers,
+  // watch the run, and reload prices automatically when it finishes.
+  let pollTimer = null;
+
   async function refreshPrices() {
     const qty = Math.max(1, Math.min(12, parseInt($("#qty").value, 10) || 2));
     const { ghToken } = loadSettings();
     if (!ghToken) {
-      window.open(SCRAPE_ACTIONS_URL, "_blank", "noopener");
+      $("#settings").hidden = false;
+      $("#gh-token").focus();
       setStatus(
-        "Opened the scraper's GitHub page — press \"Run workflow\" there. " +
-        "To make this a one-click button, save a GitHub token in Settings."
+        "The Refresh button needs a one-time access key — follow the short " +
+        "steps next to the highlighted box in Settings (opened below).",
+        true
       );
       return;
     }
     const btn = $("#refresh-btn");
     btn.disabled = true;
     try {
+      const startedAt = Date.now();
       const res = await fetch(
-        `https://api.github.com/repos/${SCRAPER_REPO}/actions/workflows/${SCRAPE_WORKFLOW}/dispatches`,
+        `${SCRAPER_API}/actions/workflows/${SCRAPE_WORKFLOW}/dispatches`,
         {
           method: "POST",
-          headers: {
-            Accept: "application/vnd.github+json",
-            Authorization: "Bearer " + ghToken,
-          },
+          headers: ghHeaders(ghToken),
           body: JSON.stringify({ ref: "main", inputs: { qty: String(qty) } }),
         }
       );
-      if (res.status === 204) {
-        setStatus(
-          `Price scrape started for blocks of ${qty} — it takes about 5–10 ` +
-          "minutes. Hit Search again afterwards to see the fresh prices."
-        );
-      } else {
+      if (res.status !== 204) {
         const body = await res.text();
         throw new Error(`GitHub answered ${res.status}: ${body.slice(0, 200)}`);
       }
+      setStatus(
+        `Price scrape started for blocks of ${qty} — usually 5–10 minutes. ` +
+        "This page will load the fresh prices automatically when it's done."
+      );
+      watchScrape(qty, startedAt);
     } catch (err) {
       console.error(err);
+      btn.disabled = false;
       setStatus(
         "Couldn't start the scraper: " + err.message +
-        " — check the GitHub token in Settings, or use " + SCRAPE_ACTIONS_URL,
+        " — check the access key in Settings.",
         true
       );
-    } finally {
-      btn.disabled = false;
     }
+  }
+
+  function watchScrape(qty, startedAt) {
+    clearInterval(pollTimer);
+    pollTimer = setInterval(async () => {
+      const mins = Math.round((Date.now() - startedAt) / 60000);
+      if (Date.now() - startedAt > 25 * 60000) {
+        clearInterval(pollTimer);
+        $("#refresh-btn").disabled = false;
+        setStatus(
+          "The scrape is taking unusually long. Hit Search later to check " +
+          "for new prices, or try Refresh again.",
+          true
+        );
+        return;
+      }
+      try {
+        const { ghToken } = loadSettings();
+        const res = await fetch(
+          `${SCRAPER_API}/actions/workflows/${SCRAPE_WORKFLOW}/runs?per_page=1`,
+          { headers: ghHeaders(ghToken) }
+        );
+        if (!res.ok) return;
+        const run = ((await res.json()).workflow_runs || [])[0];
+        // Ignore stale runs from before this button press.
+        if (!run || Date.parse(run.created_at) < startedAt - 60000) {
+          setStatus(`Scrape starting… (${mins} min)`);
+          return;
+        }
+        if (run.status !== "completed") {
+          setStatus(
+            `Scraper is running on GitHub's servers — usually 5–10 minutes ` +
+            `(${mins} elapsed). Fresh prices will load here automatically.`
+          );
+          return;
+        }
+        clearInterval(pollTimer);
+        $("#refresh-btn").disabled = false;
+        if (run.conclusion === "success") {
+          setStatus("Scrape finished — loading fresh prices…");
+          await runSearch();
+        } else {
+          setStatus(
+            `The scrape run ended with status "${run.conclusion}" — try ` +
+            "Refresh again in a few minutes.",
+            true
+          );
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }, POLL_MS);
   }
 
   /* ------------------------------- search ------------------------------- */

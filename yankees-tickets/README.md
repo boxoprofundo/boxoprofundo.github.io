@@ -42,9 +42,17 @@ clearly labeled.
 
 ## When do prices update?
 
-**At search time.** With API keys saved in the app's Settings panel, every
-press of Search queries Ticketmaster and SeatGeek live from your browser at
-that moment — nothing runs on a schedule.
+**When you ask, from this page.** Nothing runs on a schedule:
+
+- **Search** — with API keys saved in Settings, every press queries
+  Ticketmaster and SeatGeek live from your browser at that moment, and also
+  loads the latest scraped prices for the other marketplaces.
+- **↻ Refresh prices** — with the one-time access key saved in Settings
+  (the pre-filled setup link is right next to the box), the button starts
+  the scraper in the companion ticket-scraper repo on GitHub's servers,
+  shows progress, and loads the fresh per-section prices automatically when
+  it finishes. With the key, Search reads results straight from that repo's
+  `published/` folder via the GitHub API — no publish step needed at all.
 
 ## Optional: shared cached prices for visitors without keys
 
