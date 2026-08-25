@@ -70,13 +70,63 @@ GitHub and never appear in the site's code:
 
 Until secrets are added, the workflow runs harmlessly and writes nothing.
 
-The same mechanism is the extension point for real per-section data: any
-source you have credentials for can be normalized in
-`scripts/fetch-listings.mjs` to the `Quote` shape documented at the top of
-`providers.js` (with `section` filled in), and the aggregation and table code
-needs no changes. Scraping marketplaces that prohibit it in their terms of
-service is their call, not the app's; this design keeps that decision (and
-any credentials) out of the client entirely.
+## Plugging in your own scrapers (StubHub, XP, Vivid Seats, TickPick…)
+
+Any program that can fetch prices — including scrapers you already run on
+your own computer — can feed this app. The contract is one JSON file:
+
+- `yankees-tickets/data/listings.json` — generic prices, or
+- `yankees-tickets/data/listings-<qty>.json` — prices for blocks of exactly
+  `<qty>` tickets (e.g. `listings-4.json`). When someone searches for 4
+  tickets, the app prefers `listings-4.json` and falls back to
+  `listings.json`.
+
+File format:
+
+```json
+{
+  "fetchedAt": "2026-08-25T18:00:00Z",
+  "quotes": [
+    {
+      "gamePk": 813205,
+      "provider": "StubHub",
+      "section": "214",
+      "price": 87.5,
+      "faceValue": 70,
+      "url": "https://www.stubhub.com/...event page, section-filtered if possible..."
+    }
+  ]
+}
+```
+
+- `gamePk` is MLB's ID for the game. Get the mapping of remaining home games
+  by running `node scripts/fetch-listings.mjs` (it prints nothing sensitive
+  and needs no keys for the schedule), or fetch
+  `https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=147&startDate=<today>&endDate=<year>-11-15`
+  and read `dates[].games[].gamePk`.
+- `provider` should be one of: `Ticketmaster`, `SeatGeek`, `StubHub`, `XP`,
+  `Vivid Seats`, `TickPick` (matching these names makes the per-game table
+  line up; other names still work in the section table).
+- `section` filled in → the quote appears in the per-section table; the
+  cheapest per section across all games wins automatically. `section: null`
+  → event-level only.
+- `price` is per ticket. `faceValue` and `url` are optional but feed the
+  Face value and Link columns.
+
+Workflow that fits the existing setup on this site: run the scraper on your
+own machine on whatever schedule you like (or right before you search),
+write the file(s) into `yankees-tickets/data/`, then `git commit` and
+`git push` — GitHub Pages republishes in under a minute and the next Search
+includes the data (the status bar shows its `fetchedAt` age). Stale games
+(already played) are filtered out automatically, so leftover quotes do no
+harm.
+
+Alternatively, normalize a source directly in `scripts/fetch-listings.mjs`
+and run it via the manual GitHub Action — but note that runs from GitHub's
+data-center IPs are more likely to be blocked by marketplace bot-detection
+than runs from a home connection. Whether to scrape marketplaces whose terms
+of service prohibit it is your call, not the app's; this design keeps that
+decision (and any credentials) off the public site entirely.
 
 ## Files
 

@@ -68,17 +68,21 @@
     month: "numeric", day: "numeric", year: "numeric",
   });
 
-  // Prices collected server-side by the scheduled GitHub Action
-  // (.github/workflows/update-listings.yml). Optional — a 404 just means the
-  // Action hasn't run yet (or no API secrets are configured).
-  async function fetchCachedListings() {
-    try {
-      const res = await fetch("data/listings.json", { cache: "no-cache" });
-      if (!res.ok) return null;
-      return await res.json();
-    } catch {
-      return null;
+  // Prices collected outside the browser — by the manual GitHub Action or by
+  // any scraper that writes the Quote shape documented in providers.js.
+  // A quantity-specific file (listings-4.json for blocks of 4) wins over the
+  // generic listings.json; a 404 just means no collector has run yet.
+  async function fetchCachedListings(qty) {
+    for (const name of [`data/listings-${qty}.json`, "data/listings.json"]) {
+      try {
+        const res = await fetch(name, { cache: "no-cache" });
+        if (!res.ok) continue;
+        return await res.json();
+      } catch {
+        /* try next */
+      }
     }
+    return null;
   }
 
   async function fetchRemainingHomeGames() {
@@ -131,7 +135,7 @@
 
       setStatus(`Searching ${games.length} remaining home games across 6 marketplaces…`);
       const [cached, ...results] = await Promise.allSettled([
-        fetchCachedListings(),
+        fetchCachedListings(qty),
         ...window.PROVIDERS.map((p) => p.search(games, qty, settings)),
       ]);
       const quotes = [];
@@ -290,12 +294,16 @@
     const providerNames = window.PROVIDERS.map((p) => p.name);
     const byGameProvider = new Map();
     for (const q of quotes) {
-      if (q.section || q.demo) continue; // event-level live quotes only
+      if (q.demo) continue;
       const key = q.gamePk + "|" + q.provider;
       const prev = byGameProvider.get(key);
-      // A priced quote always beats a link-only one, regardless of order.
-      if (prev && prev.price != null && q.price == null) continue;
-      byGameProvider.set(key, q);
+      // Keep each provider's cheapest priced quote for the game (section-level
+      // quotes count too); link-only quotes just fill otherwise-empty cells.
+      if (q.price == null) {
+        if (!prev) byGameProvider.set(key, q);
+      } else if (!prev || prev.price == null || q.price < prev.price) {
+        byGameProvider.set(key, q);
+      }
     }
 
     const tbody = $("#game-table tbody");
