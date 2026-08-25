@@ -297,8 +297,10 @@
         note += `Includes prices auto-collected ${new Date(cachedAt).toLocaleString()}. `;
       } else if (!settings.tmKey && !settings.sgKey && !demo) {
         note +=
-          "No API keys configured — showing games with direct marketplace links only. " +
-          "Add free Ticketmaster/SeatGeek keys in Settings for live prices, or turn on Demo mode to preview the per-section view.";
+          "No prices loaded yet for this block size — press ↻ Refresh prices " +
+          "to run the price scraper (a short one-time setup the first time), " +
+          "then they'll load here automatically. The games and store links " +
+          "below work either way.";
       }
       setStatus(note || null, !!failed.length);
     } catch (err) {
