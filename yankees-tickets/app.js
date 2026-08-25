@@ -32,6 +32,7 @@
     const s = {
       tmKey: $("#tm-key").value.trim(),
       sgKey: $("#sg-key").value.trim(),
+      ghToken: $("#gh-token").value.trim(),
     };
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
     $("#settings").hidden = true;
@@ -113,6 +114,62 @@
       }
     }
     return games;
+  }
+
+  /* --------------------------- refresh prices --------------------------- */
+
+  const SCRAPER_REPO = "boxoprofundo/ticket-scraper";
+  const SCRAPE_WORKFLOW = "yankees-scrape.yml";
+  const SCRAPE_ACTIONS_URL =
+    `https://github.com/${SCRAPER_REPO}/actions/workflows/${SCRAPE_WORKFLOW}`;
+
+  // Starts the scraper on GitHub's servers for the current block size. With
+  // a token saved in Settings it's one click from here; otherwise we open
+  // GitHub's own Run workflow page.
+  async function refreshPrices() {
+    const qty = Math.max(1, Math.min(12, parseInt($("#qty").value, 10) || 2));
+    const { ghToken } = loadSettings();
+    if (!ghToken) {
+      window.open(SCRAPE_ACTIONS_URL, "_blank", "noopener");
+      setStatus(
+        "Opened the scraper's GitHub page — press \"Run workflow\" there. " +
+        "To make this a one-click button, save a GitHub token in Settings."
+      );
+      return;
+    }
+    const btn = $("#refresh-btn");
+    btn.disabled = true;
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${SCRAPER_REPO}/actions/workflows/${SCRAPE_WORKFLOW}/dispatches`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/vnd.github+json",
+            Authorization: "Bearer " + ghToken,
+          },
+          body: JSON.stringify({ ref: "main", inputs: { qty: String(qty) } }),
+        }
+      );
+      if (res.status === 204) {
+        setStatus(
+          `Price scrape started for blocks of ${qty} — it takes about 5–10 ` +
+          "minutes. Hit Search again afterwards to see the fresh prices."
+        );
+      } else {
+        const body = await res.text();
+        throw new Error(`GitHub answered ${res.status}: ${body.slice(0, 200)}`);
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus(
+        "Couldn't start the scraper: " + err.message +
+        " — check the GitHub token in Settings, or use " + SCRAPE_ACTIONS_URL,
+        true
+      );
+    } finally {
+      btn.disabled = false;
+    }
   }
 
   /* ------------------------------- search ------------------------------- */
@@ -331,8 +388,10 @@
     const s = loadSettings();
     $("#tm-key").value = s.tmKey || "";
     $("#sg-key").value = s.sgKey || "";
+    $("#gh-token").value = s.ghToken || "";
 
     $("#search-btn").addEventListener("click", runSearch);
+    $("#refresh-btn").addEventListener("click", refreshPrices);
     $("#qty").addEventListener("keydown", (e) => {
       if (e.key === "Enter") runSearch();
     });

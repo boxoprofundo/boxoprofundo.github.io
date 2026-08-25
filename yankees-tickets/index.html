@@ -17,6 +17,8 @@
   <label for="qty">Number of tickets</label>
   <input id="qty" type="number" min="1" max="12" value="2">
   <button id="search-btn">Search</button>
+  <button id="refresh-btn" class="secondary" type="button"
+          title="Runs the price scraper on GitHub's servers; fresh prices land here a few minutes later">↻ Refresh prices</button>
   <button id="settings-btn" class="secondary" type="button">Settings</button>
   <label class="demo-toggle" title="Fills the table with generated sample listings so you can see how results look without API keys">
     <input type="checkbox" id="demo-mode"> Demo mode
@@ -41,6 +43,13 @@
     <input id="sg-key" type="text" autocomplete="off" placeholder="client_id">
   </div>
   <p class="note">With keys saved here, every Search fetches prices live at that moment.</p>
+  <div class="field">
+    <label for="gh-token">GitHub token
+      <small>(lets the "Refresh prices" button start the scraper from this page — a
+      fine-grained token with <em>Actions: Read and write</em> on the ticket-scraper
+      repo. Without it the button opens the GitHub page where you press Run instead.)</small></label>
+    <input id="gh-token" type="password" autocomplete="off" placeholder="github_pat_…">
+  </div>
   <p class="note">StubHub, Vivid Seats, TickPick and XP don't offer public browser-accessible
   APIs, so for those the app builds direct search links for each game with your quantity
   applied where the site supports it. See the
