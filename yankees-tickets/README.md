@@ -39,24 +39,38 @@ constraint, not a missing feature — no purely static page can do it.
 for every section so the full aggregation UI can be exercised; demo rows are
 clearly labeled.
 
-### Extending to real per-section data
+## Automatic price updates (no visitor setup)
 
-The clean path within this repo is a scheduled GitHub Action that runs
-server-side (no CORS), collects listing data into
-`yankees-tickets/data/listings.json`, commits it, and lets the page load that
-file. Steps:
+A scheduled GitHub Action (`.github/workflows/update-listings.yml`) runs
+`scripts/fetch-listings.mjs` on GitHub's servers every 6 hours (server-side,
+so no CORS), collects Ticketmaster and SeatGeek prices, and commits them to
+`yankees-tickets/data/listings.json`. The app merges that file into every
+search, so **all visitors see prices without entering any keys**. Quotes
+fetched live in the browser (when a visitor has keys in Settings) override
+the cached file.
 
-1. Add a workflow on a cron (e.g. every 6 h) running a Node script.
-2. In the script, call whatever sources you have credentials for
-   (e.g. Ticketmaster Discovery, SeatGeek, or a licensed listings API) and
-   normalize to the `Quote` shape documented at the top of `providers.js`,
-   one file per common quantity (1–8).
-3. In `app.js`, merge `fetch("data/listings.json")` results into `quotes`
-   before rendering — the aggregation and table code needs no changes.
+To turn it on, add the API keys as repository secrets — they stay private on
+GitHub and never appear in the site's code:
 
-Note that scraping marketplaces that prohibit it in their terms of service is
-their call, not the app's; the adapter design keeps that decision (and any
-credentials) out of the client entirely.
+1. Get the free keys: a Ticketmaster "Consumer Key" from
+   [developer.ticketmaster.com](https://developer.ticketmaster.com/) and a
+   SeatGeek "client ID" from
+   [seatgeek.com/account/develop](https://seatgeek.com/account/develop).
+2. On GitHub: repo **Settings → Secrets and variables → Actions →
+   New repository secret**. Add `TICKETMASTER_API_KEY` and
+   `SEATGEEK_CLIENT_ID` with those values.
+3. Trigger the first run from the **Actions** tab → "Update ticket listings"
+   → "Run workflow" (or wait for the next 6-hour tick).
+
+Until secrets are added, the workflow runs harmlessly and writes nothing.
+
+The same mechanism is the extension point for real per-section data: any
+source you have credentials for can be normalized in
+`scripts/fetch-listings.mjs` to the `Quote` shape documented at the top of
+`providers.js` (with `section` filled in), and the aggregation and table code
+needs no changes. Scraping marketplaces that prohibit it in their terms of
+service is their call, not the app's; this design keeps that decision (and
+any credentials) out of the client entirely.
 
 ## Files
 

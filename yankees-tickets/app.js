@@ -68,6 +68,19 @@
     month: "numeric", day: "numeric", year: "numeric",
   });
 
+  // Prices collected server-side by the scheduled GitHub Action
+  // (.github/workflows/update-listings.yml). Optional — a 404 just means the
+  // Action hasn't run yet (or no API secrets are configured).
+  async function fetchCachedListings() {
+    try {
+      const res = await fetch("data/listings.json", { cache: "no-cache" });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch {
+      return null;
+    }
+  }
+
   async function fetchRemainingHomeGames() {
     const today = fmtISO.format(new Date());
     const year = new Date().getFullYear();
@@ -117,11 +130,21 @@
       }
 
       setStatus(`Searching ${games.length} remaining home games across 6 marketplaces…`);
-      const results = await Promise.allSettled(
-        window.PROVIDERS.map((p) => p.search(games, qty, settings))
-      );
+      const [cached, ...results] = await Promise.allSettled([
+        fetchCachedListings(),
+        ...window.PROVIDERS.map((p) => p.search(games, qty, settings)),
+      ]);
       const quotes = [];
       const failed = [];
+
+      // Server-collected prices go first so fresher in-browser quotes win.
+      let cachedAt = null;
+      const listings = cached.status === "fulfilled" ? cached.value : null;
+      if (listings && Array.isArray(listings.quotes)) {
+        const valid = new Set(games.map((g) => g.gamePk));
+        quotes.push(...listings.quotes.filter((q) => valid.has(q.gamePk)));
+        cachedAt = listings.fetchedAt || null;
+      }
       results.forEach((r, i) => {
         if (r.status === "fulfilled") quotes.push(...r.value);
         else {
@@ -136,7 +159,9 @@
       let note = failed.length
         ? `Some sources failed and were skipped: ${failed.join(", ")}. `
         : "";
-      if (!settings.tmKey && !settings.sgKey && !demo) {
+      if (cachedAt) {
+        note += `Includes prices auto-collected ${new Date(cachedAt).toLocaleString()}. `;
+      } else if (!settings.tmKey && !settings.sgKey && !demo) {
         note +=
           "No API keys configured — showing games with direct marketplace links only. " +
           "Add free Ticketmaster/SeatGeek keys in Settings for live prices, or turn on Demo mode to preview the per-section view.";
@@ -266,7 +291,11 @@
     const byGameProvider = new Map();
     for (const q of quotes) {
       if (q.section || q.demo) continue; // event-level live quotes only
-      byGameProvider.set(q.gamePk + "|" + q.provider, q);
+      const key = q.gamePk + "|" + q.provider;
+      const prev = byGameProvider.get(key);
+      // A priced quote always beats a link-only one, regardless of order.
+      if (prev && prev.price != null && q.price == null) continue;
+      byGameProvider.set(key, q);
     }
 
     const tbody = $("#game-table tbody");
@@ -277,6 +306,7 @@
         if (!q) return `<td class="na">—</td>`;
         const label = q.price != null ? fmtMoney(q.price) : "search →";
         const cls = q.price != null ? "price" : "";
+        if (!q.url) return `<td class="${cls}">${label}</td>`;
         return `<td class="${cls}"><a href="${q.url}" target="_blank" rel="noopener">${label}</a></td>`;
       });
       const tr = document.createElement("tr");

@@ -40,6 +40,9 @@
       <small>(free at <a href="https://seatgeek.com/account/develop" target="_blank" rel="noopener">seatgeek.com/account/develop</a> — enables lowest listed price per game)</small></label>
     <input id="sg-key" type="text" autocomplete="off" placeholder="client_id">
   </div>
+  <p class="note">Keys are optional — this site also refreshes prices automatically every
+  6 hours via a scheduled GitHub Action once the repository secrets are configured
+  (see the README). Keys entered here simply fetch fresher numbers directly.</p>
   <p class="note">StubHub, Vivid Seats, TickPick and XP don't offer public browser-accessible
   APIs, so for those the app builds direct search links for each game with your quantity
   applied where the site supports it. See the
