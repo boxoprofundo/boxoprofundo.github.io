@@ -39,17 +39,23 @@ constraint, not a missing feature — no purely static page can do it.
 for every section so the full aggregation UI can be exercised; demo rows are
 clearly labeled.
 
-## Automatic price updates (no visitor setup)
+## When do prices update?
 
-A scheduled GitHub Action (`.github/workflows/update-listings.yml`) runs
-`scripts/fetch-listings.mjs` on GitHub's servers every 6 hours (server-side,
-so no CORS), collects Ticketmaster and SeatGeek prices, and commits them to
+**At search time.** With API keys saved in the app's Settings panel, every
+press of Search queries Ticketmaster and SeatGeek live from your browser at
+that moment — nothing runs on a schedule.
+
+## Optional: shared cached prices for visitors without keys
+
+A manual-only GitHub Action (`.github/workflows/update-listings.yml`, run
+from the repo's Actions tab whenever you like) executes
+`scripts/fetch-listings.mjs` on GitHub's servers (server-side, so no CORS),
+collects Ticketmaster and SeatGeek prices, and commits them to
 `yankees-tickets/data/listings.json`. The app merges that file into every
-search, so **all visitors see prices without entering any keys**. Quotes
-fetched live in the browser (when a visitor has keys in Settings) override
-the cached file.
+search, so visitors without keys still see those prices. Live quotes fetched
+in the browser always override the cached file.
 
-To turn it on, add the API keys as repository secrets — they stay private on
+To enable it, add the API keys as repository secrets — they stay private on
 GitHub and never appear in the site's code:
 
 1. Get the free keys: a Ticketmaster "Consumer Key" from
@@ -59,8 +65,8 @@ GitHub and never appear in the site's code:
 2. On GitHub: repo **Settings → Secrets and variables → Actions →
    New repository secret**. Add `TICKETMASTER_API_KEY` and
    `SEATGEEK_CLIENT_ID` with those values.
-3. Trigger the first run from the **Actions** tab → "Update ticket listings"
-   → "Run workflow" (or wait for the next 6-hour tick).
+3. Trigger a run from the **Actions** tab → "Update ticket listings" →
+   "Run workflow".
 
 Until secrets are added, the workflow runs harmlessly and writes nothing.
 

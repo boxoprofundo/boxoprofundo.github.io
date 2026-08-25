@@ -1,9 +1,10 @@
 name: Update ticket listings
 
+# Manual-only: prices are fetched live in the browser at search time
+# (see providers.js). Run this from the Actions tab if you ever want to
+# refresh the shared cached prices in yankees-tickets/data/listings.json.
 on:
-  schedule:
-    - cron: "17 */6 * * *"   # every 6 hours
-  workflow_dispatch: {}       # allows manual runs from the Actions tab
+  workflow_dispatch: {}
 
 permissions:
   contents: write
