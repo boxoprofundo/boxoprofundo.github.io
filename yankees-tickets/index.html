@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yankees Ticket Finder</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>⚾ Yankees Ticket Finder</h1>
+  <p class="tagline">Lowest price per section across every remaining Yankees home game
+     — Ticketmaster · SeatGeek · StubHub · XP · Vivid Seats · TickPick</p>
+</header>
+
+<section class="search-bar">
+  <label for="qty">Number of tickets</label>
+  <input id="qty" type="number" min="1" max="12" value="2">
+  <button id="search-btn">Search</button>
+  <button id="settings-btn" class="secondary" type="button">Settings</button>
+  <label class="demo-toggle" title="Fills the table with generated sample listings so you can see how results look without API keys">
+    <input type="checkbox" id="demo-mode"> Demo mode
+  </label>
+</section>
+
+<div id="status" class="status" hidden></div>
+
+<section id="settings" class="settings" hidden>
+  <h2>Data sources</h2>
+  <p>This page is served statically from GitHub Pages — every request happens in
+  <em>your</em> browser. Two marketplaces offer free public APIs that work from a
+  browser; paste your keys below (stored only in this browser's localStorage).</p>
+  <div class="field">
+    <label for="tm-key">Ticketmaster API key
+      <small>(free at <a href="https://developer.ticketmaster.com/" target="_blank" rel="noopener">developer.ticketmaster.com</a> — enables event links, price ranges and approximate face value)</small></label>
+    <input id="tm-key" type="text" autocomplete="off" placeholder="Consumer Key">
+  </div>
+  <div class="field">
+    <label for="sg-key">SeatGeek client ID
+      <small>(free at <a href="https://seatgeek.com/account/develop" target="_blank" rel="noopener">seatgeek.com/account/develop</a> — enables lowest listed price per game)</small></label>
+    <input id="sg-key" type="text" autocomplete="off" placeholder="client_id">
+  </div>
+  <p class="note">Keys are optional — this site also refreshes prices automatically every
+  6 hours via a scheduled GitHub Action once the repository secrets are configured
+  (see the README). Keys entered here simply fetch fresher numbers directly.</p>
+  <p class="note">StubHub, Vivid Seats, TickPick and XP don't offer public browser-accessible
+  APIs, so for those the app builds direct search links for each game with your quantity
+  applied where the site supports it. See the
+  <a href="https://github.com/boxoprofundo/boxoprofundo.github.io/blob/main/yankees-tickets/README.md" target="_blank" rel="noopener">README</a>
+  for how to extend this with server-side data.</p>
+  <button id="save-settings">Save</button>
+</section>
+
+<main>
+  <section id="section-results" hidden>
+    <h2>Cheapest block by section <span id="section-sub" class="sub"></span></h2>
+    <div class="table-wrap">
+      <table id="section-table">
+        <thead>
+          <tr>
+            <th data-sort="section">Section</th>
+            <th data-sort="price">Price / ticket</th>
+            <th data-sort="total">Block total</th>
+            <th data-sort="date">Game date &amp; time</th>
+            <th data-sort="opponent">Opponent</th>
+            <th>Site</th>
+            <th>Link</th>
+            <th data-sort="face">Face value</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="game-results" hidden>
+    <h2>Best price per game <span class="sub">(event-level, all sections)</span></h2>
+    <div class="table-wrap">
+      <table id="game-table">
+        <thead>
+          <tr>
+            <th>Game</th>
+            <th>Date &amp; time (ET)</th>
+            <th>Ticketmaster</th>
+            <th>SeatGeek</th>
+            <th>StubHub</th>
+            <th>XP</th>
+            <th>Vivid Seats</th>
+            <th>TickPick</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Prices are the lowest <em>listed</em> price found for a block of your chosen size and can
+  change by the minute; the marketplace page is always the source of truth. Face value shown is
+  the primary-market (Ticketmaster) price range minimum for that game where available.</p>
+  <p><a href="/">← boxoprofundo.github.io</a></p>
+</footer>
+
+<script src="providers.js"></script>
+<script src="demo-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
