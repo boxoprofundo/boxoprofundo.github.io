@@ -182,5 +182,11 @@
     "https://xp.tickets/search?q=" + encodeURIComponent(gameQuery(g))
   );
 
-  window.PROVIDERS = [ticketmaster, seatgeek, stubhub, xp, vividseats, tickpick];
+  // No public API either, but the ticket-scraper repo covers it, so cached
+  // listings regularly carry Gametime prices.
+  const gametime = linkProvider("Gametime", () =>
+    "https://gametime.co/mlb-baseball/yankees-tickets"
+  );
+
+  window.PROVIDERS = [ticketmaster, seatgeek, stubhub, xp, vividseats, tickpick, gametime];
 })();

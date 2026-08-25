@@ -20,6 +20,7 @@ Ticketmaster, SeatGeek, StubHub, XP, Vivid Seats and TickPick.
    | XP (xp.tickets) | ❌ | Direct search link for the exact game |
    | Vivid Seats | ❌ | Direct search link for the exact game |
    | TickPick | ❌ | Direct search link for the exact game |
+   | Gametime | ❌ | Yankees schedule link; prices arrive via the scraper data files below |
 
 3. **Aggregation** — all quotes are pooled and, for each stadium section, the
    single cheapest per-ticket price (and block total) across all games and
@@ -105,7 +106,7 @@ File format:
   `https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=147&startDate=<today>&endDate=<year>-11-15`
   and read `dates[].games[].gamePk`.
 - `provider` should be one of: `Ticketmaster`, `SeatGeek`, `StubHub`, `XP`,
-  `Vivid Seats`, `TickPick` (matching these names makes the per-game table
+  `Vivid Seats`, `TickPick`, `Gametime` (matching these names makes the per-game table
   line up; other names still work in the section table).
 - `section` filled in → the quote appears in the per-section table; the
   cheapest per section across all games wins automatically. `section: null`
