@@ -211,8 +211,9 @@ th[data-sort] { cursor: pointer; }
 th[data-sort]:hover { text-decoration: underline; }
 tbody tr:hover { background: #f2f6fb; }
 td.price { font-weight: 700; color: var(--green); }
-td.price.down { color: var(--green); }
-td.price.up { color: var(--red); }
+td.price.flat { color: var(--text); }   /* unchanged since last run: black */
+td.price.down { color: var(--green); }   /* dropped: green */
+td.price.up { color: var(--red); }       /* rose: red */
 td.na { color: var(--muted); }
 .trend { margin-right: .25rem; font-size: .8rem; }
 .trend.down { color: var(--green); }

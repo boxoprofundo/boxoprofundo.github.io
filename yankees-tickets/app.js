@@ -587,7 +587,7 @@
       if (r.price == null) {
         tr.innerHTML =
           sectionCell +
-          `<td class="na" colspan="8">No block of ${state.lastQty} found in scope</td>` +
+          `<td class="na" colspan="7">No block of ${state.lastQty} found in scope</td>` +
           stubCell;
       } else {
         const arrow =
@@ -595,7 +595,7 @@
           : r.trend > 0 ? '<span class="trend up">▲</span>'
           : "";
         const priceCls =
-          r.trend < 0 ? "price down" : r.trend > 0 ? "price up" : "price";
+          r.trend < 0 ? "price down" : r.trend > 0 ? "price up" : "price flat";
         const pctStyle = r.pctFace != null
           ? ` style="color:${pctColor(r.pctFace, lo, hi)};font-weight:700"`
           : "";
@@ -608,8 +608,9 @@
           `<td${pctStyle}>${pctText}</td>` +
           `<td>${r.dateLabel}</td>` +
           `<td>${r.opponent}</td>` +
-          `<td>${r.provider}</td>` +
-          `<td><a href="${r.url}" target="_blank" rel="noopener">View →</a></td>` +
+          `<td>${r.url
+            ? `<a href="${r.url}" target="_blank" rel="noopener">${r.provider} →</a>`
+            : r.provider}</td>` +
           stubCell;
       }
       tbody.appendChild(tr);
