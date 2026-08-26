@@ -76,10 +76,10 @@
   // 2. this site's own data/ files (for visitors without a key).
   // A quantity-specific file (listings-4.json for blocks of 4) wins over the
   // generic listings.json; a 404 just means no collector has run yet.
-  async function fetchCachedListings(qty) {
+  async function fetchOneListing(qty, base) {
     const { ghToken } = loadSettings();
     const sources = [];
-    for (const name of [`listings-${qty}.json`, "listings.json"]) {
+    for (const name of [`${base}-${qty}.json`, `${base}.json`]) {
       if (ghToken) {
         sources.push({
           url: `${SCRAPER_API}/contents/published/${name}?ref=main`,
@@ -98,6 +98,23 @@
       }
     }
     return null;
+  }
+
+  // The cloud run writes "listings" (everything but StubHub); a home-computer
+  // run writes "listings-stubhub" (StubHub only, scraped over a residential
+  // connection). Merge both so StubHub prices appear whenever the home run
+  // last refreshed them.
+  async function fetchCachedListings(qty) {
+    const [main, stub] = await Promise.all([
+      fetchOneListing(qty, "listings"),
+      fetchOneListing(qty, "listings-stubhub"),
+    ]);
+    if (!main && !stub) return null;
+    const quotes = []
+      .concat(main && Array.isArray(main.quotes) ? main.quotes : [])
+      .concat(stub && Array.isArray(stub.quotes) ? stub.quotes : []);
+    const times = [main, stub].filter((x) => x && x.fetchedAt).map((x) => x.fetchedAt);
+    return { fetchedAt: times.sort().slice(-1)[0] || null, quotes };
   }
 
   async function fetchRemainingHomeGames() {
