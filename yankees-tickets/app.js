@@ -508,6 +508,7 @@
 
       return {
         code: cls.code,
+        display: cls.display || cls.code,
         cls,
         level: cls.level,
         label: cls.label,
@@ -576,11 +577,11 @@
 
       const stubCell =
         `<td><a href="${r.stubhub}" target="_blank" rel="noopener" ` +
-        `title="Opens a game on StubHub; then pick section ${r.code} on the seat map">` +
-        `Check §${r.code} ↗</a></td>`;
+        `title="Opens a game on StubHub; then pick section ${r.display} on the seat map">` +
+        `Check §${r.display} ↗</a></td>`;
 
       const sectionCell =
-        `<td><span class="badge lvl-${r.level.replace(/\s/g, "")}">${r.level}</span> ${r.code}` +
+        `<td><span class="badge lvl-${r.level.replace(/\s/g, "")}">${r.level}</span> ${r.display}` +
         (r.cls.obstructed ? ' <span class="obstructed">obstructed</span>' : "") +
         `</td>`;
 
