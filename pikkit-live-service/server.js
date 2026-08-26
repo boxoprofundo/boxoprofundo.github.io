@@ -58,7 +58,11 @@ app.get(['/', '/live-summary'], async (req, res) => {
     // format=text: plain English, one short paragraph per bet. The wager,
     // then where its game stands. Ordered by start time; parlays always
     // last. Today's settled results are mixed in alongside the open bets.
-    if (req.query.format === 'text') {
+    // The bare root URL is the human bookmark: it defaults to the plain-
+    // English view. /live-summary keeps JSON as its default for programmatic
+    // consumers (the voice skill). ?format=text / ?format=json override.
+    const format = req.query.format || (req.path === '/' ? 'text' : 'json');
+    if (format === 'text') {
       // Guard against relic games: ESPN boards can serve years-old entries
       // (the CFL board's only game was the 2022 Grey Cup), and matching a
       // current bet to one would report a phantom result.
