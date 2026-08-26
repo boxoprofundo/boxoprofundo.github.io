@@ -210,6 +210,11 @@ th { background: #eef1f5; position: sticky; top: 0; }
   width: 5.5rem;
 }
 #section-table td:first-child, #section-table th:first-child { width: 8.5rem; }
+/* Empty "no block found" rows use a colspan; keep that message and the
+   StubHub link left-aligned and full-width instead of inheriting the
+   right-aligned fixed-width money-column rules by cell position. */
+#section-table td.noblock { text-align: left; width: auto; }
+#section-table td.stub-cell { text-align: left; width: auto; white-space: nowrap; }
 th[data-sort] { cursor: pointer; }
 th[data-sort]:hover { text-decoration: underline; }
 tbody tr:hover { background: #f2f6fb; }
