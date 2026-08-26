@@ -365,7 +365,19 @@ app.get('/diag-statuses', async (req, res) => {
         }
       : null;
 
-    res.json({ ok: true, statusCounts, bets, sampleBetFields, availableFilters: filters });
+    // What does each ESPN board actually hold right now? Line counts per
+    // league, plus the CFL lines in full -- for debugging match failures.
+    let boards = null;
+    try {
+      const raw = await require('./scores').getSimplifiedScoreboards();
+      boards = Object.fromEntries(
+        Object.entries(raw).map(([k, v]) => [k, k === 'cfl' ? v : v.length])
+      );
+    } catch (e) {
+      boards = { error: e.message };
+    }
+
+    res.json({ ok: true, statusCounts, bets, sampleBetFields, boards, availableFilters: filters });
   } catch (e) {
     res.status(502).json({ ok: false, error: e.message });
   }
