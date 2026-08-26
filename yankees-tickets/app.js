@@ -45,6 +45,7 @@
       tmKey: $("#tm-key").value.trim(),
       sgKey: $("#sg-key").value.trim(),
       ghToken: $("#gh-token").value.trim(),
+      homeRunner: $("#home-runner").checked,
     };
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
     const note = $("#settings-saved");
@@ -119,7 +120,7 @@
           gamePk: g.gamePk,
           dateUTC,
           opponent: g.teams.away.team.name,
-          displayET: fmtET.format(dateUTC) + " ET",
+          displayET: fmtET.format(dateUTC),
           isoDateET: fmtISO.format(dateUTC),
           dateShort: fmtShort.format(dateUTC),
         });
@@ -134,6 +135,7 @@
   const SCRAPER_REPO = "boxoprofundo/ticket-scraper";
   const SCRAPER_API = `https://api.github.com/repos/${SCRAPER_REPO}`;
   const SCRAPE_WORKFLOW = "yankees-scrape.yml";
+  const SCRAPE_WORKFLOW_HOME = "yankees-scrape-home.yml";
   const POLL_MS = 20000;
 
   function ghHeaders(token, raw) {
@@ -217,7 +219,8 @@
 
   async function refreshPrices(scope) {
     const qty = readQty(scope);
-    const { ghToken } = loadSettings();
+    const settings = loadSettings();
+    const ghToken = settings.ghToken;
     if (!ghToken) {
       selectTab("settings");
       $("#gh-token").focus();
@@ -228,11 +231,12 @@
       );
       return;
     }
+    const workflow = settings.homeRunner ? SCRAPE_WORKFLOW_HOME : SCRAPE_WORKFLOW;
     $$(".refresh-btn").forEach((b) => (b.disabled = true));
     try {
       const startedAt = Date.now();
       const res = await fetch(
-        `${SCRAPER_API}/actions/workflows/${SCRAPE_WORKFLOW}/dispatches`,
+        `${SCRAPER_API}/actions/workflows/${workflow}/dispatches`,
         {
           method: "POST",
           headers: ghHeaders(ghToken),
@@ -244,10 +248,14 @@
         throw new Error(`GitHub answered ${res.status}: ${body.slice(0, 200)}`);
       }
       setStatus(
-        `Price scrape started for blocks of ${qty} — usually 5–10 minutes. ` +
-        "Fresh prices will load here automatically when it finishes."
+        settings.homeRunner
+          ? `Scrape sent to your home computer for blocks of ${qty}. If the PC ` +
+            "is on it runs now (a few minutes) and loads here automatically; " +
+            "if it's off, it'll run when the PC next comes online."
+          : `Price scrape started for blocks of ${qty} — usually 5–10 minutes. ` +
+            "Fresh prices will load here automatically when it finishes."
       );
-      watchScrape(scope, qty, startedAt);
+      watchScrape(scope, qty, startedAt, workflow);
     } catch (err) {
       console.error(err);
       $$(".refresh-btn").forEach((b) => (b.disabled = false));
@@ -259,7 +267,9 @@
     }
   }
 
-  function watchScrape(scope, qty, startedAt) {
+  function watchScrape(scope, qty, startedAt, workflow) {
+    workflow = workflow || SCRAPE_WORKFLOW;
+    const home = workflow === SCRAPE_WORKFLOW_HOME;
     clearInterval(pollTimer);
     pollTimer = setInterval(async () => {
       const mins = Math.round((Date.now() - startedAt) / 60000);
@@ -267,8 +277,11 @@
         clearInterval(pollTimer);
         $$(".refresh-btn").forEach((b) => (b.disabled = false));
         setStatus(
-          "The scrape is taking unusually long. Hit Search later to check " +
-          "for new prices, or try Refresh again.",
+          home
+            ? "Still waiting on your home computer — make sure it's powered on " +
+              "and the helper is installed. Hit Search later to pick up results."
+            : "The scrape is taking unusually long. Hit Search later to check " +
+              "for new prices, or try Refresh again.",
           true
         );
         return;
@@ -276,7 +289,7 @@
       try {
         const { ghToken } = loadSettings();
         const res = await fetch(
-          `${SCRAPER_API}/actions/workflows/${SCRAPE_WORKFLOW}/runs?per_page=1`,
+          `${SCRAPER_API}/actions/workflows/${workflow}/runs?per_page=1`,
           { headers: ghHeaders(ghToken) }
         );
         if (!res.ok) return;
@@ -287,8 +300,11 @@
         }
         if (run.status !== "completed") {
           setStatus(
-            `Scraper is running on GitHub's servers — usually 5–10 minutes ` +
-            `(${mins} elapsed). Fresh prices will load here automatically.`
+            home
+              ? `Running on your home computer — a few minutes (${mins} elapsed). ` +
+                "Fresh prices will load here automatically."
+              : `Scraper is running on GitHub's servers — usually 5–10 minutes ` +
+                `(${mins} elapsed). Fresh prices will load here automatically.`
           );
           return;
         }
@@ -579,21 +595,22 @@
           : r.trend > 0 ? '<span class="trend up">▲</span>'
           : "";
         const priceCls =
-          r.trend < 0 ? "price down" : r.trend > 0 ? "price up" : "price";
+          r.trend < 0 ? "price down" : r.trend > 0 ? "price up" : "price flat";
         const pctStyle = r.pctFace != null
           ? ` style="color:${pctColor(r.pctFace, lo, hi)};font-weight:700"`
           : "";
         const pctText = r.pctFace != null ? Math.round(r.pctFace) + "%" : "—";
         tr.innerHTML =
           sectionCell +
-          `<td class="${priceCls}">${arrow}${fmtMoney(r.price)}</td>` +
-          `<td${pctStyle}>${pctText}</td>` +
           `<td>${fmtMoney(r.total)}</td>` +
+          `<td class="${priceCls}">${arrow}${fmtMoney(r.price)}</td>` +
           `<td>${r.face != null ? fmtMoney(r.face) : "—"}</td>` +
+          `<td${pctStyle}>${pctText}</td>` +
           `<td>${r.dateLabel}</td>` +
           `<td>${r.opponent}</td>` +
-          `<td>${r.provider}</td>` +
-          `<td><a href="${r.url}" target="_blank" rel="noopener">View →</a></td>` +
+          `<td>${r.url
+            ? `<a href="${r.url}" target="_blank" rel="noopener">${r.provider} →</a>`
+            : r.provider}</td>` +
           stubCell;
       }
       tbody.appendChild(tr);
@@ -652,23 +669,40 @@
       const id = "game-" + g.gamePk;
       const row = document.createElement("label");
       row.className = "game-opt";
+      // Date/time on top, team underneath — narrower cards, more per row.
       row.innerHTML =
         `<input type="checkbox" id="${id}" value="${g.gamePk}" ` +
         `${state.picked.has(g.gamePk) ? "checked" : ""}>` +
+        `<span class="g-meta">` +
         `<span class="g-date">${g.displayET}</span>` +
-        `<span class="g-opp">vs ${g.opponent}</span>`;
+        `<span class="g-opp">vs ${g.opponent}</span>` +
+        `</span>`;
       row.querySelector("input").addEventListener("change", (e) => {
         if (e.target.checked) state.picked.add(g.gamePk);
         else state.picked.delete(g.gamePk);
+        syncSelectAll();
       });
       host.appendChild(row);
     }
+    syncSelectAll();
+  }
+
+  // Keep the master "Select all" checkbox in sync: checked when all picked,
+  // unchecked when none, indeterminate in between.
+  function syncSelectAll() {
+    const cb = $("#pick-all-cb");
+    if (!cb || !state.games) return;
+    const total = state.games.length;
+    const n = state.picked ? state.picked.size : 0;
+    cb.checked = n === total && total > 0;
+    cb.indeterminate = n > 0 && n < total;
   }
 
   function setAllPicked(on) {
     if (!state.games) return;
     state.picked = new Set(on ? state.games.map((g) => g.gamePk) : []);
     $$("#game-list input[type=checkbox]").forEach((cb) => (cb.checked = on));
+    syncSelectAll();
   }
 
   /* ------------------------------- tabs --------------------------------- */
@@ -688,43 +722,16 @@
 
   /* --------------------------- stadium map ------------------------------ */
 
-  const LEVEL_COLORS = {
-    Legends: "#b3132a", Field: "#0c2340", Main: "#1c7a3f",
-    Bleachers: "#8a6d1f", Terrace: "#5a3a8a", Grandstand: "#0f5f78",
-  };
-
-  function stadiumMapSVG() {
-    // Concentric decks, home plate at the bottom — a quick orientation aid.
-    const decks = [
-      { level: "Grandstand", ry: 150, label: "Grandstand (400s)" },
-      { level: "Terrace",    ry: 122, label: "Terrace (300s)" },
-      { level: "Main",       ry: 96,  label: "Main / Bleachers (200s)" },
-      { level: "Field",      ry: 70,  label: "Field (100s)" },
-      { level: "Legends",    ry: 44,  label: "Legends (infield)" },
-    ];
-    const rings = decks.map((d) =>
-      `<ellipse cx="200" cy="150" rx="${d.ry * 1.35}" ry="${d.ry}" ` +
-      `fill="${LEVEL_COLORS[d.level]}" fill-opacity="0.85" stroke="#fff" stroke-width="2"/>`
-    ).join("");
-    const legend = decks.map((d, i) =>
-      `<g transform="translate(300,${40 + i * 22})">` +
-      `<rect width="14" height="14" rx="3" fill="${LEVEL_COLORS[d.level]}"/>` +
-      `<text x="20" y="12" font-size="12" fill="#1b2733">${d.label}</text></g>`
-    ).join("");
-    return (
-      `<svg viewBox="0 0 440 320" width="100%" role="img" aria-label="Yankee Stadium seating levels">` +
-      `<rect width="440" height="320" fill="#f5f6f8"/>` +
-      rings +
-      `<circle cx="200" cy="150" r="6" fill="#fff" stroke="#1b2733"/>` +
-      `<polygon points="200,236 192,244 200,252 208,244" fill="#fff" stroke="#1b2733"/>` +
-      `<text x="200" y="270" font-size="12" text-anchor="middle" fill="#1b2733">Home plate</text>` +
-      legend +
-      `</svg>`
-    );
-  }
+  const MAP_IMG =
+    "https://dvvwrk0u94pdu.cloudfront.net/seatingcharts/yankee-seating-chart-1299x1261.jpeg";
 
   function openMap() {
-    $("#map-holder").innerHTML = stadiumMapSVG();
+    const holder = $("#map-holder");
+    if (!holder.querySelector("img")) {
+      holder.innerHTML =
+        `<img src="${MAP_IMG}" alt="Yankee Stadium seating chart" ` +
+        `class="map-img" loading="lazy">`;
+    }
     $("#map-modal").hidden = false;
   }
   function closeMap() {
@@ -738,6 +745,7 @@
     $("#tm-key").value = s.tmKey || "";
     $("#sg-key").value = s.sgKey || "";
     $("#gh-token").value = s.ghToken || "";
+    $("#home-runner").checked = !!s.homeRunner;
 
     $$(".tab").forEach((t) =>
       t.addEventListener("click", () => selectTab(t.dataset.tab))
@@ -760,8 +768,7 @@
 
     $("#save-settings").addEventListener("click", saveSettings);
 
-    $("#pick-all").addEventListener("click", (e) => { e.preventDefault(); setAllPicked(true); });
-    $("#pick-none").addEventListener("click", (e) => { e.preventDefault(); setAllPicked(false); });
+    $("#pick-all-cb").addEventListener("change", (e) => setAllPicked(e.target.checked));
 
     $("#open-map").addEventListener("click", (e) => { e.preventDefault(); openMap(); });
     $("#map-close").addEventListener("click", closeMap);

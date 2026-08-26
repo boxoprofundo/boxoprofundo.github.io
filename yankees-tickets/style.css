@@ -52,6 +52,17 @@ header h1 { margin: 0; font-size: 1.7rem; }
 }
 .tab:hover { color: #fff; }
 .tab.active { background: var(--bg); color: var(--navy); }
+.nav-map {
+  margin-left: auto;
+  align-self: center;
+  color: #d8e0ea;
+  text-decoration: none;
+  font-size: .9rem;
+  font-weight: 600;
+  padding: .4rem .3rem;
+  white-space: nowrap;
+}
+.nav-map:hover { color: #fff; text-decoration: underline; }
 
 /* ------------------------------ panels ------------------------------- */
 .panel {
@@ -110,25 +121,31 @@ header h1 { margin: 0; font-size: 1.7rem; }
   align-items: center;
   margin-bottom: .6rem;
 }
-.picker-head a { color: var(--navy-soft); text-decoration: none; font-weight: 600; }
-.picker-head a:hover { text-decoration: underline; }
+.select-all {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-weight: 600;
+  cursor: pointer;
+}
 .game-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: .3rem .9rem;
+  grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+  gap: .3rem .7rem;
 }
 .game-opt {
   display: flex;
-  align-items: baseline;
-  gap: .5rem;
+  align-items: flex-start;
+  gap: .45rem;
   padding: .3rem .4rem;
   border-radius: 6px;
   cursor: pointer;
-  font-size: .9rem;
 }
 .game-opt:hover { background: #f2f6fb; }
-.game-opt .g-date { color: var(--muted); white-space: nowrap; }
-.game-opt .g-opp { font-weight: 600; }
+.game-opt input { margin-top: .2rem; }
+.g-meta { display: flex; flex-direction: column; line-height: 1.25; }
+.g-date { color: var(--muted); font-size: .82rem; white-space: nowrap; }
+.g-opp { font-weight: 600; font-size: .88rem; }
 
 /* ----------------------------- settings ------------------------------ */
 .settings { padding: 1.1rem 1.1rem 0; }
@@ -176,12 +193,27 @@ main h2 { margin: 1.6rem 0 .6rem; display: flex; align-items: center; gap: .8rem
 table { border-collapse: collapse; width: 100%; font-size: .92rem; }
 th, td { padding: .55rem .8rem; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
 th { background: #eef1f5; position: sticky; top: 0; }
+
+/* Compact the section table so all columns fit without horizontal scroll. */
+#section-table { font-size: .84rem; }
+#section-table th, #section-table td { padding: .4rem .5rem; }
+/* The money columns (block total, price, face, % of face) are narrow and
+   read better right-aligned; keep them tight to match the section column. */
+#section-table td:nth-child(2), #section-table th:nth-child(2),
+#section-table td:nth-child(3), #section-table th:nth-child(3),
+#section-table td:nth-child(4), #section-table th:nth-child(4),
+#section-table td:nth-child(5), #section-table th:nth-child(5) {
+  text-align: right;
+  width: 5.5rem;
+}
+#section-table td:first-child, #section-table th:first-child { width: 8.5rem; }
 th[data-sort] { cursor: pointer; }
 th[data-sort]:hover { text-decoration: underline; }
 tbody tr:hover { background: #f2f6fb; }
 td.price { font-weight: 700; color: var(--green); }
-td.price.down { color: var(--green); }
-td.price.up { color: var(--red); }
+td.price.flat { color: var(--text); }   /* unchanged since last run: black */
+td.price.down { color: var(--green); }   /* dropped: green */
+td.price.up { color: var(--red); }       /* rose: red */
 td.na { color: var(--muted); }
 .trend { margin-right: .25rem; font-size: .8rem; }
 .trend.down { color: var(--green); }
@@ -190,9 +222,9 @@ td.na { color: var(--muted); }
 
 .badge {
   display: inline-block;
-  padding: .1rem .5rem;
+  padding: .05rem .35rem;
   border-radius: 999px;
-  font-size: .74rem;
+  font-size: .66rem;
   font-weight: 600;
   background: #e8edf4;
   color: var(--navy);
@@ -218,7 +250,8 @@ td.na { color: var(--muted); }
   position: relative;
   background: var(--card);
   border-radius: 12px;
-  max-width: 40rem; width: 100%;
+  max-width: 44rem; width: 100%;
+  max-height: 92vh; overflow: auto;
   padding: 1.25rem 1.35rem 1.5rem;
   box-shadow: 0 12px 40px rgba(0,0,0,.3);
 }
@@ -228,7 +261,13 @@ td.na { color: var(--muted); }
   border: 0; background: transparent; font-size: 1.2rem;
   cursor: pointer; color: var(--muted); line-height: 1;
 }
+.map-img { display: block; width: 100%; height: auto; border-radius: 8px; }
 .map-note { font-size: .85rem; color: var(--muted); margin: .8rem 0 0; }
+
+/* Settings checkbox row */
+.check-field { display: flex; align-items: flex-start; gap: .5rem; font-weight: 600; cursor: pointer; }
+.check-field input { margin-top: .25rem; }
+.check-field small { display: block; font-weight: 400; color: var(--muted); }
 
 footer {
   max-width: 76rem;
