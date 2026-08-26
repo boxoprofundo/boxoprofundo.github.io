@@ -37,7 +37,8 @@
 
   function levelFor(num, code) {
     if (num != null) {
-      if (num >= 1 && num <= 30) return "Legends";
+      if (num >= 11 && num <= 30) return "Legends";     // 011–029 behind the plate
+      if (num >= 1 && num <= 10) return "Suite";         // 1–4 etc. are field suites
       if (num >= 100 && num <= 136) return "Field";
       if ((num >= 201 && num <= 204) || (num >= 235 && num <= 239)) return "Bleachers";
       if (num >= 205 && num <= 234) return "Main";
@@ -73,10 +74,20 @@
     }
 
     const level = levelFor(num, code);
-    let label = code ? level + " " + code : level;
+
+    // Display code: Legends sections are labelled with a leading zero at the
+    // stadium (011–029), so show them padded to three digits. `code` stays the
+    // stripped form ("28") for dedup and for matching the scraper's keys.
+    let display = code;
+    if (level === "Legends" && num != null) {
+      const suffix = m ? m[2] : "";
+      display = String(num).padStart(3, "0") + suffix;
+    }
+
+    let label = display ? level + " " + display : level;
     if (obstructed) label += " (obstructed)";
 
-    return { code, level, label, num, obstructed };
+    return { code, display, level, label, num, obstructed };
   }
 
   // Comparator for two classified sections: by level, then numeric, then code.
