@@ -130,7 +130,10 @@ header h1 { margin: 0; font-size: 1.7rem; }
 }
 .game-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+  /* Fill top-to-bottom down each column, then wrap to the next column.
+     The row count is set inline by JS so there are always ~5 columns. */
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(9rem, 1fr);
   gap: .3rem .7rem;
 }
 .game-opt {
@@ -144,8 +147,8 @@ header h1 { margin: 0; font-size: 1.7rem; }
 .game-opt:hover { background: #f2f6fb; }
 .game-opt input { margin-top: .2rem; }
 .g-meta { display: flex; flex-direction: column; line-height: 1.25; }
-.g-date { color: var(--muted); font-size: .82rem; white-space: nowrap; }
-.g-opp { font-weight: 600; font-size: .88rem; }
+.g-date { font-weight: 600; font-size: .82rem; white-space: nowrap; }
+.g-opp { font-weight: 400; color: var(--muted); font-size: .86rem; }
 
 /* ----------------------------- settings ------------------------------ */
 .settings { padding: 1.1rem 1.1rem 0; }

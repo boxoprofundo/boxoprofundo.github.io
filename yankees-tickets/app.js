@@ -684,6 +684,10 @@
       });
       host.appendChild(row);
     }
+    // Column-major fill: N rows so the games flow down each column, wrapping
+    // to the next column, capped at ~5 columns wide.
+    const rows = Math.max(1, Math.ceil(state.games.length / 5));
+    host.style.gridTemplateRows = `repeat(${rows}, auto)`;
     syncSelectAll();
   }
 
