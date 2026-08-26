@@ -59,9 +59,18 @@ app.get(['/', '/live-summary'], async (req, res) => {
     // then where its game stands. Ordered by start time; parlays always
     // last. Today's settled results are mixed in alongside the open bets.
     if (req.query.format === 'text') {
+      // Guard against relic games: ESPN boards can serve years-old entries
+      // (the CFL board's only game was the 2022 Grey Cup), and matching a
+      // current bet to one would report a phantom result.
+      const STALE_MS = 3 * 24 * 3600 * 1000;
       const games = [];
       for (const arr of Object.values(rawBoards)) {
-        for (const g of arr) if (g.abbrevs && g.abbrevs.length === 2) games.push(g);
+        for (const g of arr) {
+          if (!g.abbrevs || g.abbrevs.length !== 2) continue;
+          const t = g.start ? Date.parse(g.start) : NaN;
+          if (!isNaN(t) && Date.now() - t > STALE_MS) continue;
+          games.push(g);
+        }
       }
 
       // Pikkit and ESPN disagree on a handful of team abbreviations
@@ -238,7 +247,15 @@ app.get(['/', '/live-summary'], async (req, res) => {
           const side = pickSide(pk, g);
           return `${g.away.abbr}@${g.home.abbr}|${side ? side.idx : '?'}${side && side.modifier ? `|${side.modifier}` : ''}|${market}`;
         }
-        return String(pk.name || '').toUpperCase();
+        // No game matched: merge on the team's nickname (books agree on
+        // "Bombers" even when they disagree on "Winnipeg" vs "WPG"), the
+        // spread/total number if any, and the market.
+        const teamPart = String(pk.name || '').split('\u00b7')[0].trim();
+        const rawWords = teamPart.split(/\s+/);
+        const nums = rawWords.filter((w) => /^[+-]?\d/.test(w)).join(' ');
+        const nameWords = rawWords.filter((w) => !/^[+-]?\d/.test(w));
+        const nick = nameWords.length ? canon(nameWords[nameWords.length - 1].toUpperCase()) : '';
+        return `${nick}${nums ? `|${nums}` : ''}|${market}`;
       };
       const merged = new Map();
       for (const b of [...live.bets, ...settledToday]) {

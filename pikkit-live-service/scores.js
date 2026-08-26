@@ -14,7 +14,9 @@ const LEAGUES = [
   { key: 'nhl', url: 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard' },
   { key: 'ncaaf', url: 'https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard' },
   { key: 'ncaab', url: 'https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard' },
-  { key: 'cfl', url: 'https://site.api.espn.com/apis/site/v2/sports/football/cfl/scoreboard' },
+  // NOTE: ESPN's CFL scoreboard is dead -- it serves the 2022 Grey Cup as
+  // its only "game". Do not re-add it; there is no usable CFL source here.
+  { key: 'mls', url: 'https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/scoreboard' },
 ];
 
 function simplifyEvent(ev) {
