@@ -175,16 +175,23 @@
 
   // The cloud run writes "listings" (everything but StubHub); a home run
   // writes "listings-stubhub". Merge both.
+  // Three collected sources, each written by a different run:
+  //   listings          — the cloud run (XP, Vivid Seats, Gametime, …)
+  //   listings-tm       — the home runner (Ticketmaster only, on a clean IP)
+  //   listings-stubhub  — an optional home StubHub run
+  // Merge whatever exists; the newest fetchedAt is shown as the collected time.
   async function fetchCachedListings(qty) {
-    const [main, stub] = await Promise.all([
+    const [main, tm, stub] = await Promise.all([
       fetchOneListing(qty, "listings"),
+      fetchOneListing(qty, "listings-tm"),
       fetchOneListing(qty, "listings-stubhub"),
     ]);
-    if (!main && !stub) return null;
+    if (!main && !tm && !stub) return null;
     const quotes = []
       .concat(main && Array.isArray(main.quotes) ? main.quotes : [])
+      .concat(tm && Array.isArray(tm.quotes) ? tm.quotes : [])
       .concat(stub && Array.isArray(stub.quotes) ? stub.quotes : []);
-    const times = [main, stub].filter((x) => x && x.fetchedAt).map((x) => x.fetchedAt);
+    const times = [main, tm, stub].filter((x) => x && x.fetchedAt).map((x) => x.fetchedAt);
     return { fetchedAt: times.sort().slice(-1)[0] || null, quotes };
   }
 
@@ -217,6 +224,8 @@
 
   let pollTimer = null;
 
+  const reenableRefresh = () => $$(".refresh-btn").forEach((b) => (b.disabled = false));
+
   async function refreshPrices(scope) {
     const qty = readQty(scope);
     const settings = loadSettings();
@@ -231,34 +240,46 @@
       );
       return;
     }
-    const workflow = settings.homeRunner ? SCRAPE_WORKFLOW_HOME : SCRAPE_WORKFLOW;
+
+    // With the home runner on, fan out: the Mac scrapes only Ticketmaster
+    // while the cloud does everything else, concurrently and into separate
+    // files the site merges. Without it, one cloud run covers all sites.
+    const jobs = settings.homeRunner
+      ? [
+          { file: SCRAPE_WORKFLOW, inputs: { qty: String(qty), skip: "StubHub Ticketmaster" }, home: false },
+          { file: SCRAPE_WORKFLOW_HOME, inputs: { qty: String(qty) }, home: true },
+        ]
+      : [{ file: SCRAPE_WORKFLOW, inputs: { qty: String(qty) }, home: false }];
+
     $$(".refresh-btn").forEach((b) => (b.disabled = true));
     try {
       const startedAt = Date.now();
-      const res = await fetch(
-        `${SCRAPER_API}/actions/workflows/${workflow}/dispatches`,
-        {
-          method: "POST",
-          headers: ghHeaders(ghToken),
-          body: JSON.stringify({ ref: "main", inputs: { qty: String(qty) } }),
+      for (const j of jobs) {
+        const res = await fetch(
+          `${SCRAPER_API}/actions/workflows/${j.file}/dispatches`,
+          {
+            method: "POST",
+            headers: ghHeaders(ghToken),
+            body: JSON.stringify({ ref: "main", inputs: j.inputs }),
+          }
+        );
+        if (res.status !== 204) {
+          const body = await res.text();
+          throw new Error(`GitHub answered ${res.status} for ${j.file}: ${body.slice(0, 160)}`);
         }
-      );
-      if (res.status !== 204) {
-        const body = await res.text();
-        throw new Error(`GitHub answered ${res.status}: ${body.slice(0, 200)}`);
       }
       setStatus(
         settings.homeRunner
-          ? `Scrape sent to your home computer for blocks of ${qty}. If the PC ` +
-            "is on it runs now (a few minutes) and loads here automatically; " +
-            "if it's off, it'll run when the PC next comes online."
+          ? `Refresh started (blocks of ${qty}): your Mac is scraping Ticketmaster ` +
+            "while the cloud handles the rest. Keep the Mac awake — prices load " +
+            "here automatically when both finish."
           : `Price scrape started for blocks of ${qty} — usually 5–10 minutes. ` +
             "Fresh prices will load here automatically when it finishes."
       );
-      watchScrape(scope, qty, startedAt, workflow);
+      watchScrape(scope, startedAt, jobs);
     } catch (err) {
       console.error(err);
-      $$(".refresh-btn").forEach((b) => (b.disabled = false));
+      reenableRefresh();
       setStatus(
         "Couldn't start the scraper: " + err.message +
         " — check the access key in Settings.",
@@ -267,59 +288,58 @@
     }
   }
 
-  function watchScrape(scope, qty, startedAt, workflow) {
-    workflow = workflow || SCRAPE_WORKFLOW;
-    const home = workflow === SCRAPE_WORKFLOW_HOME;
+  // Poll every dispatched workflow's latest run; reload prices once all have
+  // completed (or on timeout, so a stuck home runner can't block the rest).
+  function watchScrape(scope, startedAt, jobs) {
     clearInterval(pollTimer);
+    const label = (j) => (j.home ? "your Mac (Ticketmaster)" : "the cloud");
+    const done = {}; // workflow file -> conclusion
+
     pollTimer = setInterval(async () => {
       const mins = Math.round((Date.now() - startedAt) / 60000);
       if (Date.now() - startedAt > 25 * 60000) {
         clearInterval(pollTimer);
-        $$(".refresh-btn").forEach((b) => (b.disabled = false));
+        reenableRefresh();
+        const stuck = jobs.filter((j) => !done[j.file]).map(label).join(" and ");
         setStatus(
-          home
-            ? "Still waiting on your home computer — make sure it's powered on " +
-              "and the helper is installed. Hit Search later to pick up results."
-            : "The scrape is taking unusually long. Hit Search later to check " +
-              "for new prices, or try Refresh again.",
+          `Loading what's ready… ${stuck} didn't finish in time` +
+          (jobs.some((j) => j.home) ? " (is the Mac awake and the helper installed?)." : "."),
           true
         );
+        await runSearch(scope);
         return;
       }
       try {
         const { ghToken } = loadSettings();
-        const res = await fetch(
-          `${SCRAPER_API}/actions/workflows/${workflow}/runs?per_page=1`,
-          { headers: ghHeaders(ghToken) }
-        );
-        if (!res.ok) return;
-        const run = ((await res.json()).workflow_runs || [])[0];
-        if (!run || Date.parse(run.created_at) < startedAt - 60000) {
-          setStatus(`Scrape starting… (${mins} min)`);
-          return;
+        for (const j of jobs) {
+          if (done[j.file]) continue;
+          const res = await fetch(
+            `${SCRAPER_API}/actions/workflows/${j.file}/runs?per_page=1`,
+            { headers: ghHeaders(ghToken) }
+          );
+          if (!res.ok) continue;
+          const run = ((await res.json()).workflow_runs || [])[0];
+          if (!run || Date.parse(run.created_at) < startedAt - 60000) continue;
+          if (run.status === "completed") done[j.file] = run.conclusion || "completed";
         }
-        if (run.status !== "completed") {
+        const pending = jobs.filter((j) => !done[j.file]);
+        if (pending.length) {
           setStatus(
-            home
-              ? `Running on your home computer — a few minutes (${mins} elapsed). ` +
-                "Fresh prices will load here automatically."
-              : `Scraper is running on GitHub's servers — usually 5–10 minutes ` +
-                `(${mins} elapsed). Fresh prices will load here automatically.`
+            `Still scraping: ${pending.map(label).join(" and ")} (${mins} min elapsed). ` +
+            "Prices load here automatically when done."
           );
           return;
         }
         clearInterval(pollTimer);
-        $$(".refresh-btn").forEach((b) => (b.disabled = false));
-        if (run.conclusion === "success") {
-          setStatus("Scrape finished — loading fresh prices…");
-          await runSearch(scope);
-        } else {
-          setStatus(
-            `The scrape run ended with status "${run.conclusion}" — try ` +
-            "Refresh again in a few minutes.",
-            true
-          );
-        }
+        reenableRefresh();
+        const failed = jobs.filter((j) => done[j.file] !== "success");
+        setStatus(
+          failed.length
+            ? `Loading fresh prices… (${failed.map(label).join(", ")} ended as ` +
+              `${failed.map((j) => done[j.file]).join(", ")} — you can Refresh again.)`
+            : "Scrape finished — loading fresh prices…"
+        );
+        await runSearch(scope);
       } catch (err) {
         console.error(err);
       }

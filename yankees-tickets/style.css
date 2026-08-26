@@ -267,10 +267,12 @@ td.na { color: var(--muted); }
 .map-img { display: block; width: 100%; height: auto; border-radius: 8px; }
 .map-note { font-size: .85rem; color: var(--muted); margin: .8rem 0 0; }
 
-/* Settings checkbox row */
-.check-field { display: flex; align-items: flex-start; gap: .5rem; font-weight: 600; cursor: pointer; }
-.check-field input { margin-top: .25rem; }
-.check-field small { display: block; font-weight: 400; color: var(--muted); }
+/* Settings checkbox row: checkbox on the left, label + hint stacked at right.
+   Scoped under .settings to beat the `.settings label { display:block }` rule. */
+.settings label.check-field { display: flex; align-items: flex-start; gap: .5rem; cursor: pointer; font-weight: 400; }
+.check-field input { margin-top: .3rem; flex: 0 0 auto; }
+.cf-text { font-weight: 600; }
+.check-field small { display: block; font-weight: 400; color: var(--muted); margin-top: .15rem; }
 
 footer {
   max-width: 76rem;
