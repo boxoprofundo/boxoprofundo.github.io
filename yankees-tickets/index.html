@@ -16,6 +16,7 @@
   <button class="tab active" data-tab="all">Search all games</button>
   <button class="tab" data-tab="specific">Search specific games</button>
   <button class="tab" data-tab="settings">Settings</button>
+  <a href="#" id="open-map" class="nav-map">🗺 View stadium map</a>
 </nav>
 
 <!-- ── Search all games ─────────────────────────────────────────── -->
@@ -39,10 +40,8 @@
   <div class="game-picker">
     <div class="picker-head">
       <strong>Choose games</strong>
-      <span>
-        <a href="#" id="pick-all">All</a> ·
-        <a href="#" id="pick-none">None</a>
-      </span>
+      <label class="select-all"><input type="checkbox" id="pick-all-cb" checked>
+        Select all</label>
     </div>
     <div id="game-list" class="game-list">Loading remaining home games…</div>
   </div>
@@ -77,6 +76,15 @@
         <em>No expiration</em>, Generate, copy the code, paste below, Save. Once per device.)</small></label>
       <input id="gh-token" type="password" autocomplete="off" placeholder="ghp_…">
     </div>
+    <div class="field">
+      <label class="check-field">
+        <input id="home-runner" type="checkbox">
+        Run scrapes on my home computer
+        <small>(routes Refresh to a self-hosted runner on your PC, over your
+        clean home connection where Ticketmaster works — needs the one-time
+        <code>install_home_runner.bat</code> setup, and the PC powered on)</small>
+      </label>
+    </div>
     <button id="save-settings">Save</button>
     <span id="settings-saved" class="saved-note" hidden>Saved ✓</span>
   </div>
@@ -88,17 +96,16 @@
   <section id="section-results" hidden>
     <h2>
       Cheapest block by section <span id="section-sub" class="sub"></span>
-      <a href="#" id="open-map" class="map-link">🗺 View stadium map</a>
     </h2>
     <div class="table-wrap">
       <table id="section-table">
         <thead>
           <tr>
             <th data-sort="section">Section</th>
-            <th data-sort="price">Price / ticket</th>
-            <th data-sort="pctFace">% of face</th>
             <th data-sort="total">Block total</th>
+            <th data-sort="price">Price / ticket</th>
             <th data-sort="face">Face value</th>
+            <th data-sort="pctFace">% of face</th>
             <th data-sort="date">Game date &amp; time</th>
             <th data-sort="opponent">Opponent</th>
             <th>Site</th>
@@ -126,10 +133,9 @@
 <div id="map-modal" class="modal" hidden>
   <div class="modal-box">
     <button class="modal-close" id="map-close" aria-label="Close">✕</button>
-    <h3>Yankee Stadium — seating levels</h3>
+    <h3>Yankee Stadium — seating chart</h3>
     <div id="map-holder"></div>
-    <p class="map-note">Schematic for orientation. For an exact seat-by-seat
-    chart, open the
+    <p class="map-note">For an interactive, seat-by-seat chart, open the
     <a href="https://www.rateyourseats.com/yankee-stadium/seating/seating-chart"
        target="_blank" rel="noopener">interactive seating map ↗</a>.</p>
   </div>
