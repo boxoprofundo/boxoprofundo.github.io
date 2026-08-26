@@ -88,11 +88,21 @@ app.get(['/', '/live-summary'], async (req, res) => {
         const tokens = `${pick.context || ''} ${pick.name || ''}`
           .toUpperCase()
           .split(/[^A-Z0-9+.]+/)
-          .filter((t) => t.length >= 2 && t.length <= 5)
+          .filter((t) => t.length >= 2 && t.length <= 12)
           .map(canon);
         const strict = games.find((g) => g.abbrevs.every((a) => tokens.includes(canon(a))));
         if (strict) return strict;
-        const partial = games.filter((g) => g.abbrevs.some((a) => tokens.includes(canon(a))));
+        // Fallback: a pick that names the team outright ("Winnipeg Blue
+        // Bombers") instead of by abbreviation. Match on abbreviation or on
+        // a distinctive word of the team name; accept only if exactly one
+        // game qualifies, so ambiguity never guesses.
+        const nameHit = (t) =>
+          tokens.includes(canon(t.abbr)) ||
+          t.name
+            .toUpperCase()
+            .split(/[^A-Z0-9]+/)
+            .some((w) => w.length > 3 && tokens.includes(w));
+        const partial = games.filter((g) => nameHit(g.away) || nameHit(g.home));
         return partial.length === 1 ? partial[0] : null;
       };
 
@@ -116,12 +126,24 @@ app.get(['/', '/live-summary'], async (req, res) => {
       // -> away/home index; "CHI +1.5 · Spread" keeps "+1.5" as a modifier;
       // "Over 8.5 · Total" has no side.)
       const pickSide = (pick, g) => {
+        if (!g) return null;
         const teamPart = String(pick.name || '').split('\u00b7')[0].trim();
         const words = teamPart.split(/\s+/);
-        const abbr = (words[0] || '').toUpperCase();
-        const modifier = words.slice(1).join(' ');
-        if (g && canon(abbr) === canon(g.away.abbr)) return { idx: 0, modifier };
-        if (g && canon(abbr) === canon(g.home.abbr)) return { idx: 1, modifier };
+        // The numeric bit of a spread ("CHI +1.5") is the modifier; every
+        // other word may be part of the team's name or abbreviation.
+        const modifier = words.filter((w) => /^[+-]?\d/.test(w)).join(' ');
+        const nameWords = words.filter((w) => !/^[+-]?\d/.test(w)).map((w) => canon(w.toUpperCase()));
+        const overlap = (t) => {
+          const target = new Set([
+            canon(t.abbr),
+            ...t.name.toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean),
+          ]);
+          return nameWords.filter((w) => target.has(w)).length;
+        };
+        const a = overlap(g.away);
+        const h = overlap(g.home);
+        if (a > h) return { idx: 0, modifier };
+        if (h > a) return { idx: 1, modifier };
         return null;
       };
 
@@ -206,12 +228,24 @@ app.get(['/', '/live-summary'], async (req, res) => {
       // Identical tickets (same picks, same open/settled outcome) combine
       // into one line with stakes and payouts summed -- the same bet placed
       // at two books, or repeated, reads as a single position.
+      // Books spell the same pick differently ("Winnipeg Blue Bombers" vs
+      // "WPG Blue Bombers"), so merge on the matched game, side and market
+      // -- falling back to normalized text only when no game matched.
+      const pickKey = (pk) => {
+        const g = findGame(pk);
+        const market = String(pk.name || '').split('\u00b7').slice(1).join(' ').trim().toUpperCase();
+        if (g) {
+          const side = pickSide(pk, g);
+          return `${g.away.abbr}@${g.home.abbr}|${side ? side.idx : '?'}${side && side.modifier ? `|${side.modifier}` : ''}|${market}`;
+        }
+        return String(pk.name || '').toUpperCase();
+      };
       const merged = new Map();
       for (const b of [...live.bets, ...settledToday]) {
         const key = JSON.stringify([
           b.type,
           String(b.status).startsWith('SETTLED') ? b.status : 'OPEN',
-          b.picks.map((pk) => [pk.name, pk.context]),
+          b.picks.map(pickKey),
         ]);
         const prev = merged.get(key);
         if (!prev) {
