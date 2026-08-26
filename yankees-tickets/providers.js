@@ -119,7 +119,10 @@
         sort: "datetime_utc.asc",
         "datetime_utc.gte": new Date().toISOString().slice(0, 19),
       });
-      params.append("performers[home_team].slug", "new-york-yankees");
+      // Any event with the Yankees as a performer; the per-game date match
+      // below narrows it to home games (a home game and an away game can't
+      // share a date). More reliable than the home_team taxonomy filter.
+      params.append("performers.slug", "new-york-yankees");
       const res = await fetch("https://api.seatgeek.com/2/events?" + params);
       if (!res.ok) throw new Error("SeatGeek API HTTP " + res.status);
       const data = await res.json();
