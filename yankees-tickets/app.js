@@ -596,7 +596,7 @@
       const tr = document.createElement("tr");
 
       const stubCell =
-        `<td><a href="${r.stubhub}" target="_blank" rel="noopener" ` +
+        `<td class="stub-cell"><a href="${r.stubhub}" target="_blank" rel="noopener" ` +
         `title="Opens a game on StubHub; then pick section ${r.display} on the seat map">` +
         `Check §${r.display} ↗</a></td>`;
 
@@ -608,7 +608,7 @@
       if (r.price == null) {
         tr.innerHTML =
           sectionCell +
-          `<td class="na" colspan="7">No block of ${state.lastQty} found in scope</td>` +
+          `<td class="na noblock" colspan="7">No block of ${state.lastQty} found in scope</td>` +
           stubCell;
       } else {
         const arrow =
