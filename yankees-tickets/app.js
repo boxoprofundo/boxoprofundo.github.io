@@ -390,6 +390,11 @@
         demoRow: q ? !!q.demo : false,
         face: q && q.faceValue != null ? q.faceValue
           : q ? tmFace.get(q.gamePk) ?? null : null,
+        // StubHub isn't scrapeable, so link to that game's exact StubHub
+        // event page for a quick manual check of this section's price.
+        stubhub: game
+          ? window.stubhubLink(game.gamePk, qty, game.opponent, game.dateShort)
+          : "",
       };
     });
 
@@ -417,10 +422,15 @@
     tbody.innerHTML = "";
     for (const r of rows) {
       const tr = document.createElement("tr");
+      const stubCell = r.stubhub
+        ? `<td><a href="${r.stubhub}" target="_blank" rel="noopener" ` +
+          `title="Opens this game on StubHub; then pick section ${r.section} on the seat map">` +
+          `Check §${r.section} ↗</a></td>`
+        : `<td class="na">—</td>`;
       if (r.price == null) {
         tr.innerHTML =
           `<td><span class="badge">${r.level}</span> ${r.section}</td>` +
-          `<td class="na" colspan="7">No block of this size found</td>`;
+          `<td class="na" colspan="8">No block of this size found</td>`;
       } else {
         const link = r.demoRow
           ? `<span class="na">demo</span>`
@@ -433,7 +443,8 @@
           `<td>${r.opponent}</td>` +
           `<td>${r.provider}${r.demoRow ? " (demo)" : ""}</td>` +
           `<td>${link}</td>` +
-          `<td>${r.face != null ? fmtMoney(r.face) : "—"}</td>`;
+          `<td>${r.face != null ? fmtMoney(r.face) : "—"}</td>` +
+          stubCell;
       }
       tbody.appendChild(tr);
     }
