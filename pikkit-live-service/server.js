@@ -76,6 +76,7 @@ app.get(['/', '/live-summary'], async (req, res) => {
         KCR: 'KC',
         SDP: 'SD',
         OAK: 'ATH', // Athletics
+        WIN: 'WPG', // Winnipeg Jets
       };
       const canon = (a) => CANON[a] || a;
 
