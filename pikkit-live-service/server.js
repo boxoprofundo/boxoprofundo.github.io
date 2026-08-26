@@ -64,14 +64,35 @@ app.get(['/', '/live-summary'], async (req, res) => {
         for (const g of arr) if (g.abbrevs && g.abbrevs.length === 2) games.push(g);
       }
 
+      // Pikkit and ESPN disagree on a handful of team abbreviations
+      // (Pikkit's WAS is ESPN's WSH, etc.). Normalize both sides to one
+      // spelling before comparing.
+      const CANON = {
+        WAS: 'WSH', // Washington Nationals
+        AZ: 'ARI', // Arizona Diamondbacks
+        CWS: 'CHW', // White Sox
+        SFG: 'SF',
+        TBR: 'TB',
+        KCR: 'KC',
+        SDP: 'SD',
+        OAK: 'ATH', // Athletics
+      };
+      const canon = (a) => CANON[a] || a;
+
       // A leg's context looks like "STL - CIN"; require BOTH team
       // abbreviations to match one game so nothing is matched by accident.
+      // If that fails and exactly ONE game involves the picked team, use it
+      // -- unambiguous, and it covers any alias the table above missed.
       const findGame = (pick) => {
         const tokens = `${pick.context || ''} ${pick.name || ''}`
           .toUpperCase()
           .split(/[^A-Z0-9+.]+/)
-          .filter((t) => t.length >= 2 && t.length <= 5);
-        return games.find((g) => g.abbrevs.every((a) => tokens.includes(a))) || null;
+          .filter((t) => t.length >= 2 && t.length <= 5)
+          .map(canon);
+        const strict = games.find((g) => g.abbrevs.every((a) => tokens.includes(canon(a))));
+        if (strict) return strict;
+        const partial = games.filter((g) => g.abbrevs.some((a) => tokens.includes(canon(a))));
+        return partial.length === 1 ? partial[0] : null;
       };
 
       const fmt = (n) => (Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`);
@@ -98,8 +119,8 @@ app.get(['/', '/live-summary'], async (req, res) => {
         const words = teamPart.split(/\s+/);
         const abbr = (words[0] || '').toUpperCase();
         const modifier = words.slice(1).join(' ');
-        if (g && abbr === g.away.abbr) return { idx: 0, modifier };
-        if (g && abbr === g.home.abbr) return { idx: 1, modifier };
+        if (g && canon(abbr) === canon(g.away.abbr)) return { idx: 0, modifier };
+        if (g && canon(abbr) === canon(g.home.abbr)) return { idx: 1, modifier };
         return null;
       };
 
