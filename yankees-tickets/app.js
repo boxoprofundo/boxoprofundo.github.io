@@ -175,23 +175,21 @@
 
   // The cloud run writes "listings" (everything but StubHub); a home run
   // writes "listings-stubhub". Merge both.
-  // Three collected sources, each written by a different run:
+  // Collected sources, each written by a different run:
   //   listings          — the cloud run (XP, Vivid Seats, Gametime, …)
-  //   listings-tm       — the home runner (Ticketmaster only, on a clean IP)
-  //   listings-stubhub  — an optional home StubHub run
+  //   listings-tm       — the home runner (Ticketmaster + TickPick, clean IP)
+  //   listings-stubhub  — the browser collector (StubHub, real Chrome)
+  //   listings-seatgeek — the browser collector (SeatGeek, real Chrome)
   // Merge whatever exists; the newest fetchedAt is shown as the collected time.
   async function fetchCachedListings(qty) {
-    const [main, tm, stub] = await Promise.all([
-      fetchOneListing(qty, "listings"),
-      fetchOneListing(qty, "listings-tm"),
-      fetchOneListing(qty, "listings-stubhub"),
-    ]);
-    if (!main && !tm && !stub) return null;
-    const quotes = []
-      .concat(main && Array.isArray(main.quotes) ? main.quotes : [])
-      .concat(tm && Array.isArray(tm.quotes) ? tm.quotes : [])
-      .concat(stub && Array.isArray(stub.quotes) ? stub.quotes : []);
-    const times = [main, tm, stub].filter((x) => x && x.fetchedAt).map((x) => x.fetchedAt);
+    const parts = await Promise.all(
+      ["listings", "listings-tm", "listings-stubhub", "listings-seatgeek"]
+        .map((name) => fetchOneListing(qty, name))
+    );
+    if (parts.every((p) => !p)) return null;
+    const quotes = parts.reduce(
+      (acc, p) => acc.concat(p && Array.isArray(p.quotes) ? p.quotes : []), []);
+    const times = parts.filter((x) => x && x.fetchedAt).map((x) => x.fetchedAt);
     return { fetchedAt: times.sort().slice(-1)[0] || null, quotes };
   }
 
