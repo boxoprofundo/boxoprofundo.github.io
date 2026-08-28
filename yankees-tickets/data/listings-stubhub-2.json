@@ -1,76 +1,60 @@
 {
-  "fetchedAt": "2026-08-28T01:40:27Z",
+  "fetchedAt": "2026-08-28T03:37:55Z",
   "quotes": [
     {
-      "gamePk": 823489,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-26-2026/event/159257469/",
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
-      "section": "126",
-      "price": 268,
+      "section": "103",
+      "price": 80,
       "faceValue": null
     },
     {
-      "gamePk": 823489,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-26-2026/event/159257469/",
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
-      "section": "134",
-      "price": 95,
+      "section": "104",
+      "price": 84,
       "faceValue": null
     },
     {
-      "gamePk": 823489,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-26-2026/event/159257469/",
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
-      "section": "203",
-      "price": 30,
+      "section": "105",
+      "price": 70,
       "faceValue": null
     },
     {
-      "gamePk": 823489,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-26-2026/event/159257469/",
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
-      "section": "235",
-      "price": 59,
+      "section": "106",
+      "price": 73,
       "faceValue": null
     },
     {
-      "gamePk": 823489,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-26-2026/event/159257469/",
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
-      "section": "236",
-      "price": 59,
+      "section": "107",
+      "price": 68,
       "faceValue": null
     },
     {
-      "gamePk": 823489,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-26-2026/event/159257469/",
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
-      "section": "333",
-      "price": 37,
+      "section": "108",
+      "price": 63,
       "faceValue": null
     },
     {
-      "gamePk": 823489,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-26-2026/event/159257469/",
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
-      "section": "411",
-      "price": 37,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823489,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-26-2026/event/159257469/",
-      "provider": "StubHub",
-      "section": "127A",
-      "price": 248,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823489,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-26-2026/event/159257469/",
-      "provider": "StubHub",
-      "section": "420B",
-      "price": 71,
+      "section": "109",
+      "price": 70,
       "faceValue": null
     },
     {
@@ -85,8 +69,48 @@
       "gamePk": 823490,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
-      "section": "125",
-      "price": 199,
+      "section": "132",
+      "price": 71,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "133",
+      "price": 71,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "134",
+      "price": 62,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "135",
+      "price": 77,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "136",
+      "price": 74,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "202",
+      "price": 25,
       "faceValue": null
     },
     {
@@ -101,8 +125,208 @@
       "gamePk": 823490,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
+      "section": "204",
+      "price": 35,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "208",
+      "price": 51,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "209",
+      "price": 47,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "211",
+      "price": 64,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "212",
+      "price": 89,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "213",
+      "price": 110,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "215",
+      "price": 128,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "223",
+      "price": 134,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "226",
+      "price": 145,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "228",
+      "price": 69,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "229",
+      "price": 61,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
       "section": "235",
+      "price": 30,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "236",
+      "price": 29,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "237",
+      "price": 28,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "238",
+      "price": 26,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "305",
+      "price": 29,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "309",
+      "price": 37,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "310",
+      "price": 40,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "311",
       "price": 41,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "312",
+      "price": 37,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "314",
+      "price": 52,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "315",
+      "price": 60,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "316",
+      "price": 99,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "317",
+      "price": 89,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "318",
+      "price": 70,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "319",
+      "price": 81,
       "faceValue": null
     },
     {
@@ -117,8 +341,112 @@
       "gamePk": 823490,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
+      "section": "324",
+      "price": 66,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "325",
+      "price": 60,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "326",
+      "price": 58,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "327",
+      "price": 39,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "328",
+      "price": 31,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "329",
+      "price": 28,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
       "section": "330",
       "price": 31,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "334",
+      "price": 27,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "411",
+      "price": 26,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "412",
+      "price": 22,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "413",
+      "price": 23,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "414",
+      "price": 34,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "415",
+      "price": 30,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "416",
+      "price": 35,
       "faceValue": null
     },
     {
@@ -133,6 +461,30 @@
       "gamePk": 823490,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
+      "section": "419",
+      "price": 36,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "421",
+      "price": 31,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "422",
+      "price": 31,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
       "section": "423",
       "price": 28,
       "faceValue": null
@@ -141,8 +493,56 @@
       "gamePk": 823490,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
       "provider": "StubHub",
-      "section": "114B",
-      "price": 197,
+      "section": "424",
+      "price": 28,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "425",
+      "price": 32,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "426",
+      "price": 33,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "427",
+      "price": 26,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "428",
+      "price": 28,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "429",
+      "price": 23,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "430",
+      "price": 30,
       "faceValue": null
     },
     {
@@ -154,11 +554,227 @@
       "faceValue": null
     },
     {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "420C",
+      "price": 36,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "232A",
+      "price": 46,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "320C",
+      "price": 84,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "320A",
+      "price": 81,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "214A",
+      "price": 147,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "420A",
+      "price": 34,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "227B",
+      "price": 95,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "332B",
+      "price": 29,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "420B",
+      "price": 43,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "233A",
+      "price": 49,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "431A",
+      "price": 29,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "407A",
+      "price": 21,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823490,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-27-2026/event/159257470/",
+      "provider": "StubHub",
+      "section": "232B",
+      "price": 47,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823491,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-25-2026/event/159257468/",
+      "provider": "StubHub",
+      "section": "115",
+      "price": 305,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823491,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-25-2026/event/159257468/",
+      "provider": "StubHub",
+      "section": "123",
+      "price": 224,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823491,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-25-2026/event/159257468/",
+      "provider": "StubHub",
+      "section": "124",
+      "price": 265,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823491,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-25-2026/event/159257468/",
+      "provider": "StubHub",
+      "section": "202",
+      "price": 35,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823491,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-25-2026/event/159257468/",
+      "provider": "StubHub",
+      "section": "204",
+      "price": 37,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823491,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-25-2026/event/159257468/",
+      "provider": "StubHub",
+      "section": "236",
+      "price": 32,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823491,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-25-2026/event/159257468/",
+      "provider": "StubHub",
+      "section": "328",
+      "price": 32,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823491,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-25-2026/event/159257468/",
+      "provider": "StubHub",
+      "section": "417",
+      "price": 33,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823491,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-25-2026/event/159257468/",
+      "provider": "StubHub",
+      "section": "434B",
+      "price": 25,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "105",
+      "price": 65,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "113",
+      "price": 123,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "129",
+      "price": 68,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "133",
+      "price": 45,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "134",
+      "price": 41,
+      "faceValue": null
+    },
+    {
       "gamePk": 823492,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
       "provider": "StubHub",
       "section": "135",
-      "price": 46,
+      "price": 43,
       "faceValue": null
     },
     {
@@ -173,6 +789,14 @@
       "gamePk": 823492,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
       "provider": "StubHub",
+      "section": "202",
+      "price": 10,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
       "section": "203",
       "price": 10,
       "faceValue": null
@@ -181,7 +805,191 @@
       "gamePk": 823492,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
       "provider": "StubHub",
+      "section": "204",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "205",
+      "price": 16,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "206",
+      "price": 16,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "209",
+      "price": 28,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "210",
+      "price": 45,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "211",
+      "price": 40,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "212",
+      "price": 83,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "213",
+      "price": 75,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "226",
+      "price": 96,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "228",
+      "price": 28,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "229",
+      "price": 31,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "230",
+      "price": 40,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "235",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
       "section": "236",
+      "price": 11,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "237",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "238",
+      "price": 11,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "306",
+      "price": 14,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "309",
+      "price": 18,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "310",
+      "price": 18,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "311",
+      "price": 25,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "312",
+      "price": 16,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "313",
+      "price": 19,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "314",
+      "price": 36,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "315",
       "price": 23,
       "faceValue": null
     },
@@ -189,8 +997,120 @@
       "gamePk": 823492,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
       "provider": "StubHub",
+      "section": "318",
+      "price": 37,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "322",
+      "price": 40,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "323",
+      "price": 32,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "324",
+      "price": 36,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "325",
+      "price": 31,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "326",
+      "price": 29,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "328",
+      "price": 14,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "329",
+      "price": 13,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
       "section": "330",
-      "price": 22,
+      "price": 14,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "408",
+      "price": 14,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "410",
+      "price": 10,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "411",
+      "price": 13,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "412",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "413",
+      "price": 10,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "414",
+      "price": 19,
       "faceValue": null
     },
     {
@@ -213,16 +1133,160 @@
       "gamePk": 823492,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
       "provider": "StubHub",
+      "section": "417",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "418",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "419",
+      "price": 13,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "421",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
       "section": "422",
       "price": 11,
       "faceValue": null
     },
     {
-      "gamePk": 823493,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-24-2026/event/159257467/",
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
       "provider": "StubHub",
-      "section": "202",
+      "section": "423",
+      "price": 11,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "424",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "425",
+      "price": 11,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "426",
+      "price": 17,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "427",
+      "price": 11,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "428",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "429",
       "price": 10,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "430",
+      "price": 14,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "420B",
+      "price": 13,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "420C",
+      "price": 12,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "320A",
+      "price": 46,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "232A",
+      "price": 40,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "227B",
+      "price": 105,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "420A",
+      "price": 14,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823492,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-23-2026/event/159257466/",
+      "provider": "StubHub",
+      "section": "227A",
+      "price": 89,
       "faceValue": null
     },
     {
@@ -261,6 +1325,14 @@
       "gamePk": 823493,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-24-2026/event/159257467/",
       "provider": "StubHub",
+      "section": "411",
+      "price": 11,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823493,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-24-2026/event/159257467/",
+      "provider": "StubHub",
       "section": "415",
       "price": 12,
       "faceValue": null
@@ -270,15 +1342,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-24-2026/event/159257467/",
       "provider": "StubHub",
       "section": "427",
-      "price": 10,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823493,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-24-2026/event/159257467/",
-      "provider": "StubHub",
-      "section": "429",
-      "price": 10,
+      "price": 12,
       "faceValue": null
     },
     {
@@ -407,14 +1471,6 @@
       "provider": "StubHub",
       "section": "212",
       "price": 54,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823494,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257465/",
-      "provider": "StubHub",
-      "section": "215",
-      "price": 100,
       "faceValue": null
     },
     {
@@ -623,6 +1679,14 @@
       "provider": "StubHub",
       "section": "330",
       "price": 16,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823494,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257465/",
+      "provider": "StubHub",
+      "section": "408",
+      "price": 13,
       "faceValue": null
     },
     {
@@ -917,6 +1981,14 @@
       "gamePk": 823495,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
+      "section": "129",
+      "price": 191,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823495,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
+      "provider": "StubHub",
       "section": "132",
       "price": 142,
       "faceValue": null
@@ -934,7 +2006,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "134",
-      "price": 148,
+      "price": 153,
       "faceValue": null
     },
     {
@@ -950,7 +2022,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "136",
-      "price": 180,
+      "price": 186,
       "faceValue": null
     },
     {
@@ -1022,7 +2094,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "215",
-      "price": 228,
+      "price": 237,
       "faceValue": null
     },
     {
@@ -1198,7 +2270,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "325",
-      "price": 111,
+      "price": 117,
       "faceValue": null
     },
     {
@@ -1262,7 +2334,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "412",
-      "price": 69,
+      "price": 89,
       "faceValue": null
     },
     {
@@ -1278,7 +2350,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "414",
-      "price": 81,
+      "price": 80,
       "faceValue": null
     },
     {
@@ -1310,7 +2382,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "418",
-      "price": 69,
+      "price": 73,
       "faceValue": null
     },
     {
@@ -1334,7 +2406,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "424",
-      "price": 68,
+      "price": 81,
       "faceValue": null
     },
     {
@@ -1358,7 +2430,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "427",
-      "price": 67,
+      "price": 69,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823495,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
+      "provider": "StubHub",
+      "section": "428",
+      "price": 80,
       "faceValue": null
     },
     {
@@ -1366,7 +2446,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
       "section": "429",
-      "price": 67,
+      "price": 76,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823495,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
+      "provider": "StubHub",
+      "section": "127A",
+      "price": 287,
       "faceValue": null
     },
     {
@@ -1389,16 +2477,16 @@
       "gamePk": 823495,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
-      "section": "320C",
-      "price": 171,
+      "section": "420B",
+      "price": 89,
       "faceValue": null
     },
     {
       "gamePk": 823495,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
-      "section": "420B",
-      "price": 89,
+      "section": "320C",
+      "price": 171,
       "faceValue": null
     },
     {
@@ -1453,8 +2541,8 @@
       "gamePk": 823495,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
-      "section": "420C",
-      "price": 83,
+      "section": "227B",
+      "price": 163,
       "faceValue": null
     },
     {
@@ -1469,16 +2557,16 @@
       "gamePk": 823495,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
-      "section": "227B",
-      "price": 163,
+      "section": "233A",
+      "price": 92,
       "faceValue": null
     },
     {
       "gamePk": 823495,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-13-2026/event/159257464/",
       "provider": "StubHub",
-      "section": "233A",
-      "price": 92,
+      "section": "420C",
+      "price": 83,
       "faceValue": null
     },
     {
@@ -1509,14 +2597,6 @@
       "gamePk": 823496,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
       "provider": "StubHub",
-      "section": "104",
-      "price": 176,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
       "section": "105",
       "price": 154,
       "faceValue": null
@@ -1525,64 +2605,8 @@
       "gamePk": 823496,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
       "provider": "StubHub",
-      "section": "106",
-      "price": 176,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "126",
-      "price": 327,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "136",
-      "price": 213,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
       "section": "203",
       "price": 124,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "204",
-      "price": 192,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "205",
-      "price": 147,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "228",
-      "price": 164,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "235",
-      "price": 98,
       "faceValue": null
     },
     {
@@ -1605,30 +2629,6 @@
       "gamePk": 823496,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
       "provider": "StubHub",
-      "section": "315",
-      "price": 126,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "322",
-      "price": 207,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "323",
-      "price": 131,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
       "section": "326",
       "price": 156,
       "faceValue": null
@@ -1637,24 +2637,8 @@
       "gamePk": 823496,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
       "provider": "StubHub",
-      "section": "423",
-      "price": 104,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "424",
-      "price": 93,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "426",
-      "price": 132,
+      "section": "114B",
+      "price": 377,
       "faceValue": null
     },
     {
@@ -1669,48 +2653,16 @@
       "gamePk": 823496,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
       "provider": "StubHub",
+      "section": "227B",
+      "price": 144,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823496,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
+      "provider": "StubHub",
       "section": "420C",
       "price": 96,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "420B",
-      "price": 112,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "227A",
-      "price": 193,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "232A",
-      "price": 131,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "227B",
-      "price": 169,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823496,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-12-2026/event/159257463/",
-      "provider": "StubHub",
-      "section": "432B",
-      "price": 86,
       "faceValue": null
     },
     {
@@ -1774,7 +2726,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-9-2026/event/159257460/",
       "provider": "StubHub",
       "section": "202",
-      "price": 11,
+      "price": 10,
       "faceValue": null
     },
     {
@@ -1837,14 +2789,6 @@
       "gamePk": 823497,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-9-2026/event/159257460/",
       "provider": "StubHub",
-      "section": "212",
-      "price": 37,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823497,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-9-2026/event/159257460/",
-      "provider": "StubHub",
       "section": "213",
       "price": 66,
       "faceValue": null
@@ -1894,7 +2838,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-9-2026/event/159257460/",
       "provider": "StubHub",
       "section": "237",
-      "price": 9,
+      "price": 11,
       "faceValue": null
     },
     {
@@ -2253,7 +3197,7 @@
       "gamePk": 823497,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-9-2026/event/159257460/",
       "provider": "StubHub",
-      "section": "420B",
+      "section": "420C",
       "price": 16,
       "faceValue": null
     },
@@ -2261,7 +3205,7 @@
       "gamePk": 823497,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-9-2026/event/159257460/",
       "provider": "StubHub",
-      "section": "420C",
+      "section": "420B",
       "price": 16,
       "faceValue": null
     },
@@ -2277,16 +3221,16 @@
       "gamePk": 823497,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-9-2026/event/159257460/",
       "provider": "StubHub",
-      "section": "227A",
-      "price": 70,
+      "section": "232A",
+      "price": 31,
       "faceValue": null
     },
     {
       "gamePk": 823497,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-9-2026/event/159257460/",
       "provider": "StubHub",
-      "section": "232A",
-      "price": 31,
+      "section": "227A",
+      "price": 70,
       "faceValue": null
     },
     {
@@ -2302,7 +3246,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
       "provider": "StubHub",
       "section": "103",
-      "price": 257,
+      "price": 263,
       "faceValue": null
     },
     {
@@ -2310,7 +3254,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
       "provider": "StubHub",
       "section": "104",
-      "price": 306,
+      "price": 314,
       "faceValue": null
     },
     {
@@ -2533,14 +3477,6 @@
       "gamePk": 823498,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
       "provider": "StubHub",
-      "section": "234",
-      "price": 194,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823498,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
-      "provider": "StubHub",
       "section": "235",
       "price": 178,
       "faceValue": null
@@ -2638,7 +3574,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
       "provider": "StubHub",
       "section": "323",
-      "price": 209,
+      "price": 198,
       "faceValue": null
     },
     {
@@ -2790,7 +3726,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
       "provider": "StubHub",
       "section": "423",
-      "price": 111,
+      "price": 114,
       "faceValue": null
     },
     {
@@ -2798,7 +3734,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
       "provider": "StubHub",
       "section": "424",
-      "price": 118,
+      "price": 110,
       "faceValue": null
     },
     {
@@ -2869,6 +3805,14 @@
       "gamePk": 823498,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
       "provider": "StubHub",
+      "section": "232A",
+      "price": 161,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823498,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
+      "provider": "StubHub",
       "section": "320B",
       "price": 296,
       "faceValue": null
@@ -2893,6 +3837,14 @@
       "gamePk": 823498,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
       "provider": "StubHub",
+      "section": "320A",
+      "price": 303,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823498,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
+      "provider": "StubHub",
       "section": "214A",
       "price": 292,
       "faceValue": null
@@ -2903,14 +3855,6 @@
       "provider": "StubHub",
       "section": "127B",
       "price": 306,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823498,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
-      "provider": "StubHub",
-      "section": "320A",
-      "price": 303,
       "faceValue": null
     },
     {
@@ -2938,19 +3882,19 @@
       "faceValue": null
     },
     {
-      "gamePk": 823498,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-11-2026/event/159257462/",
+      "gamePk": 823499,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
       "provider": "StubHub",
-      "section": "232A",
-      "price": 216,
+      "section": "103",
+      "price": 52,
       "faceValue": null
     },
     {
       "gamePk": 823499,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
       "provider": "StubHub",
-      "section": "103",
-      "price": 52,
+      "section": "104",
+      "price": 69,
       "faceValue": null
     },
     {
@@ -3126,7 +4070,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
       "provider": "StubHub",
       "section": "309",
-      "price": 26,
+      "price": 27,
       "faceValue": null
     },
     {
@@ -3437,24 +4381,8 @@
       "gamePk": 823499,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
       "provider": "StubHub",
-      "section": "420A",
-      "price": 19,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823499,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
-      "provider": "StubHub",
       "section": "420B",
       "price": 21,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823499,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
-      "provider": "StubHub",
-      "section": "232A",
-      "price": 30,
       "faceValue": null
     },
     {
@@ -3469,8 +4397,24 @@
       "gamePk": 823499,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
       "provider": "StubHub",
+      "section": "232A",
+      "price": 30,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823499,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
+      "provider": "StubHub",
       "section": "420C",
       "price": 20,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823499,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
+      "provider": "StubHub",
+      "section": "420A",
+      "price": 21,
       "faceValue": null
     },
     {
@@ -3501,8 +4445,8 @@
       "gamePk": 823499,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
       "provider": "StubHub",
-      "section": "214A",
-      "price": 88,
+      "section": "227A",
+      "price": 135,
       "faceValue": null
     },
     {
@@ -3517,8 +4461,8 @@
       "gamePk": 823499,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
       "provider": "StubHub",
-      "section": "227A",
-      "price": 135,
+      "section": "214A",
+      "price": 88,
       "faceValue": null
     },
     {
@@ -3527,14 +4471,6 @@
       "provider": "StubHub",
       "section": "114A",
       "price": 127,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823499,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-10-2026/event/159257461/",
-      "provider": "StubHub",
-      "section": "127B",
-      "price": 146,
       "faceValue": null
     },
     {
@@ -3575,14 +4511,6 @@
       "provider": "StubHub",
       "section": "106",
       "price": 149,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823500,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
-      "provider": "StubHub",
-      "section": "109",
-      "price": 159,
       "faceValue": null
     },
     {
@@ -3646,7 +4574,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
       "section": "129",
-      "price": 135,
+      "price": 137,
       "faceValue": null
     },
     {
@@ -3654,7 +4582,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
       "section": "130",
-      "price": 119,
+      "price": 114,
       "faceValue": null
     },
     {
@@ -3686,7 +4614,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
       "section": "136",
-      "price": 146,
+      "price": 151,
       "faceValue": null
     },
     {
@@ -3719,14 +4647,6 @@
       "provider": "StubHub",
       "section": "205",
       "price": 102,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823500,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
-      "provider": "StubHub",
-      "section": "209",
-      "price": 123,
       "faceValue": null
     },
     {
@@ -3782,7 +4702,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
       "section": "224",
-      "price": 170,
+      "price": 136,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823500,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
+      "provider": "StubHub",
+      "section": "225",
+      "price": 193,
       "faceValue": null
     },
     {
@@ -3821,6 +4749,14 @@
       "gamePk": 823500,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
+      "section": "231",
+      "price": 157,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823500,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
+      "provider": "StubHub",
       "section": "235",
       "price": 80,
       "faceValue": null
@@ -3846,7 +4782,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
       "section": "310",
-      "price": 103,
+      "price": 102,
       "faceValue": null
     },
     {
@@ -3902,7 +4838,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
       "section": "318",
-      "price": 163,
+      "price": 177,
       "faceValue": null
     },
     {
@@ -4117,7 +5053,7 @@
       "gamePk": 823500,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
-      "section": "432A",
+      "section": "432B",
       "price": 63,
       "faceValue": null
     },
@@ -4189,24 +5125,8 @@
       "gamePk": 823500,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
-      "section": "320A",
-      "price": 154,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823500,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
-      "provider": "StubHub",
       "section": "127B",
       "price": 157,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823500,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
-      "provider": "StubHub",
-      "section": "232B",
-      "price": 83,
       "faceValue": null
     },
     {
@@ -4221,8 +5141,16 @@
       "gamePk": 823500,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
-      "section": "432B",
-      "price": 63,
+      "section": "232B",
+      "price": 83,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823500,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
+      "provider": "StubHub",
+      "section": "320A",
+      "price": 154,
       "faceValue": null
     },
     {
@@ -4238,7 +5166,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-8-2026/event/159257459/",
       "provider": "StubHub",
       "section": "214A",
-      "price": 159,
+      "price": 150,
       "faceValue": null
     },
     {
@@ -4270,7 +5198,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "103",
-      "price": 104,
+      "price": 112,
       "faceValue": null
     },
     {
@@ -4278,7 +5206,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "104",
-      "price": 111,
+      "price": 119,
       "faceValue": null
     },
     {
@@ -4286,102 +5214,6 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "105",
-      "price": 101,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "106",
-      "price": 105,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "107",
-      "price": 106,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "109",
-      "price": 104,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "110",
-      "price": 121,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "111",
-      "price": 124,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "113",
-      "price": 136,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "128",
-      "price": 127,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "131",
-      "price": 91,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "132",
-      "price": 88,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "133",
-      "price": 102,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "134",
-      "price": 92,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "135",
       "price": 110,
       "faceValue": null
     },
@@ -4389,8 +5221,96 @@
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
+      "section": "106",
+      "price": 114,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "107",
+      "price": 118,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "109",
+      "price": 117,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "113",
+      "price": 155,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "124",
+      "price": 262,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "128",
+      "price": 154,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "131",
+      "price": 94,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "132",
+      "price": 92,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "133",
+      "price": 111,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "134",
+      "price": 103,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "135",
+      "price": 120,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
       "section": "202",
-      "price": 57,
+      "price": 60,
       "faceValue": null
     },
     {
@@ -4398,7 +5318,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "203",
-      "price": 75,
+      "price": 84,
       "faceValue": null
     },
     {
@@ -4406,15 +5326,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "204",
-      "price": 72,
+      "price": 81,
       "faceValue": null
     },
     {
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
-      "section": "207",
-      "price": 79,
+      "section": "205",
+      "price": 80,
       "faceValue": null
     },
     {
@@ -4430,7 +5350,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "211",
-      "price": 109,
+      "price": 110,
       "faceValue": null
     },
     {
@@ -4438,7 +5358,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "212",
-      "price": 117,
+      "price": 121,
       "faceValue": null
     },
     {
@@ -4446,7 +5366,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "213",
-      "price": 115,
+      "price": 155,
       "faceValue": null
     },
     {
@@ -4454,23 +5374,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "215",
-      "price": 142,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "216",
-      "price": 154,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "217",
-      "price": 161,
+      "price": 158,
       "faceValue": null
     },
     {
@@ -4486,7 +5390,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "224",
-      "price": 145,
+      "price": 159,
       "faceValue": null
     },
     {
@@ -4494,7 +5398,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "225",
-      "price": 130,
+      "price": 145,
       "faceValue": null
     },
     {
@@ -4502,7 +5406,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "228",
-      "price": 95,
+      "price": 105,
       "faceValue": null
     },
     {
@@ -4510,7 +5414,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "229",
-      "price": 90,
+      "price": 94,
       "faceValue": null
     },
     {
@@ -4518,7 +5422,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "230",
-      "price": 81,
+      "price": 89,
       "faceValue": null
     },
     {
@@ -4526,7 +5430,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "231",
-      "price": 80,
+      "price": 87,
       "faceValue": null
     },
     {
@@ -4550,7 +5454,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "236",
-      "price": 50,
+      "price": 55,
       "faceValue": null
     },
     {
@@ -4558,7 +5462,23 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "237",
-      "price": 48,
+      "price": 74,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "238",
+      "price": 68,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "305",
+      "price": 51,
       "faceValue": null
     },
     {
@@ -4566,7 +5486,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "310",
-      "price": 54,
+      "price": 60,
       "faceValue": null
     },
     {
@@ -4574,7 +5494,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "311",
-      "price": 51,
+      "price": 57,
       "faceValue": null
     },
     {
@@ -4598,7 +5518,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "314",
-      "price": 76,
+      "price": 87,
       "faceValue": null
     },
     {
@@ -4606,7 +5526,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "316",
-      "price": 84,
+      "price": 89,
       "faceValue": null
     },
     {
@@ -4646,7 +5566,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "324",
-      "price": 89,
+      "price": 98,
       "faceValue": null
     },
     {
@@ -4654,7 +5574,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "325",
-      "price": 77,
+      "price": 83,
       "faceValue": null
     },
     {
@@ -4662,7 +5582,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "326",
-      "price": 74,
+      "price": 73,
       "faceValue": null
     },
     {
@@ -4670,7 +5590,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "327",
-      "price": 71,
+      "price": 81,
       "faceValue": null
     },
     {
@@ -4678,7 +5598,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "328",
-      "price": 57,
+      "price": 60,
       "faceValue": null
     },
     {
@@ -4694,7 +5614,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "330",
-      "price": 55,
+      "price": 61,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "333",
+      "price": 54,
       "faceValue": null
     },
     {
@@ -4702,7 +5630,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "410",
-      "price": 39,
+      "price": 43,
       "faceValue": null
     },
     {
@@ -4710,7 +5638,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "411",
-      "price": 43,
+      "price": 46,
       "faceValue": null
     },
     {
@@ -4718,86 +5646,6 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "412",
-      "price": 42,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "413",
-      "price": 40,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "414",
-      "price": 43,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "415",
-      "price": 44,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "416",
-      "price": 42,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "417",
-      "price": 42,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "418",
-      "price": 44,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "421",
-      "price": 45,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "422",
-      "price": 46,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "423",
-      "price": 44,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "424",
       "price": 47,
       "faceValue": null
     },
@@ -4805,15 +5653,7 @@
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
-      "section": "425",
-      "price": 43,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "426",
+      "section": "413",
       "price": 46,
       "faceValue": null
     },
@@ -4821,8 +5661,104 @@
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
+      "section": "414",
+      "price": 44,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "415",
+      "price": 45,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "416",
+      "price": 43,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "417",
+      "price": 44,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "418",
+      "price": 47,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "421",
+      "price": 46,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "422",
+      "price": 48,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "423",
+      "price": 45,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "424",
+      "price": 48,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "425",
+      "price": 45,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "426",
+      "price": 48,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
       "section": "427",
-      "price": 41,
+      "price": 44,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "428",
+      "price": 49,
       "faceValue": null
     },
     {
@@ -4830,39 +5766,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "429",
-      "price": 39,
+      "price": 43,
       "faceValue": null
     },
     {
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
-      "section": "430",
-      "price": 40,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "127A",
-      "price": 225,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "114A",
-      "price": 230,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "420C",
-      "price": 48,
+      "section": "432B",
+      "price": 42,
       "faceValue": null
     },
     {
@@ -4877,6 +5789,22 @@
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
+      "section": "420C",
+      "price": 50,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "332A",
+      "price": 47,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
       "section": "320B",
       "price": 132,
       "faceValue": null
@@ -4885,24 +5813,8 @@
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
-      "section": "233A",
-      "price": 69,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
       "section": "227B",
-      "price": 111,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "420B",
-      "price": 48,
+      "price": 117,
       "faceValue": null
     },
     {
@@ -4910,7 +5822,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "232A",
-      "price": 68,
+      "price": 75,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823501,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
+      "provider": "StubHub",
+      "section": "420B",
+      "price": 52,
       "faceValue": null
     },
     {
@@ -4918,7 +5838,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
       "section": "320C",
-      "price": 159,
+      "price": 144,
       "faceValue": null
     },
     {
@@ -4933,16 +5853,8 @@
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
-      "section": "332A",
-      "price": 42,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823501,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
-      "provider": "StubHub",
-      "section": "127B",
-      "price": 138,
+      "section": "233A",
+      "price": 76,
       "faceValue": null
     },
     {
@@ -4957,16 +5869,16 @@
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
-      "section": "214A",
-      "price": 125,
+      "section": "127B",
+      "price": 156,
       "faceValue": null
     },
     {
       "gamePk": 823501,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257457/",
       "provider": "StubHub",
-      "section": "232B",
-      "price": 74,
+      "section": "214A",
+      "price": 137,
       "faceValue": null
     },
     {
@@ -4974,7 +5886,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "103",
-      "price": 102,
+      "price": 105,
       "faceValue": null
     },
     {
@@ -4982,7 +5894,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "104",
-      "price": 102,
+      "price": 105,
       "faceValue": null
     },
     {
@@ -4990,7 +5902,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "105",
-      "price": 96,
+      "price": 97,
       "faceValue": null
     },
     {
@@ -4998,23 +5910,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "106",
-      "price": 93,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
-      "section": "107",
-      "price": 88,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
-      "section": "108",
-      "price": 93,
+      "price": 96,
       "faceValue": null
     },
     {
@@ -5022,7 +5918,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "109",
-      "price": 102,
+      "price": 179,
       "faceValue": null
     },
     {
@@ -5030,7 +5926,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "111",
-      "price": 132,
+      "price": 130,
       "faceValue": null
     },
     {
@@ -5038,7 +5934,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "112",
-      "price": 172,
+      "price": 171,
       "faceValue": null
     },
     {
@@ -5046,15 +5942,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "124",
-      "price": 337,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
-      "section": "126",
-      "price": 244,
+      "price": 331,
       "faceValue": null
     },
     {
@@ -5062,7 +5950,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "128",
-      "price": 172,
+      "price": 171,
       "faceValue": null
     },
     {
@@ -5086,7 +5974,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "131",
-      "price": 94,
+      "price": 96,
       "faceValue": null
     },
     {
@@ -5094,7 +5982,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "132",
-      "price": 86,
+      "price": 89,
       "faceValue": null
     },
     {
@@ -5102,7 +5990,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "133",
-      "price": 90,
+      "price": 86,
       "faceValue": null
     },
     {
@@ -5110,7 +5998,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "134",
-      "price": 86,
+      "price": 84,
       "faceValue": null
     },
     {
@@ -5126,7 +6014,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "136",
-      "price": 108,
+      "price": 106,
       "faceValue": null
     },
     {
@@ -5134,7 +6022,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "202",
-      "price": 56,
+      "price": 53,
       "faceValue": null
     },
     {
@@ -5142,7 +6030,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "203",
-      "price": 61,
+      "price": 62,
       "faceValue": null
     },
     {
@@ -5165,16 +6053,8 @@
       "gamePk": 823502,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
-      "section": "206",
-      "price": 74,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
       "section": "208",
-      "price": 74,
+      "price": 76,
       "faceValue": null
     },
     {
@@ -5182,7 +6062,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "209",
-      "price": 111,
+      "price": 102,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823502,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
+      "provider": "StubHub",
+      "section": "211",
+      "price": 97,
       "faceValue": null
     },
     {
@@ -5190,7 +6078,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "212",
-      "price": 112,
+      "price": 109,
       "faceValue": null
     },
     {
@@ -5206,7 +6094,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "215",
-      "price": 162,
+      "price": 168,
       "faceValue": null
     },
     {
@@ -5221,24 +6109,8 @@
       "gamePk": 823502,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
-      "section": "224",
-      "price": 177,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
-      "section": "225",
-      "price": 183,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
       "section": "228",
-      "price": 94,
+      "price": 92,
       "faceValue": null
     },
     {
@@ -5254,15 +6126,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "230",
-      "price": 82,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
-      "section": "231",
-      "price": 79,
+      "price": 78,
       "faceValue": null
     },
     {
@@ -5270,7 +6134,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "234",
-      "price": 61,
+      "price": 59,
       "faceValue": null
     },
     {
@@ -5278,7 +6142,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "235",
-      "price": 67,
+      "price": 66,
       "faceValue": null
     },
     {
@@ -5286,7 +6150,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "236",
-      "price": 58,
+      "price": 52,
       "faceValue": null
     },
     {
@@ -5294,15 +6158,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "237",
-      "price": 87,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
-      "section": "238",
-      "price": 59,
+      "price": 50,
       "faceValue": null
     },
     {
@@ -5318,7 +6174,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "309",
-      "price": 50,
+      "price": 47,
       "faceValue": null
     },
     {
@@ -5326,7 +6182,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "310",
-      "price": 57,
+      "price": 55,
       "faceValue": null
     },
     {
@@ -5342,7 +6198,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "314",
-      "price": 84,
+      "price": 83,
       "faceValue": null
     },
     {
@@ -5350,7 +6206,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "315",
-      "price": 103,
+      "price": 102,
       "faceValue": null
     },
     {
@@ -5359,6 +6215,14 @@
       "provider": "StubHub",
       "section": "316",
       "price": 89,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823502,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
+      "provider": "StubHub",
+      "section": "318",
+      "price": 108,
       "faceValue": null
     },
     {
@@ -5382,7 +6246,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "324",
-      "price": 110,
+      "price": 109,
       "faceValue": null
     },
     {
@@ -5398,7 +6262,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "326",
-      "price": 87,
+      "price": 86,
       "faceValue": null
     },
     {
@@ -5406,7 +6270,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "327",
-      "price": 69,
+      "price": 68,
       "faceValue": null
     },
     {
@@ -5414,7 +6278,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "328",
-      "price": 58,
+      "price": 56,
       "faceValue": null
     },
     {
@@ -5438,7 +6302,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "331",
-      "price": 49,
+      "price": 48,
       "faceValue": null
     },
     {
@@ -5446,7 +6310,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "334",
-      "price": 43,
+      "price": 45,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823502,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
+      "provider": "StubHub",
+      "section": "405",
+      "price": 34,
       "faceValue": null
     },
     {
@@ -5454,15 +6326,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "408",
-      "price": 37,
+      "price": 34,
       "faceValue": null
     },
     {
       "gamePk": 823502,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
-      "section": "412",
-      "price": 64,
+      "section": "411",
+      "price": 38,
       "faceValue": null
     },
     {
@@ -5470,7 +6342,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "413",
-      "price": 40,
+      "price": 41,
       "faceValue": null
     },
     {
@@ -5478,7 +6350,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "414",
-      "price": 53,
+      "price": 55,
       "faceValue": null
     },
     {
@@ -5494,7 +6366,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "416",
-      "price": 49,
+      "price": 51,
       "faceValue": null
     },
     {
@@ -5510,7 +6382,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "418",
-      "price": 47,
+      "price": 48,
       "faceValue": null
     },
     {
@@ -5518,7 +6390,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "419",
-      "price": 46,
+      "price": 47,
       "faceValue": null
     },
     {
@@ -5542,7 +6414,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "423",
-      "price": 47,
+      "price": 49,
       "faceValue": null
     },
     {
@@ -5557,8 +6429,16 @@
       "gamePk": 823502,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
+      "section": "425",
+      "price": 46,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823502,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
+      "provider": "StubHub",
       "section": "426",
-      "price": 49,
+      "price": 51,
       "faceValue": null
     },
     {
@@ -5566,7 +6446,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "427",
-      "price": 40,
+      "price": 42,
       "faceValue": null
     },
     {
@@ -5581,32 +6461,24 @@
       "gamePk": 823502,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
-      "section": "429",
+      "section": "430",
+      "price": 57,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823502,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
+      "provider": "StubHub",
+      "section": "114A",
+      "price": 247,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823502,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
+      "provider": "StubHub",
+      "section": "407A",
       "price": 34,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
-      "section": "433",
-      "price": 33,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
-      "section": "127A",
-      "price": 289,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
-      "section": "420C",
-      "price": 50,
       "faceValue": null
     },
     {
@@ -5622,7 +6494,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "227B",
-      "price": 109,
+      "price": 107,
       "faceValue": null
     },
     {
@@ -5638,7 +6510,7 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "232A",
-      "price": 67,
+      "price": 68,
       "faceValue": null
     },
     {
@@ -5653,14 +6525,6 @@
       "gamePk": 823502,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
-      "section": "227A",
-      "price": 115,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823502,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
-      "provider": "StubHub",
       "section": "320B",
       "price": 142,
       "faceValue": null
@@ -5669,8 +6533,8 @@
       "gamePk": 823502,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
-      "section": "420B",
-      "price": 50,
+      "section": "227A",
+      "price": 117,
       "faceValue": null
     },
     {
@@ -5679,6 +6543,14 @@
       "provider": "StubHub",
       "section": "431A",
       "price": 51,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823502,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
+      "provider": "StubHub",
+      "section": "420B",
+      "price": 53,
       "faceValue": null
     },
     {
@@ -5694,7 +6566,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "233A",
-      "price": 68,
+      "price": 67,
+      "faceValue": null
+    },
+    {
+      "gamePk": 823502,
+      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
+      "provider": "StubHub",
+      "section": "420C",
+      "price": 53,
       "faceValue": null
     },
     {
@@ -5710,927 +6590,15 @@
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
       "section": "233B",
-      "price": 72,
+      "price": 71,
       "faceValue": null
     },
     {
       "gamePk": 823502,
       "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-30-2026/event/159257458/",
       "provider": "StubHub",
-      "section": "420A",
-      "price": 56,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823504,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-28-2026/event/159257456/",
-      "provider": "StubHub",
-      "section": "124",
-      "price": 324,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823504,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-28-2026/event/159257456/",
-      "provider": "StubHub",
-      "section": "126",
-      "price": 253,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823504,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-28-2026/event/159257456/",
-      "provider": "StubHub",
-      "section": "134",
-      "price": 103,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823504,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-28-2026/event/159257456/",
-      "provider": "StubHub",
-      "section": "225",
-      "price": 159,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823504,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-28-2026/event/159257456/",
-      "provider": "StubHub",
-      "section": "315",
-      "price": 81,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823504,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-28-2026/event/159257456/",
-      "provider": "StubHub",
-      "section": "325",
-      "price": 81,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823504,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-28-2026/event/159257456/",
-      "provider": "StubHub",
-      "section": "326",
-      "price": 79,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823504,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-28-2026/event/159257456/",
-      "provider": "StubHub",
-      "section": "423",
-      "price": 45,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823504,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-28-2026/event/159257456/",
-      "provider": "StubHub",
-      "section": "407B",
-      "price": 43,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "103",
-      "price": 263,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "104",
-      "price": 175,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "105",
-      "price": 255,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "106",
-      "price": 226,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "109",
-      "price": 225,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "124",
-      "price": 821,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "129",
-      "price": 268,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "131",
-      "price": 182,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "132",
-      "price": 211,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "133",
-      "price": 135,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "135",
-      "price": 220,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "136",
-      "price": 195,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "202",
-      "price": 124,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "203",
-      "price": 122,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "204",
-      "price": 223,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "205",
-      "price": 201,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "209",
-      "price": 201,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "210",
-      "price": 235,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "211",
-      "price": 201,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "213",
-      "price": 261,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "223",
-      "price": 181,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "228",
-      "price": 235,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "229",
-      "price": 183,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "230",
-      "price": 171,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "234",
-      "price": 201,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "235",
-      "price": 122,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "236",
-      "price": 159,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "237",
-      "price": 165,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "238",
-      "price": 93,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "306",
-      "price": 140,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "307",
-      "price": 150,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "308",
-      "price": 120,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "309",
-      "price": 120,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "310",
-      "price": 142,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "311",
-      "price": 164,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "312",
-      "price": 113,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "313",
-      "price": 158,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "314",
-      "price": 224,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "315",
-      "price": 192,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "317",
-      "price": 180,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "318",
-      "price": 180,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "319",
-      "price": 180,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "321",
-      "price": 180,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "323",
-      "price": 203,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "324",
-      "price": 258,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "325",
-      "price": 135,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "326",
-      "price": 122,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "327",
-      "price": 211,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "328",
-      "price": 132,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "329",
-      "price": 183,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "330",
-      "price": 150,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "333",
-      "price": 137,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "334",
-      "price": 134,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "405",
-      "price": 102,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "406",
-      "price": 104,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "408",
-      "price": 93,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "409",
-      "price": 111,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "410",
-      "price": 105,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "411",
-      "price": 130,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "412",
-      "price": 113,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "413",
-      "price": 133,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "414",
-      "price": 118,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "415",
-      "price": 108,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "416",
-      "price": 122,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "417",
-      "price": 116,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "418",
-      "price": 107,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "419",
-      "price": 134,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "421",
-      "price": 134,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "422",
-      "price": 134,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "423",
-      "price": 123,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "424",
-      "price": 126,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "425",
-      "price": 111,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "426",
-      "price": 111,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "427",
-      "price": 112,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "428",
-      "price": 89,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "429",
-      "price": 101,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "430",
-      "price": 113,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "433",
-      "price": 112,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "420A",
-      "price": 92,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "232A",
-      "price": 138,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "227B",
-      "price": 213,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "420B",
-      "price": 135,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "420C",
-      "price": 138,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "320C",
-      "price": 198,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "320A",
-      "price": 235,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "332B",
-      "price": 141,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
       "section": "432A",
-      "price": 128,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "407A",
-      "price": 109,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "432B",
-      "price": 112,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "434A",
-      "price": 112,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "332A",
-      "price": 122,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "214A",
-      "price": 273,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "233A",
-      "price": 203,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "431A",
-      "price": 112,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "407B",
-      "price": 97,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "434B",
-      "price": 112,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823539,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-8-29-2026/event/159257421/",
-      "provider": "StubHub",
-      "section": "431B",
-      "price": 108,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823543,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257415/",
-      "provider": "StubHub",
-      "section": "133",
-      "price": 55,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823543,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257415/",
-      "provider": "StubHub",
-      "section": "204",
-      "price": 23,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823543,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257415/",
-      "provider": "StubHub",
-      "section": "209",
-      "price": 27,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823543,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257415/",
-      "provider": "StubHub",
-      "section": "235",
-      "price": 32,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823543,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257415/",
-      "provider": "StubHub",
-      "section": "238",
-      "price": 16,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823543,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257415/",
-      "provider": "StubHub",
-      "section": "327",
-      "price": 43,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823543,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257415/",
-      "provider": "StubHub",
-      "section": "434A",
-      "price": 14,
-      "faceValue": null
-    },
-    {
-      "gamePk": 823543,
-      "url": "https://www.stubhub.com/new-york-yankees-bronx-tickets-9-22-2026/event/159257415/",
-      "provider": "StubHub",
-      "section": "420A",
-      "price": 21,
+      "price": 34,
       "faceValue": null
     }
   ]
