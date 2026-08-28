@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.3.0
+// @version      2.4.0
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -16,6 +16,7 @@
 // @grant        GM_openInTab
 // @grant        GM_xmlhttpRequest
 // @grant        GM_registerMenuCommand
+// @grant        unsafeWindow
 // @connect      api.github.com
 // @run-at       document-start
 // ==/UserScript==
@@ -41,6 +42,11 @@
 
   const PAGES_REPO = "boxoprofundo/boxoprofundo.github.io";
   const JOB_TTL = 30 * 60000;
+
+  // Per-tab network captures (shared between the hook and the worker, which run
+  // in the same userscript execution). Each event page is its own tab.
+  const SG_CAPTURES = [];   // { url, body } for listing-shaped responses
+  const SG_CAP_URLS = [];   // every response URL seen (for diagnostics)
 
   /* ── StubHub event map (gamePk -> URL) ──────────────────────────────── */
   const SH = (slug, id) =>
@@ -186,49 +192,88 @@
     return;
   }
 
-  // Inject a page-context hook that records fetch/XHR responses whose bodies
-  // look like ticket listings, into a hidden DOM node the worker reads. Runs in
-  // the page's real context (not the userscript sandbox) so it wraps the actual
-  // window.fetch / XMLHttpRequest the SeatGeek bundle uses.
+  // Wrap the PAGE's fetch/XHR to record responses. SeatGeek's CSP blocks an
+  // injected <script>, so we wrap unsafeWindow directly from the sandbox — the
+  // page's window.fetch === unsafeWindow.fetch, so its calls route through ours.
+  // No CSP violation (we assign a property, we don't inject markup).
   function installSGNetHook() {
+    let w;
+    try { w = (typeof unsafeWindow !== "undefined") ? unsafeWindow : window; }
+    catch (e) { w = window; }
+    if (!w || w.__ykSGHooked) return;
+    const sink = (url, text) => {
+      try {
+        if (url) SG_CAP_URLS.push(String(url).split("?")[0]);
+        if (!text || text.length < 40) return;
+        if (!/"section"|section_id|"lp"|"dp"|"price|listings?/i.test(text)) return;
+        SG_CAPTURES.push({ url: String(url || ""), body: text.slice(0, 4000000) });
+      } catch (e) {}
+    };
     try {
-      const code = `(function(){
-        if (window.__ykSGHooked) return; window.__ykSGHooked = 1;
-        function sink(url, text){
-          try{
-            if(!text || text.length < 40) return;
-            if(!/"section"|section_id|"lp"|"dp"|"price|listings?"/i.test(text)) return;
-            var el = document.getElementById("__yk_sg_cap");
-            if(!el){ el=document.createElement("div"); el.id="__yk_sg_cap"; el.style.display="none";
-                     (document.documentElement||document.body).appendChild(el); }
-            el.setAttribute("data-count", String((+el.getAttribute("data-count")||0)+1));
-            el.textContent += "\\n@@YKREC@@" + JSON.stringify({url:String(url||""), body:text.slice(0,3000000)});
-          }catch(e){}
-        }
-        var of = window.fetch;
-        if(of){ window.fetch = function(){ var a=arguments;
-          return of.apply(this,a).then(function(r){ try{ r.clone().text().then(function(t){ sink(r.url||a[0], t); }); }catch(e){} return r; }); }; }
-        var XO=XMLHttpRequest.prototype.open, XS=XMLHttpRequest.prototype.send;
-        XMLHttpRequest.prototype.open=function(m,u){ this.__ykUrl=u; return XO.apply(this,arguments); };
-        XMLHttpRequest.prototype.send=function(){ var x=this;
-          this.addEventListener("load", function(){ try{ sink(x.__ykUrl, x.responseText); }catch(e){} });
-          return XS.apply(this,arguments); };
-      })();`;
-      const s = document.createElement("script");
-      s.textContent = code;
-      (document.documentElement || document.head || document.body).appendChild(s);
-      s.remove();
+      w.__ykSGHooked = 1;
+      const of = w.fetch;
+      if (of) {
+        w.fetch = function () {
+          const a = arguments;
+          return of.apply(this, a).then((r) => {
+            try { r.clone().text().then((t) => sink(r.url || a[0], t)); } catch (e) {}
+            return r;
+          });
+        };
+      }
+      const XP = w.XMLHttpRequest && w.XMLHttpRequest.prototype;
+      if (XP) {
+        const XO = XP.open, XS = XP.send;
+        XP.open = function (m, u) { this.__ykUrl = u; return XO.apply(this, arguments); };
+        XP.send = function () {
+          const x = this;
+          this.addEventListener("load", function () {
+            try { sink(x.__ykUrl, x.responseText); } catch (e) {}
+          });
+          return XS.apply(this, arguments);
+        };
+      }
     } catch (e) { console.error("[collector/SeatGeek] hook install failed", e); }
   }
 
-  // Read + clear captured network records from the hidden sink node.
-  function readSGCaptures() {
-    const el = document.getElementById("__yk_sg_cap");
-    if (!el) return [];
-    const raw = el.textContent || "";
-    return raw.split("@@YKREC@@").slice(1).map((r) => {
-      try { return JSON.parse(r); } catch (e) { return null; }
-    }).filter(Boolean);
+  // Scan free-form text for JSON listing objects, string- and escape-aware.
+  // Handles three shapes in one pass: (1) real JSON objects, brace-matched and
+  // parsed; (2) SeatGeek/Next.js RSC "flight" payloads, where JSON is serialized
+  // *inside* a JS string literal (self.__next_f.push([1,"...\"section\":..."])) —
+  // any string literal that looks like it holds listing data is JSON-decoded and
+  // rescanned; (3) nested combinations of the two (depth-limited). Each small
+  // object carrying a section key is handed to `emit` (the caller's walk()).
+  function scanForListings(text, emit, depth) {
+    if (!text || (depth || 0) > 3) return;
+    const stack = []; let inStr = false, esc = false, strStart = -1;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (inStr) {
+        if (esc) esc = false;
+        else if (ch === "\\") esc = true;
+        else if (ch === '"') {
+          inStr = false;
+          const lit = text.slice(strStart, i + 1);
+          if (lit.length > 30 && lit.length < 4000000 &&
+              /section/.test(lit) && lit.indexOf('\\"') >= 0) {
+            try { const dec = JSON.parse(lit); if (typeof dec === "string") scanForListings(dec, emit, (depth || 0) + 1); }
+            catch (e) {}
+          }
+        }
+        continue;
+      }
+      if (ch === '"') { inStr = true; strStart = i; }
+      else if (ch === "{") stack.push(i);
+      else if (ch === "}") {
+        const s = stack.pop();
+        if (s == null) continue;
+        const len = i - s + 1;
+        if (len < 12 || len > 20000) continue;
+        const frag = text.slice(s, i + 1);
+        if (!/"section(?:_id)?"\s*:/.test(frag)) continue;
+        try { emit(JSON.parse(frag)); } catch (e) {}
+      }
+    }
   }
 
   // Harvest home-game event URLs from the SeatGeek Yankees team page (real
@@ -407,21 +452,42 @@
       }
     } catch (e) { diag.next_err = String(e).slice(0, 160); }
 
-    // 2) Wait for the network capture to populate, nudging the page to load
-    //    listings (scroll; the map's listing panel loads on view).
-    let caps = [];
+    // Parse text for listings: whole-JSON first, then the brace/flight scanner.
+    // Gate on a *quoted* "section" so minified framework bundles (which contain
+    // the bare word "section") aren't scanned pointlessly.
+    const parseText = (text) => {
+      if (!text || !/\\?"section/.test(text)) return;
+      try { walk(JSON.parse(text)); } catch (e) {}
+      scanForListings(text, walk, 0);
+    };
+    // Gather from: (a) captured network bodies (grow over time — always re-read),
+    // (b) the page's own <script> tags (Next.js streams listing data in here),
+    // scanned once each via a seen-set, (c) whole-page HTML as a last resort.
+    let capIdx = 0;
+    const seenScripts = new WeakSet();
+    const gather = () => {
+      for (; capIdx < SG_CAPTURES.length; capIdx++) parseText(SG_CAPTURES[capIdx].body);
+      for (const s of document.querySelectorAll("script")) {
+        if (seenScripts.has(s)) continue;
+        seenScripts.add(s);
+        parseText(s.textContent || "");
+      }
+    };
+
+    // 2) Poll — listings load a moment after render; nudge the map/list panel.
     for (let i = 0; i < 50; i++) {                    // up to ~25s
-      caps = readSGCaptures();
-      if (caps.length && Object.keys(bySec).length) break;
-      // (re)parse whatever we have so far
-      for (const c of caps) { try { walk(JSON.parse(c.body)); } catch (e) {} }
+      gather();
       if (Object.keys(bySec).length) break;
-      if (i % 4 === 0) { window.scrollTo(0, document.body.scrollHeight); }
-      if (i % 6 === 3) { try { clickMore(["all areas", "list", "list view", "lowest price", "sort"]); } catch (e) {} }
+      if (i % 4 === 0) { try { window.scrollTo(0, document.body.scrollHeight); } catch (e) {} }
+      if (i % 6 === 3) { try { clickMore(["all areas", "list", "list view", "lowest price", "sort", "all tickets"]); } catch (e) {} }
       await sleep(500);
     }
-    caps = readSGCaptures();
-    for (const c of caps) { try { walk(JSON.parse(c.body)); } catch (e) {} }
+    gather();
+    // Last resort: scan the whole rendered HTML (catches listings held outside
+    // <script> tags, e.g. in element attributes).
+    if (!Object.keys(bySec).length) {
+      try { parseText(document.documentElement.innerHTML); } catch (e) {}
+    }
 
     const quotes = Object.entries(bySec).map(([sec, v]) => ({
       provider: "SeatGeek",
@@ -429,23 +495,33 @@
       price: Math.round(v.price * 100) / 100, faceValue: null,
     }));
 
-    diag.cap_count = caps.length;
-    diag.cap_urls = caps.map((c) => String(c.url).split("?")[0]).slice(0, 12);
+    diag.cap_count = SG_CAPTURES.length;
+    diag.cap_urls_all = [...new Set(SG_CAP_URLS)].slice(0, 30);
     diag.listing_count = listingCount;
     diag.sections = quotes.length;
     diag.sample_listing = sampleListing;
     diag.sample_section = sampleSection;
-    // If nothing parsed, keep a trimmed sample of the most listing-like body.
-    if (!quotes.length && caps.length) {
-      const best = caps.slice().sort((a, b) =>
-        (b.body.match(/"section"/g) || []).length - (a.body.match(/"section"/g) || []).length)[0];
-      diag.cap_body_head = best ? { url: String(best.url).split("?")[0], head: best.body.slice(0, 1200) } : null;
+    // Safety net: if nothing parsed, show where "section" lives in the raw page
+    // so the exact format is visible for one more tuning pass.
+    if (!quotes.length) {
+      let scriptHits = 0;
+      for (const s of document.querySelectorAll("script"))
+        if (/"?\\?"section/.test(s.textContent || "")) scriptHits++;
+      diag.script_section_tags = scriptHits;
+      const html = (() => { try { return document.documentElement.innerHTML; } catch (e) { return ""; } })();
+      const idx = html.search(/\\?"section(?:_id)?\\?"\s*:/);
+      diag.html_section_sample = idx >= 0 ? html.slice(Math.max(0, idx - 200), idx + 700) : "no 'section' in page HTML";
+      if (SG_CAPTURES.length) {
+        const best = SG_CAPTURES.slice().sort((a, b) =>
+          (b.body.match(/section/g) || []).length - (a.body.match(/section/g) || []).length)[0];
+        diag.cap_body_head = { url: String(best.url).split("?")[0], head: best.body.slice(0, 1000) };
+      }
     }
     diag.event_date = eventDate;
     diag.event_hour = eventHour;
     diag.event_title = eventTitle;
 
-    console.log(`[collector/SeatGeek] ${quotes.length} sections, date=${eventDate}, caps=${caps.length}`, diag);
+    console.log(`[collector/SeatGeek] ${quotes.length} sections, date=${eventDate}, caps=${SG_CAPTURES.length}`, diag);
     const eid = (location.pathname.match(/\/(\d{5,})/) || [])[1] || location.href;
     GM_setValue("yk_sg_result_" + eid, { ts: Date.now(), quotes, eventDate, eventHour, diag });
   }
