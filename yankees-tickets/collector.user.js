@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.2.0
+// @version      2.3.0
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -17,7 +17,7 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_registerMenuCommand
 // @connect      api.github.com
-// @run-at       document-idle
+// @run-at       document-start
 // ==/UserScript==
 
 /*
@@ -171,11 +171,64 @@
     // The team page is used to harvest event URLs; event pages to scrape.
     const isEvent = /\/\d{6,}(?:\?|$|\/)/.test(location.pathname);
     if (active && isEvent) {
+      // SeatGeek loads per-section listings over the network AFTER page load —
+      // they're not in __NEXT_DATA__ — so install a page-context capture of
+      // fetch/XHR responses NOW (document-start), before the page calls them.
+      installSGNetHook();
       seatgeekWorker().catch((e) => console.error("[collector/SeatGeek]", e));
     } else if (active && /yankees-tickets|new-york-yankees/.test(location.pathname)) {
-      seatgeekHarvest().catch((e) => console.error("[collector/SeatGeek harvest]", e));
+      // Harvest runs on the team page after render.
+      if (document.readyState === "loading")
+        document.addEventListener("DOMContentLoaded", () =>
+          seatgeekHarvest().catch((e) => console.error("[collector/SeatGeek harvest]", e)));
+      else seatgeekHarvest().catch((e) => console.error("[collector/SeatGeek harvest]", e));
     }
     return;
+  }
+
+  // Inject a page-context hook that records fetch/XHR responses whose bodies
+  // look like ticket listings, into a hidden DOM node the worker reads. Runs in
+  // the page's real context (not the userscript sandbox) so it wraps the actual
+  // window.fetch / XMLHttpRequest the SeatGeek bundle uses.
+  function installSGNetHook() {
+    try {
+      const code = `(function(){
+        if (window.__ykSGHooked) return; window.__ykSGHooked = 1;
+        function sink(url, text){
+          try{
+            if(!text || text.length < 40) return;
+            if(!/"section"|section_id|"lp"|"dp"|"price|listings?"/i.test(text)) return;
+            var el = document.getElementById("__yk_sg_cap");
+            if(!el){ el=document.createElement("div"); el.id="__yk_sg_cap"; el.style.display="none";
+                     (document.documentElement||document.body).appendChild(el); }
+            el.setAttribute("data-count", String((+el.getAttribute("data-count")||0)+1));
+            el.textContent += "\\n@@YKREC@@" + JSON.stringify({url:String(url||""), body:text.slice(0,3000000)});
+          }catch(e){}
+        }
+        var of = window.fetch;
+        if(of){ window.fetch = function(){ var a=arguments;
+          return of.apply(this,a).then(function(r){ try{ r.clone().text().then(function(t){ sink(r.url||a[0], t); }); }catch(e){} return r; }); }; }
+        var XO=XMLHttpRequest.prototype.open, XS=XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.open=function(m,u){ this.__ykUrl=u; return XO.apply(this,arguments); };
+        XMLHttpRequest.prototype.send=function(){ var x=this;
+          this.addEventListener("load", function(){ try{ sink(x.__ykUrl, x.responseText); }catch(e){} });
+          return XS.apply(this,arguments); };
+      })();`;
+      const s = document.createElement("script");
+      s.textContent = code;
+      (document.documentElement || document.head || document.body).appendChild(s);
+      s.remove();
+    } catch (e) { console.error("[collector/SeatGeek] hook install failed", e); }
+  }
+
+  // Read + clear captured network records from the hidden sink node.
+  function readSGCaptures() {
+    const el = document.getElementById("__yk_sg_cap");
+    if (!el) return [];
+    const raw = el.textContent || "";
+    return raw.split("@@YKREC@@").slice(1).map((r) => {
+      try { return JSON.parse(r); } catch (e) { return null; }
+    }).filter(Boolean);
   }
 
   // Harvest home-game event URLs from the SeatGeek Yankees team page (real
@@ -268,25 +321,17 @@
   }
 
   async function seatgeekWorker() {
-    // SeatGeek renders per-section listings into the page's Next.js data blob
-    // (__NEXT_DATA__), not into readable DOM text — the visible UI is a Mapbox
-    // seat map. So we JSON.parse that blob and deep-walk it for listing objects
-    // (a string `section` + a price) and for the event's own date/time (used to
-    // resolve the gamePk). Wait for the blob to be populated first.
-    for (let i = 0; i < 45; i++) {
-      const nd = document.getElementById("__NEXT_DATA__");
-      if (nd && (nd.textContent || "").length > 20000) break;
-      if (i % 5 === 0) window.scrollTo(0, document.body.scrollHeight);
-      await sleep(300);
-    }
-
+    // Per-section listings arrive over the NETWORK after load (not in the DOM
+    // or __NEXT_DATA__). installSGNetHook() (called at document-start) records
+    // those responses into a hidden node; here we wait for them, parse each,
+    // and deep-walk for listing objects (a string `section` + a price). The
+    // event's date/time still comes from __NEXT_DATA__, for the gamePk.
     const diag = { url: location.href };
     const bySec = {};
-    let eventDate = null, eventHour = null, eventTitle = null;
-    let sampleListing = null, listingCount = 0;
+    let sampleListing = null, sampleSection = null, listingCount = 0;
 
     const PRICE_KEYS = ["price", "pf", "display_price", "lowest_price",
-      "list_price", "p", "amount", "total_price", "dp"];
+      "list_price", "p", "amount", "total_price", "dp", "sp", "ep"];
     const readPrice = (o) => {
       for (const k of PRICE_KEYS) {
         let v = o[k];
@@ -299,49 +344,84 @@
       }
       return null;
     };
-
-    try {
-      const nd = document.getElementById("__NEXT_DATA__");
-      if (!nd) { diag.next = "missing"; }
-      else {
-        diag.next_len = (nd.textContent || "").length;
-        const data = JSON.parse(nd.textContent);
-        const stack = [data]; let steps = 0;
-        while (stack.length && steps < 600000) {
-          steps++;
-          const o = stack.pop();
-          if (!o || typeof o !== "object") continue;
-          if (Array.isArray(o)) {
-            for (const v of o) if (v && typeof v === "object") stack.push(v);
-            continue;
-          }
-          // Listing object?
-          if (typeof o.section === "string" && o.section) {
-            if (!sampleListing) sampleListing = JSON.stringify(o).slice(0, 800);
-            const price = readPrice(o);
-            if (price != null) {
-              listingCount++;
-              const sec = normSGSection(o.section);
-              if (sec) {
-                const meta = JSON.stringify(o.deal_types || o.tags || o.notes || o.disclosures || "");
-                const obstructed = /obstruct|limited/i.test(meta);
-                if (!(sec in bySec) || price < bySec[sec].price)
-                  bySec[sec] = { price, obstructed };
-              }
+    // Deep-walk one parsed JSON root, folding any listing objects into bySec.
+    const walk = (root) => {
+      const stack = [root]; let steps = 0;
+      while (stack.length && steps < 800000) {
+        steps++;
+        const o = stack.pop();
+        if (!o || typeof o !== "object") continue;
+        if (Array.isArray(o)) {
+          for (const v of o) if (v && typeof v === "object") stack.push(v);
+          continue;
+        }
+        const secRaw = (typeof o.section === "string" && o.section) ? o.section :
+          (typeof o.section_id === "string" && o.section_id) ? o.section_id : null;
+        // Ignore i18n template strings like "Section {{section}}".
+        if (secRaw && !/\{\{|\}\}/.test(secRaw)) {
+          if (!sampleSection) sampleSection = JSON.stringify(o).slice(0, 900);
+          const price = readPrice(o);
+          if (price != null) {
+            listingCount++;
+            if (!sampleListing) sampleListing = JSON.stringify(o).slice(0, 900);
+            const sec = normSGSection(secRaw);
+            if (sec) {
+              const meta = JSON.stringify(o.deal_types || o.tags || o.notes || o.disclosures || o.dp || "");
+              const obstructed = /obstruct|limited/i.test(meta);
+              if (!(sec in bySec) || price < bySec[sec].price) bySec[sec] = { price, obstructed };
             }
           }
-          // Event object (for date/time -> gamePk)?
+        }
+        for (const k in o) { const v = o[k]; if (v && typeof v === "object") stack.push(v); }
+      }
+    };
+
+    // 1) Event date/hour from __NEXT_DATA__ (present at load), for gamePk.
+    let eventDate = null, eventHour = null, eventTitle = null;
+    for (let i = 0; i < 30; i++) {
+      const nd = document.getElementById("__NEXT_DATA__");
+      if (nd && (nd.textContent || "").length > 20000) break;
+      await sleep(200);
+    }
+    try {
+      const nd = document.getElementById("__NEXT_DATA__");
+      if (nd) {
+        diag.next_len = (nd.textContent || "").length;
+        const data = JSON.parse(nd.textContent);
+        const st = [data]; let steps = 0;
+        while (st.length && steps < 400000 && !eventDate) {
+          steps++;
+          const o = st.pop();
+          if (!o || typeof o !== "object") continue;
+          if (Array.isArray(o)) { for (const v of o) if (v && typeof v === "object") st.push(v); continue; }
           const dt = o.datetime_local || o.datetime_utc || o.datetime;
-          if (!eventDate && typeof dt === "string" && /^\d{4}-\d{2}-\d{2}T/.test(dt) &&
+          if (typeof dt === "string" && /^\d{4}-\d{2}-\d{2}T/.test(dt) &&
               /yankee/i.test(JSON.stringify(o.title || o.short_title || o.name || ""))) {
             eventDate = dt.slice(0, 10);
             eventHour = parseInt(dt.slice(11, 13), 10);
             eventTitle = String(o.title || o.short_title || o.name || "").slice(0, 80);
+            break;
           }
-          for (const k in o) { const v = o[k]; if (v && typeof v === "object") stack.push(v); }
+          for (const k in o) { const v = o[k]; if (v && typeof v === "object") st.push(v); }
         }
       }
     } catch (e) { diag.next_err = String(e).slice(0, 160); }
+
+    // 2) Wait for the network capture to populate, nudging the page to load
+    //    listings (scroll; the map's listing panel loads on view).
+    let caps = [];
+    for (let i = 0; i < 50; i++) {                    // up to ~25s
+      caps = readSGCaptures();
+      if (caps.length && Object.keys(bySec).length) break;
+      // (re)parse whatever we have so far
+      for (const c of caps) { try { walk(JSON.parse(c.body)); } catch (e) {} }
+      if (Object.keys(bySec).length) break;
+      if (i % 4 === 0) { window.scrollTo(0, document.body.scrollHeight); }
+      if (i % 6 === 3) { try { clickMore(["all areas", "list", "list view", "lowest price", "sort"]); } catch (e) {} }
+      await sleep(500);
+    }
+    caps = readSGCaptures();
+    for (const c of caps) { try { walk(JSON.parse(c.body)); } catch (e) {} }
 
     const quotes = Object.entries(bySec).map(([sec, v]) => ({
       provider: "SeatGeek",
@@ -349,15 +429,23 @@
       price: Math.round(v.price * 100) / 100, faceValue: null,
     }));
 
+    diag.cap_count = caps.length;
+    diag.cap_urls = caps.map((c) => String(c.url).split("?")[0]).slice(0, 12);
     diag.listing_count = listingCount;
     diag.sections = quotes.length;
     diag.sample_listing = sampleListing;
+    diag.sample_section = sampleSection;
+    // If nothing parsed, keep a trimmed sample of the most listing-like body.
+    if (!quotes.length && caps.length) {
+      const best = caps.slice().sort((a, b) =>
+        (b.body.match(/"section"/g) || []).length - (a.body.match(/"section"/g) || []).length)[0];
+      diag.cap_body_head = best ? { url: String(best.url).split("?")[0], head: best.body.slice(0, 1200) } : null;
+    }
     diag.event_date = eventDate;
     diag.event_hour = eventHour;
     diag.event_title = eventTitle;
-    try { diag.body_head = (document.body ? document.body.innerText : "").slice(0, 260); } catch (e) {}
 
-    console.log(`[collector/SeatGeek] ${quotes.length} sections, date=${eventDate}`, diag);
+    console.log(`[collector/SeatGeek] ${quotes.length} sections, date=${eventDate}, caps=${caps.length}`, diag);
     const eid = (location.pathname.match(/\/(\d{5,})/) || [])[1] || location.href;
     GM_setValue("yk_sg_result_" + eid, { ts: Date.now(), quotes, eventDate, eventHour, diag });
   }
