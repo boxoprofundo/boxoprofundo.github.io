@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.1.0
+// @version      2.2.0
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -61,6 +61,52 @@
   for (const [pk, url] of Object.entries(STUBHUB_EVENTS)) {
     const m = url.match(/event\/(\d+)/);
     if (m) SH_ID_TO_GAME[m[1]] = Number(pk);
+  }
+
+  /* ── SeatGeek event map ──────────────────────────────────────────────
+   * SeatGeek doesn't expose gamePk, so each event page's real date+time is
+   * read from __NEXT_DATA__ and mapped to a gamePk here. That makes the map
+   * self-correcting: even a guessed eventId only contributes if its actual
+   * date matches a Yankees home game. Confirmed eventIds come from the team
+   * page harvest; 17691597–17691600 are sequential guesses for 9/24–9/27
+   * (validated on load).                                                     */
+  const SGU = (d, id) =>
+    `https://seatgeek.com/new-york-yankees-tickets/${d}-bronx-new-york-yankee-stadium/mlb/${id}`;
+  const SEATGEEK_URLS = [
+    SGU("8-28-2026", 17691586), SGU("8-29-2026", 17691587), SGU("8-29-2026", 17691551),
+    SGU("8-30-2026", 17691588), SGU("9-8-2026", 17691589),  SGU("9-9-2026", 17691590),
+    SGU("9-10-2026", 17691591), SGU("9-11-2026", 17691592), SGU("9-12-2026", 17691593),
+    SGU("9-13-2026", 17691594), SGU("9-22-2026", 17691595), SGU("9-22-2026", 17691545),
+    SGU("9-23-2026", 17691596), SGU("9-24-2026", 17691597), SGU("9-25-2026", 17691598),
+    SGU("9-26-2026", 17691599), SGU("9-27-2026", 17691600),
+  ];
+  // Single-game dates -> gamePk (derived from the StubHub date slugs).
+  const SG_PK_BY_DATE = {
+    "2026-08-28": 823504, "2026-08-30": 823502, "2026-09-08": 823500,
+    "2026-09-09": 823497, "2026-09-10": 823499, "2026-09-11": 823498,
+    "2026-09-12": 823496, "2026-09-13": 823495, "2026-09-23": 823492,
+    "2026-09-24": 823493, "2026-09-25": 823491, "2026-09-26": 823489,
+    "2026-09-27": 823490,
+  };
+  // Doubleheaders: day game (≈1pm) vs night game (≈7pm).
+  const SG_PK_DH = {
+    "2026-08-29": { day: 823539, night: 823501 },
+    "2026-09-22": { day: 823543, night: 823494 },
+  };
+  function sgGamePk(date, hour) {
+    if (!date) return null;
+    if (SG_PK_DH[date]) return (hour != null && hour < 16) ? SG_PK_DH[date].day : SG_PK_DH[date].night;
+    return SG_PK_BY_DATE[date] || null;
+  }
+  // Normalize a SeatGeek section slug to a plain section id that matches the
+  // other providers: "bleachers-204"->"204", "320-b"->"320", "318"->"318".
+  function normSGSection(raw) {
+    let s = String(raw || "").trim().toLowerCase();
+    s = s.replace(/^(sections?|sec)[-_ ]+/, "");
+    const m = s.match(/\d{1,3}/);
+    if (m) return m[0];
+    const named = s.replace(/[^a-z0-9]+/g, " ").trim().toUpperCase();
+    return named ? named.slice(0, 14) : null;
   }
 
   const host = location.host;
@@ -222,69 +268,98 @@
   }
 
   async function seatgeekWorker() {
-    // Wait for listings to render.
-    for (let i = 0; i < 50; i++) {
-      const t = document.body ? document.body.innerText : "";
-      if ((t.match(/\$\s*\d{2,}/g) || []).length >= 3 &&
-          /sec(tion)?/i.test(t)) break;
-      if (i % 4 === 0) window.scrollTo(0, document.body.scrollHeight);
+    // SeatGeek renders per-section listings into the page's Next.js data blob
+    // (__NEXT_DATA__), not into readable DOM text — the visible UI is a Mapbox
+    // seat map. So we JSON.parse that blob and deep-walk it for listing objects
+    // (a string `section` + a price) and for the event's own date/time (used to
+    // resolve the gamePk). Wait for the blob to be populated first.
+    for (let i = 0; i < 45; i++) {
+      const nd = document.getElementById("__NEXT_DATA__");
+      if (nd && (nd.textContent || "").length > 20000) break;
+      if (i % 5 === 0) window.scrollTo(0, document.body.scrollHeight);
       await sleep(300);
     }
-    for (let r = 0; r < 12; r++) {
-      if (!clickMore(["show all", "show more", "view more", "load more", "see more tickets"])) break;
-      await sleep(1200);
-    }
 
-    const diag = { url: location.href, strategies: {} };
+    const diag = { url: location.href };
+    const bySec = {};
+    let eventDate = null, eventHour = null, eventTitle = null;
+    let sampleListing = null, listingCount = 0;
 
-    // Strategy A: __NEXT_DATA__ / embedded JSON listing arrays.
-    let quotes = [];
+    const PRICE_KEYS = ["price", "pf", "display_price", "lowest_price",
+      "list_price", "p", "amount", "total_price", "dp"];
+    const readPrice = (o) => {
+      for (const k of PRICE_KEYS) {
+        let v = o[k];
+        if (v == null) continue;
+        if (typeof v === "object")
+          v = (v.total != null ? v.total : v.amount != null ? v.amount :
+               v.value != null ? v.value : v.price);
+        const n = typeof v === "string" ? parseFloat(v.replace(/[^\d.]/g, "")) : Number(v);
+        if (isFinite(n) && n > 3 && n < 100000) return n;
+      }
+      return null;
+    };
+
     try {
       const nd = document.getElementById("__NEXT_DATA__");
-      if (nd) {
-        const s = nd.textContent || "";
-        diag.strategies.next_len = s.length;
-        // Capture candidate listing objects: {..."section"...,"price"...}.
-        const secKeys = [...s.matchAll(/"(section|section_name|sectionName|sg_section|section_id)"\s*:\s*("?[^",}]{1,20})/gi)].slice(0, 8);
-        const priceKeys = [...s.matchAll(/"(price|display_price|lp|list_price|p)"\s*:\s*([\d.]+)/gi)].slice(0, 8);
-        diag.strategies.next_section_samples = secKeys.map((m) => m[0]);
-        diag.strategies.next_price_samples = priceKeys.map((m) => m[0]);
-      } else {
-        diag.strategies.next = "no __NEXT_DATA__";
+      if (!nd) { diag.next = "missing"; }
+      else {
+        diag.next_len = (nd.textContent || "").length;
+        const data = JSON.parse(nd.textContent);
+        const stack = [data]; let steps = 0;
+        while (stack.length && steps < 600000) {
+          steps++;
+          const o = stack.pop();
+          if (!o || typeof o !== "object") continue;
+          if (Array.isArray(o)) {
+            for (const v of o) if (v && typeof v === "object") stack.push(v);
+            continue;
+          }
+          // Listing object?
+          if (typeof o.section === "string" && o.section) {
+            if (!sampleListing) sampleListing = JSON.stringify(o).slice(0, 800);
+            const price = readPrice(o);
+            if (price != null) {
+              listingCount++;
+              const sec = normSGSection(o.section);
+              if (sec) {
+                const meta = JSON.stringify(o.deal_types || o.tags || o.notes || o.disclosures || "");
+                const obstructed = /obstruct|limited/i.test(meta);
+                if (!(sec in bySec) || price < bySec[sec].price)
+                  bySec[sec] = { price, obstructed };
+              }
+            }
+          }
+          // Event object (for date/time -> gamePk)?
+          const dt = o.datetime_local || o.datetime_utc || o.datetime;
+          if (!eventDate && typeof dt === "string" && /^\d{4}-\d{2}-\d{2}T/.test(dt) &&
+              /yankee/i.test(JSON.stringify(o.title || o.short_title || o.name || ""))) {
+            eventDate = dt.slice(0, 10);
+            eventHour = parseInt(dt.slice(11, 13), 10);
+            eventTitle = String(o.title || o.short_title || o.name || "").slice(0, 80);
+          }
+          for (const k in o) { const v = o[k]; if (v && typeof v === "object") stack.push(v); }
+        }
       }
-    } catch (e) { diag.strategies.next_err = String(e).slice(0, 120); }
+    } catch (e) { diag.next_err = String(e).slice(0, 160); }
 
-    // Strategy B: DOM text "Section X ... $Y" parsing (robust fallback).
-    try {
-      const body = document.body ? document.body.innerText : "";
-      diag.strategies.body_len = body.length;
-      const SEC = "(?:[A-Za-z]*\\d[A-Za-z0-9]*|GA|[A-Z]{1,3})";
-      const re = new RegExp("(?=\\b[Ss]ec(?:tion)?\\.?\\s+" + SEC + "\\b)");
-      const bySec = {};
-      for (const chunk of body.split(re)) {
-        const sm = chunk.match(new RegExp("^\\b[Ss]ec(?:tion)?\\.?\\s+(" + SEC + ")\\b"));
-        if (!sm) continue;
-        const sec = sm[1].trim().toUpperCase();
-        const pm = [...chunk.slice(0, 120).matchAll(/\$\s*([\d,]+(?:\.\d{1,2})?)/g)];
-        if (!pm.length) continue;
-        const price = parseFloat(pm[0][1].replace(/,/g, ""));
-        if (!(price > 5 && price < 50000)) continue;
-        const obstructed = /obstruct|limited view/i.test(chunk.slice(0, 120));
-        if (!(sec in bySec) || price < bySec[sec].price) bySec[sec] = { price, obstructed };
-      }
-      quotes = Object.entries(bySec).map(([sec, v]) => ({
-        provider: "SeatGeek",
-        section: v.obstructed ? `${sec} (obstructed)` : sec,
-        price: Math.round(v.price * 100) / 100, faceValue: null,
-      }));
-      diag.strategies.dom_sections = quotes.length;
-      // A couple of raw DOM samples to see how a listing row reads.
-      diag.strategies.body_head = body.slice(0, 400);
-    } catch (e) { diag.strategies.dom_err = String(e).slice(0, 120); }
+    const quotes = Object.entries(bySec).map(([sec, v]) => ({
+      provider: "SeatGeek",
+      section: v.obstructed ? `${sec} (obstructed)` : sec,
+      price: Math.round(v.price * 100) / 100, faceValue: null,
+    }));
 
-    console.log(`[collector/SeatGeek] ${quotes.length} sections`, diag);
-    const eid = (location.pathname.match(/\/(\d{6,})/) || [])[1] || location.href;
-    GM_setValue("yk_sg_result_" + eid, { ts: Date.now(), quotes, diag });
+    diag.listing_count = listingCount;
+    diag.sections = quotes.length;
+    diag.sample_listing = sampleListing;
+    diag.event_date = eventDate;
+    diag.event_hour = eventHour;
+    diag.event_title = eventTitle;
+    try { diag.body_head = (document.body ? document.body.innerText : "").slice(0, 260); } catch (e) {}
+
+    console.log(`[collector/SeatGeek] ${quotes.length} sections, date=${eventDate}`, diag);
+    const eid = (location.pathname.match(/\/(\d{5,})/) || [])[1] || location.href;
+    GM_setValue("yk_sg_result_" + eid, { ts: Date.now(), quotes, eventDate, eventHour, diag });
   }
 
   /* ── shared: click a "show more"-style control ──────────────────────── */
@@ -407,25 +482,41 @@
       { fetchedAt: new Date().toISOString(), harvestDiag, harvested: rows, perEvent: perEvent || [] },
       "SeatGeek collector diagnostic (tuning)");
 
-    if (!rows.length) {
-      await publishDiag([]);
-      GM_setValue("yk_sg_job", { active: false, startedAt: 0 });
-      setChip("SeatGeek: 0 games harvested — diagnostic published");
-      return 0;
+    // Event list = the static URL map (all 17 home games, incl. sequential
+    // guesses for 9/24–9/27) unioned with anything freshly harvested, deduped
+    // by eventId. gamePk is resolved per-event from the real date/time the
+    // worker reads off the page, so a wrong guess simply contributes nothing.
+    const byEid = new Map();
+    for (const u of SEATGEEK_URLS) {
+      const eid = (u.match(/\/(\d{5,})/) || [])[1];
+      if (eid) byEid.set(eid, u);
     }
+    for (const r of rows) {
+      const eid = (r.url.match(/\/(\d{5,})/) || [])[1];
+      if (eid && !byEid.has(eid)) byEid.set(eid, r.url);
+    }
+    const entries = [...byEid.entries()].map(([eid, url]) => [eid, url, null]);
 
-    // Cycle event pages. gamePk isn't known from SeatGeek yet — publish keyed by
-    // URL + per-event diagnostics so the parser + gamePk-matching can be finalized.
-    const entries = rows.slice(0, 20).map((r) => {
-      const eid = (r.url.match(/\/(\d{5,})/) || [])[1] || r.url;
-      return [eid, r.url, null];
-    });
-    const { qty, collected } = await cycle("SeatGeek", "yk_sg_job", entries,
+    const { qty } = await cycle("SeatGeek", "yk_sg_job", entries,
       (eid) => "yk_sg_result_" + eid, true);
 
-    const diags = entries.map(([eid]) => {
+    // Rebuild results with gamePk resolved from each event's actual date/time.
+    const collected = [];
+    const diags = entries.map(([eid, url]) => {
       const r = GM_getValue("yk_sg_result_" + eid, null);
-      return { eid, sections: r ? r.quotes.length : 0, diag: r ? r.diag : "no result" };
+      const pk = r ? sgGamePk(r.eventDate, r.eventHour) : null;
+      if (r && r.quotes) {
+        for (const q of r.quotes) {
+          if (pk) collected.push(Object.assign({}, q, { gamePk: pk, url }));
+        }
+      }
+      return {
+        eid, url, gamePk: pk,
+        date: r ? r.eventDate : null, hour: r ? r.eventHour : null,
+        sections: r ? r.quotes.length : 0,
+        matched: pk ? (r ? r.quotes.length : 0) : 0,
+        diag: r ? r.diag : "no result",
+      };
     });
     await publishDiag(diags);
     if (collected.length) {
@@ -434,6 +525,8 @@
         `SeatGeek listings (blocks of ${qty}, browser collector)`);
     }
     GM_setValue("yk_sg_job", { active: false, startedAt: 0 });
+    const games = new Set(collected.map((q) => q.gamePk)).size;
+    setChip(`SeatGeek: ${collected.length} prices across ${games} games`);
     return collected.length;
   }
 
