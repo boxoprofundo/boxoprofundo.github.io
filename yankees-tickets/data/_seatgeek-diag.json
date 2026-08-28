@@ -1,5 +1,124 @@
 {
-  "fetchedAt": "2026-08-28T04:57:14.954Z",
+  "fetchedAt": "2026-08-28T06:00:14.889Z",
+  "harvestDiag": {
+    "url": "https://seatgeek.com/new-york-yankees-tickets",
+    "title": "New York Yankees Tickets 2026-2027 | Official Ticket Marketplace | SeatGeek",
+    "body_len": 35117,
+    "blocked": false,
+    "next_present": true,
+    "next_len": 566499,
+    "next_event_samples": [
+      {
+        "id": 17691596,
+        "title": "Tampa Bay Rays at New York Yankees",
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-23-2026-bronx-new-york-yankee-stadium/mlb/17691596",
+        "vname": "Yankee Stadium",
+        "vcity": "Bronx",
+        "dt": "2026-09-23T23:05:00"
+      },
+      {
+        "id": 8,
+        "title": "Yankee Stadium",
+        "url": "https://seatgeek.com/venues/yankee-stadium/tickets",
+        "vname": "",
+        "vcity": ""
+      },
+      {
+        "id": 8,
+        "title": "New York Yankees",
+        "url": "https://seatgeek.com/new-york-yankees-tickets",
+        "vname": "",
+        "vcity": ""
+      },
+      {
+        "id": 17691595,
+        "title": "Tampa Bay Rays at New York Yankees",
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-22-2026-bronx-new-york-yankee-stadium/mlb/17691595",
+        "vname": "Yankee Stadium",
+        "vcity": "Bronx",
+        "dt": "2026-09-22T23:05:00"
+      },
+      {
+        "id": 8,
+        "title": "Yankee Stadium",
+        "url": "https://seatgeek.com/venues/yankee-stadium/tickets",
+        "vname": "",
+        "vcity": ""
+      },
+      {
+        "id": 8,
+        "title": "New York Yankees",
+        "url": "https://seatgeek.com/new-york-yankees-tickets",
+        "vname": "",
+        "vcity": ""
+      }
+    ],
+    "next_url_hits": 25,
+    "anchor_count": 1018,
+    "anchor_samples": [
+      {
+        "href": "/new-york-yankees-tickets/8-28-2026-bronx-new-york-yankee-stadium/mlb/17691586",
+        "text": "Aug 28\n\nFri · 7:15pm\n\nvs Boston Red Sox\n\nHome · Ya"
+      },
+      {
+        "href": "/new-york-yankees-tickets/8-29-2026-bronx-new-york-yankee-stadium/mlb/17691551",
+        "text": "Aug 29\n\nSat · 1:05pm\n\nvs Boston Red Sox\n\nHome · Ya"
+      },
+      {
+        "href": "/new-york-yankees-tickets/8-29-2026-bronx-new-york-yankee-stadium/mlb/17691587",
+        "text": "Aug 29\n\nSat · 7:15pm\n\nvs Boston Red Sox\n\nHome · Ya"
+      },
+      {
+        "href": "/new-york-yankees-tickets/8-30-2026-bronx-new-york-yankee-stadium/mlb/17691588",
+        "text": "Aug 30\n\nSun · 1:35pm\n\nvs Boston Red Sox\n\nHome · Ya"
+      },
+      {
+        "href": "/los-angeles-angels-tickets/8-31-2026-anaheim-california-angel-stadium/mlb/17692390",
+        "text": "Aug 31\n\nMon · 6:38pm\n\nat Los Angeles Angels\n\nAway "
+      },
+      {
+        "href": "/los-angeles-angels-tickets/9-1-2026-anaheim-california-angel-stadium/mlb/17692392",
+        "text": "Sep 1\n\nTue · 6:38pm\n\nat Los Angeles Angels\n\nAway ·"
+      },
+      {
+        "href": "/los-angeles-angels-tickets/9-2-2026-anaheim-california-angel-stadium/mlb/17692394",
+        "text": "Sep 2\n\nWed · 6:38pm\n\nat Los Angeles Angels\n\nAway ·"
+      },
+      {
+        "href": "/san-diego-padres-tickets/9-4-2026-san-diego-california-petco-park/mlb/17692224",
+        "text": "Sep 4\n\nFri · 6:40pm\n\nat San Diego Padres\n\nAway · P"
+      },
+      {
+        "href": "/san-diego-padres-tickets/9-5-2026-san-diego-california-petco-park/mlb/17692226",
+        "text": "Sep 5\n\nSat · 4:15pm\n\nat San Diego Padres\n\nAway · P"
+      },
+      {
+        "href": "/san-diego-padres-tickets/9-6-2026-san-diego-california-petco-park/mlb/17692229",
+        "text": "Sep 6\n\nSun · 1:10pm\n\nat San Diego Padres\n\nAway · P"
+      },
+      {
+        "href": "/new-york-yankees-tickets/9-8-2026-bronx-new-york-yankee-stadium/mlb/17691589",
+        "text": "Sep 8\n\nTue · 7:05pm\n\nvs Colorado Rockies\n\nHome · Y"
+      },
+      {
+        "href": "/new-york-yankees-tickets/9-9-2026-bronx-new-york-yankee-stadium/mlb/17691590",
+        "text": "Sep 9\n\nWed · 7:05pm\n\nvs Colorado Rockies\n\nHome · Y"
+      },
+      {
+        "href": "/new-york-yankees-tickets/9-10-2026-bronx-new-york-yankee-stadium/mlb/17691591",
+        "text": "Sep 10\n\nThu · 7:05pm\n\nvs Colorado Rockies\n\nHome · "
+      },
+      {
+        "href": "/new-york-yankees-tickets/9-11-2026-bronx-new-york-yankee-stadium/mlb/17691592",
+        "text": "Sep 11\n\nFri · 7:05pm\n\nvs New York Mets\n\nHome · Yan"
+      },
+      {
+        "href": "/new-york-yankees-tickets/9-12-2026-bronx-new-york-yankee-stadium/mlb/17691593",
+        "text": "Sep 12\n\nSat · 1:35pm\n\nvs New York Mets\n\nHome · Yan"
+      }
+    ],
+    "rows_found": 13
+  },
   "harvested": [
     {
       "url": "https://seatgeek.com/new-york-yankees-tickets/9-23-2026-bronx-new-york-yankee-stadium/mlb/17691596",
@@ -56,220 +175,333 @@
   ],
   "perEvent": [
     {
-      "eid": "17691596",
+      "eid": "17691586",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/8-28-2026-bronx-new-york-yankee-stadium/mlb/17691586",
+      "gamePk": 823504,
+      "date": "2026-08-28",
+      "hour": 19,
       "sections": 0,
-      "diag": "no result"
-    },
-    {
-      "eid": "17691595",
-      "sections": 0,
-      "diag": "no result"
-    },
-    {
-      "eid": "17691545",
-      "sections": 0,
+      "matched": 0,
       "diag": {
-        "url": "https://seatgeek.com/new-york-yankees-tickets/9-22-2026-bronx-new-york-yankee-stadium/mlb/17691545?quantity=2",
-        "strategies": {
-          "next_len": 481468,
-          "next_section_samples": [
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"319",
-            "\"section\":\"320-b",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-236"
-          ],
-          "next_price_samples": [],
-          "body_len": 295,
-          "dom_sections": 0,
-          "body_head": "Skip to Content\n\nTampa Bay Rays at New York Yankees (Rescheduled from 5/23/26) \n\nTue, Sep 22 at 1:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Level\nUpper"
-        }
-      }
-    },
-    {
-      "eid": "17691594",
-      "sections": 0,
-      "diag": {
-        "url": "https://seatgeek.com/new-york-yankees-tickets/9-13-2026-bronx-new-york-yankee-stadium/mlb/17691594?quantity=2",
-        "strategies": {
-          "next_len": 482466,
-          "next_section_samples": [
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"319",
-            "\"section\":\"320-b",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-236"
-          ],
-          "next_price_samples": [],
-          "body_len": 1575,
-          "dom_sections": 0,
-          "body_head": "Skip to Content\n\nNew York Mets at New York Yankees \n\nSun, Sep 13 at 1:35pm · Yankee Stadium, Bronx, NY\n\n$84\n$63\n$71\n$84\n$110\n$134\n$152\n$158\n$176\n$265\n$391\n$487\n$812\n$84\n$86\n$89\n$89\n$90\n$91\n$91\n$92\n$95\n$97\n$100\n$102\n$103\n$105\n$106\n$107\n$107\n$111\n$164\n$204\n$220\n$257\n$341\n$138\n$310\n$158\n$291\n$114\n$84\n$80\n$114\n$150\n$120\n$73\n$170\n$83\n$485\n$392\n$170\n$77\n$73\n$192\n$67\n$66\n$467\n$100\n$131\n$467\n$111\n$101\n$11"
-        }
-      }
-    },
-    {
-      "eid": "17691593",
-      "sections": 0,
-      "diag": {
-        "url": "https://seatgeek.com/new-york-yankees-tickets/9-12-2026-bronx-new-york-yankee-stadium/mlb/17691593?quantity=2",
-        "strategies": {
-          "next_len": 480395,
-          "next_section_samples": [
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"319",
-            "\"section\":\"320-b",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-236"
-          ],
-          "next_price_samples": [],
-          "body_len": 267,
-          "dom_sections": 0,
-          "body_head": "Skip to Content\n\nNew York Mets at New York Yankees \n\nSat, Sep 12 at 1:35pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Level\nUpper"
-        }
-      }
-    },
-    {
-      "eid": "17691592",
-      "sections": 0,
-      "diag": "no result"
-    },
-    {
-      "eid": "17691591",
-      "sections": 0,
-      "diag": "no result"
-    },
-    {
-      "eid": "17691590",
-      "sections": 0,
-      "diag": "no result"
-    },
-    {
-      "eid": "17691589",
-      "sections": 0,
-      "diag": {
-        "url": "https://seatgeek.com/new-york-yankees-tickets/9-8-2026-bronx-new-york-yankee-stadium/mlb/17691589?quantity=2",
-        "strategies": {
-          "next_len": 477783,
-          "next_section_samples": [
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"319",
-            "\"section\":\"320-b",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-236"
-          ],
-          "next_price_samples": [],
-          "body_len": 269,
-          "dom_sections": 0,
-          "body_head": "Skip to Content\n\nColorado Rockies at New York Yankees \n\nTue, Sep 8 at 7:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Level\nUpper"
-        }
-      }
-    },
-    {
-      "eid": "17691588",
-      "sections": 0,
-      "diag": {
-        "url": "https://seatgeek.com/new-york-yankees-tickets/8-30-2026-bronx-new-york-yankee-stadium/mlb/17691588?quantity=2",
-        "strategies": {
-          "next_len": 476683,
-          "next_section_samples": [
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"319",
-            "\"section\":\"320-b",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-236"
-          ],
-          "next_price_samples": [],
-          "body_len": 268,
-          "dom_sections": 0,
-          "body_head": "Skip to Content\n\nBoston Red Sox at New York Yankees \n\nSun, Aug 30 at 1:35pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Level\nUpper"
-        }
+        "url": "https://seatgeek.com/new-york-yankees-tickets/8-28-2026-bronx-new-york-yankee-stadium/mlb/17691586?quantity=2",
+        "next_len": 476306,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-08-28",
+        "event_hour": 19,
+        "event_title": "Boston Red Sox at New York Yankees",
+        "body_head": "Skip to Content\n\nBoston Red Sox at New York Yankees \n\nFri, Aug 28 at 7:15pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Lev"
       }
     },
     {
       "eid": "17691587",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/8-29-2026-bronx-new-york-yankee-stadium/mlb/17691587",
+      "gamePk": 823501,
+      "date": "2026-08-29",
+      "hour": 19,
       "sections": 0,
+      "matched": 0,
       "diag": {
         "url": "https://seatgeek.com/new-york-yankees-tickets/8-29-2026-bronx-new-york-yankee-stadium/mlb/17691587?quantity=2",
-        "strategies": {
-          "next_len": 476419,
-          "next_section_samples": [
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"319",
-            "\"section\":\"320-b",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-236"
-          ],
-          "next_price_samples": [],
-          "body_len": 268,
-          "dom_sections": 0,
-          "body_head": "Skip to Content\n\nBoston Red Sox at New York Yankees \n\nSat, Aug 29 at 7:15pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Level\nUpper"
-        }
+        "next_len": 476404,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-08-29",
+        "event_hour": 19,
+        "event_title": "Boston Red Sox at New York Yankees",
+        "body_head": "Skip to Content\n\nBoston Red Sox at New York Yankees \n\nSat, Aug 29 at 7:15pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Lev"
       }
     },
     {
       "eid": "17691551",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/8-29-2026-bronx-new-york-yankee-stadium/mlb/17691551",
+      "gamePk": 823539,
+      "date": "2026-08-29",
+      "hour": 13,
       "sections": 0,
+      "matched": 0,
       "diag": {
         "url": "https://seatgeek.com/new-york-yankees-tickets/8-29-2026-bronx-new-york-yankee-stadium/mlb/17691551?quantity=2",
-        "strategies": {
-          "next_len": 476443,
-          "next_section_samples": [
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"319",
-            "\"section\":\"320-b",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-236"
-          ],
-          "next_price_samples": [],
-          "body_len": 291,
-          "dom_sections": 0,
-          "body_head": "Skip to Content\n\nBoston Red Sox at New York Yankees (Rescheduled from 6/6) \n\nSat, Aug 29 at 1:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Level\nUpper"
-        }
+        "next_len": 476463,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-08-29",
+        "event_hour": 13,
+        "event_title": "Boston Red Sox at New York Yankees (Rescheduled from 6/6)",
+        "body_head": "Skip to Content\n\nBoston Red Sox at New York Yankees (Rescheduled from 6/6) \n\nSat, Aug 29 at 1:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBas"
       }
     },
     {
-      "eid": "17691586",
+      "eid": "17691588",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/8-30-2026-bronx-new-york-yankee-stadium/mlb/17691588",
+      "gamePk": 823502,
+      "date": "2026-08-30",
+      "hour": 13,
       "sections": 0,
+      "matched": 0,
       "diag": {
-        "url": "https://seatgeek.com/new-york-yankees-tickets/8-28-2026-bronx-new-york-yankee-stadium/mlb/17691586?quantity=2",
-        "strategies": {
-          "next_len": 476306,
-          "next_section_samples": [
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"318",
-            "\"section\":\"319",
-            "\"section\":\"320-b",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-204",
-            "\"section\":\"bleachers-236"
-          ],
-          "next_price_samples": [],
-          "body_len": 268,
-          "dom_sections": 0,
-          "body_head": "Skip to Content\n\nBoston Red Sox at New York Yankees \n\nFri, Aug 28 at 7:15pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Level\nUpper"
-        }
+        "url": "https://seatgeek.com/new-york-yankees-tickets/8-30-2026-bronx-new-york-yankee-stadium/mlb/17691588?quantity=2",
+        "next_len": 476698,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-08-30",
+        "event_hour": 13,
+        "event_title": "Boston Red Sox at New York Yankees",
+        "body_head": "Skip to Content\n\nBoston Red Sox at New York Yankees \n\nSun, Aug 30 at 1:35pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Lev"
+      }
+    },
+    {
+      "eid": "17691589",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-8-2026-bronx-new-york-yankee-stadium/mlb/17691589",
+      "gamePk": 823500,
+      "date": "2026-09-08",
+      "hour": 19,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-8-2026-bronx-new-york-yankee-stadium/mlb/17691589?quantity=2",
+        "next_len": 478805,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-08",
+        "event_hour": 19,
+        "event_title": "Colorado Rockies at New York Yankees",
+        "body_head": "Skip to Content\n\nColorado Rockies at New York Yankees \n\nTue, Sep 8 at 7:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Le"
+      }
+    },
+    {
+      "eid": "17691590",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-9-2026-bronx-new-york-yankee-stadium/mlb/17691590",
+      "gamePk": 823497,
+      "date": "2026-09-09",
+      "hour": 19,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-9-2026-bronx-new-york-yankee-stadium/mlb/17691590?quantity=2",
+        "next_len": 477367,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-09",
+        "event_hour": 19,
+        "event_title": "Colorado Rockies at New York Yankees",
+        "body_head": "Skip to Content\n\nColorado Rockies at New York Yankees \n\nWed, Sep 9 at 7:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Le"
+      }
+    },
+    {
+      "eid": "17691591",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-10-2026-bronx-new-york-yankee-stadium/mlb/17691591",
+      "gamePk": 823499,
+      "date": "2026-09-10",
+      "hour": 19,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-10-2026-bronx-new-york-yankee-stadium/mlb/17691591?quantity=2",
+        "next_len": 479033,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-10",
+        "event_hour": 19,
+        "event_title": "Colorado Rockies at New York Yankees",
+        "body_head": "Skip to Content\n\nColorado Rockies at New York Yankees \n\nThu, Sep 10 at 7:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain L"
+      }
+    },
+    {
+      "eid": "17691592",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-11-2026-bronx-new-york-yankee-stadium/mlb/17691592",
+      "gamePk": 823498,
+      "date": "2026-09-11",
+      "hour": 19,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-11-2026-bronx-new-york-yankee-stadium/mlb/17691592?quantity=2",
+        "next_len": 480748,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-11",
+        "event_hour": 19,
+        "event_title": "New York Mets at New York Yankees",
+        "body_head": "Skip to Content\n\nNew York Mets at New York Yankees \n\nFri, Sep 11 at 7:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Leve"
+      }
+    },
+    {
+      "eid": "17691593",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-12-2026-bronx-new-york-yankee-stadium/mlb/17691593",
+      "gamePk": 823496,
+      "date": "2026-09-12",
+      "hour": 13,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-12-2026-bronx-new-york-yankee-stadium/mlb/17691593?quantity=2",
+        "next_len": 480395,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-12",
+        "event_hour": 13,
+        "event_title": "New York Mets at New York Yankees",
+        "body_head": "Skip to Content\n\nNew York Mets at New York Yankees \n\nSat, Sep 12 at 1:35pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Leve"
+      }
+    },
+    {
+      "eid": "17691594",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-13-2026-bronx-new-york-yankee-stadium/mlb/17691594",
+      "gamePk": null,
+      "date": null,
+      "hour": null,
+      "sections": 0,
+      "matched": 0,
+      "diag": "no result"
+    },
+    {
+      "eid": "17691595",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-22-2026-bronx-new-york-yankee-stadium/mlb/17691595",
+      "gamePk": 823494,
+      "date": "2026-09-22",
+      "hour": 19,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-22-2026-bronx-new-york-yankee-stadium/mlb/17691595?quantity=2",
+        "next_len": 481171,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-22",
+        "event_hour": 19,
+        "event_title": "Tampa Bay Rays at New York Yankees",
+        "body_head": "Skip to Content\n\nTampa Bay Rays at New York Yankees \n\nTue, Sep 22 at 7:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Lev"
+      }
+    },
+    {
+      "eid": "17691545",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-22-2026-bronx-new-york-yankee-stadium/mlb/17691545",
+      "gamePk": 823543,
+      "date": "2026-09-22",
+      "hour": 13,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-22-2026-bronx-new-york-yankee-stadium/mlb/17691545?quantity=2",
+        "next_len": 481468,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-22",
+        "event_hour": 13,
+        "event_title": "Tampa Bay Rays at New York Yankees (Rescheduled from 5/23/26)",
+        "body_head": "Skip to Content\n\nTampa Bay Rays at New York Yankees (Rescheduled from 5/23/26) \n\nTue, Sep 22 at 1:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP"
+      }
+    },
+    {
+      "eid": "17691596",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-23-2026-bronx-new-york-yankee-stadium/mlb/17691596",
+      "gamePk": 823492,
+      "date": "2026-09-23",
+      "hour": 19,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-23-2026-bronx-new-york-yankee-stadium/mlb/17691596?quantity=2",
+        "next_len": 481171,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-23",
+        "event_hour": 19,
+        "event_title": "Tampa Bay Rays at New York Yankees",
+        "body_head": "Skip to Content\n\nTampa Bay Rays at New York Yankees \n\nWed, Sep 23 at 7:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Lev"
+      }
+    },
+    {
+      "eid": "17691597",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-24-2026-bronx-new-york-yankee-stadium/mlb/17691597",
+      "gamePk": 823493,
+      "date": "2026-09-24",
+      "hour": 19,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-24-2026-bronx-new-york-yankee-stadium/mlb/17691597?quantity=2",
+        "next_len": 481167,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-24",
+        "event_hour": 19,
+        "event_title": "Tampa Bay Rays at New York Yankees",
+        "body_head": "Skip to Content\n\nTampa Bay Rays at New York Yankees \n\nThu, Sep 24 at 7:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain Lev"
+      }
+    },
+    {
+      "eid": "17691598",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-25-2026-bronx-new-york-yankee-stadium/mlb/17691598",
+      "gamePk": 823491,
+      "date": "2026-09-25",
+      "hour": 19,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-25-2026-bronx-new-york-yankee-stadium/mlb/17691598?quantity=2",
+        "next_len": 483952,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-25",
+        "event_hour": 19,
+        "event_title": "Baltimore Orioles at New York Yankees",
+        "body_head": "Skip to Content\n\nBaltimore Orioles at New York Yankees \n\nFri, Sep 25 at 7:05pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain "
+      }
+    },
+    {
+      "eid": "17691599",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-26-2026-bronx-new-york-yankee-stadium/mlb/17691599",
+      "gamePk": 823489,
+      "date": "2026-09-26",
+      "hour": 19,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-26-2026-bronx-new-york-yankee-stadium/mlb/17691599?quantity=2",
+        "next_len": 483480,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-26",
+        "event_hour": 19,
+        "event_title": "Baltimore Orioles at New York Yankees",
+        "body_head": "Skip to Content\n\nBaltimore Orioles at New York Yankees \n\nSat, Sep 26 at 7:15pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain "
+      }
+    },
+    {
+      "eid": "17691600",
+      "url": "https://seatgeek.com/new-york-yankees-tickets/9-27-2026-bronx-new-york-yankee-stadium/mlb/17691600",
+      "gamePk": 823490,
+      "date": "2026-09-27",
+      "hour": 15,
+      "sections": 0,
+      "matched": 0,
+      "diag": {
+        "url": "https://seatgeek.com/new-york-yankees-tickets/9-27-2026-bronx-new-york-yankee-stadium/mlb/17691600?quantity=2",
+        "next_len": 483276,
+        "listing_count": 0,
+        "sections": 0,
+        "sample_listing": "{\"empty_seats_alt\":\"An illustration of empty seats at a live event\",\"ticket_booth_alt\":\"An illustration of a booth selling tickets, surrounded by many eager fans\",\"error_alt\":\"An illustration of a large prohibited sign, as an indicator an error has occurred\",\"limited_view\":\"Limited view\",\"ada_accessible\":\"ADA Accessible Seat(s)\",\"accessibility\":\"Accessibility\",\"each_incl_fees\":\"each incl. <feesLink>fees</feesLink>\",\"each_excl_fees\":\"each excl. <feesLink>fees</feesLink>\",\"section\":\"Section {{section}}\",\"row\":\"Row {{row}}\",\"seat_label\":\"Seat {{seat}}\",\"seats_range\":\"Seats {{firstSeat}}-{{lastSeat}}\",\"seats_and\":\"Seats {{firstSeat}} and {{lastSeat}}\",\"seats_list\":\"Seats {{seatsList}} and {{lastSeat}}\",\"decline_title\":\"Are you sure you want to continue?\",\"decline_message\":\"The similarly priced",
+        "event_date": "2026-09-27",
+        "event_hour": 15,
+        "event_title": "Baltimore Orioles at New York Yankees",
+        "body_head": "Skip to Content\n\nBaltimore Orioles at New York Yankees \n\nSun, Sep 27 at 3:20pm · Yankee Stadium, Bronx, NY\n\nSign in\n\nVenue areas\n\nPremium\n\nField MVP\n\nBaseline\n\nOutfield\n\nMain Level\n\nUpper Deck\n\nPinch to zoom\n\nAll areas\nPremium\nField MVP\nBaseline\nOutfield\nMain "
       }
     }
   ]
