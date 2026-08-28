@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.4.0
+// @version      2.5.0
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -474,12 +474,32 @@
       }
     };
 
-    // 2) Poll — listings load a moment after render; nudge the map/list panel.
-    for (let i = 0; i < 50; i++) {                    // up to ~25s
+    // Nudge the seat map so it initializes and fetches per-section prices
+    // (hover/click the map canvas/svg; the map's "deals" fetch colors sections).
+    const nudgeMap = () => {
+      try {
+        const cands = [...document.querySelectorAll(
+          'canvas, svg, [class*="map" i], [class*="Map" ], [class*="seat" i], [data-testid*="map" i]')]
+          .filter((el) => el.offsetWidth > 200 && el.offsetHeight > 200);
+        const el = cands[0];
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        for (const [dx, dy] of [[0.5, 0.5], [0.4, 0.4], [0.6, 0.6], [0.5, 0.35]]) {
+          const x = r.left + r.width * dx, y = r.top + r.height * dy;
+          for (const type of ["mousemove", "mouseover", "mousedown", "mouseup", "click"]) {
+            el.dispatchEvent(new MouseEvent(type, { bubbles: true, clientX: x, clientY: y }));
+          }
+        }
+      } catch (e) {}
+    };
+
+    // 2) Poll — foreground map init + price fetch is slow; give it time.
+    for (let i = 0; i < 80; i++) {                    // up to ~40s
       gather();
       if (Object.keys(bySec).length) break;
-      if (i % 4 === 0) { try { window.scrollTo(0, document.body.scrollHeight); } catch (e) {} }
-      if (i % 6 === 3) { try { clickMore(["all areas", "list", "list view", "lowest price", "sort", "all tickets"]); } catch (e) {} }
+      if (i % 3 === 0) { try { window.scrollTo(0, (i % 6 ? document.body.scrollHeight : 0)); } catch (e) {} }
+      if (i % 4 === 1) nudgeMap();
+      if (i % 6 === 3) { try { clickMore(["all areas", "list", "list view", "lowest price", "sort", "all tickets", "view tickets"]); } catch (e) {} }
       await sleep(500);
     }
     gather();
@@ -501,21 +521,33 @@
     diag.sections = quotes.length;
     diag.sample_listing = sampleListing;
     diag.sample_section = sampleSection;
-    // Safety net: if nothing parsed, show where "section" lives in the raw page
-    // so the exact format is visible for one more tuning pass.
+    // Safety net: if nothing parsed, surface the exact format for one more pass.
     if (!quotes.length) {
+      const priceRe = /(\$\s*\d|"(?:lp|dp|p|price|amount|min_price|lowest_price)"\s*:\s*\d)/i;
       let scriptHits = 0;
       for (const s of document.querySelectorAll("script"))
         if (/"?\\?"section/.test(s.textContent || "")) scriptHits++;
       diag.script_section_tags = scriptHits;
+      // Which captured responses actually carry prices (reveals the deals API).
+      diag.cap_price_urls = [...new Set(SG_CAPTURES.filter((c) => priceRe.test(c.body))
+        .map((c) => String(c.url).split("?")[0]))].slice(0, 20);
+      // Dump the capture most likely to be the price/deals payload (has a price
+      // token), else the one with the most "section" mentions.
+      const priced = SG_CAPTURES.filter((c) => priceRe.test(c.body));
+      const pick = (priced.length ? priced : SG_CAPTURES).slice().sort((a, b) =>
+        (b.body.match(/section|"lp"|"dp"|price/gi) || []).length -
+        (a.body.match(/section|"lp"|"dp"|price/gi) || []).length)[0];
+      if (pick) {
+        const at = pick.body.search(priceRe);
+        diag.cap_body_head = {
+          url: String(pick.url).split("?")[0], len: pick.body.length,
+          head: pick.body.slice(0, 900),
+          around_price: at >= 0 ? pick.body.slice(Math.max(0, at - 300), at + 500) : null,
+        };
+      }
       const html = (() => { try { return document.documentElement.innerHTML; } catch (e) { return ""; } })();
       const idx = html.search(/\\?"section(?:_id)?\\?"\s*:/);
-      diag.html_section_sample = idx >= 0 ? html.slice(Math.max(0, idx - 200), idx + 700) : "no 'section' in page HTML";
-      if (SG_CAPTURES.length) {
-        const best = SG_CAPTURES.slice().sort((a, b) =>
-          (b.body.match(/section/g) || []).length - (a.body.match(/section/g) || []).length)[0];
-        diag.cap_body_head = { url: String(best.url).split("?")[0], head: best.body.slice(0, 1000) };
-      }
+      diag.html_section_sample = idx >= 0 ? html.slice(Math.max(0, idx - 150), idx + 500) : "no 'section' in page HTML";
     }
     diag.event_date = eventDate;
     diag.event_hour = eventHour;
@@ -591,8 +623,10 @@
 
   // Generic game-cycler: opens each URL in a background tab, waits for the
   // worker in that tab to post a result under `resultKey(key)`, collects them.
-  async function cycle(label, jobKey, entries, resultKey, stampUrl) {
+  async function cycle(label, jobKey, entries, resultKey, stampUrl, opts) {
+    opts = opts || {};
     const qty = qtyNow();
+    const waits = opts.waits || 70;                 // result-poll iterations (×500ms)
     GM_setValue(jobKey, { active: true, startedAt: Date.now() });
     entries.forEach(([k]) => GM_deleteValue(resultKey(k)));
     const collected = [];
@@ -600,16 +634,16 @@
       const [key, url, gamePk] = entries[i];
       setChip(`${label} ${i + 1}/${entries.length}…`, true);
       const tab = GM_openInTab(url + (url.includes("?") ? "&" : "?") + "quantity=" + qty,
-                               { active: false, insert: true });
+                               { active: !!opts.active, insert: true });
       let result = null;
-      for (let w = 0; w < 70; w++) { result = GM_getValue(resultKey(key), null); if (result) break; await sleep(500); }
+      for (let w = 0; w < waits; w++) { result = GM_getValue(resultKey(key), null); if (result) break; await sleep(500); }
       try { tab.close(); } catch {}
       if (result && result.quotes) {
         for (const q of result.quotes) {
           collected.push(Object.assign({ gamePk, url: stampUrl ? url : q.url }, q, { gamePk, url: url }));
         }
       }
-      await sleep(6000 + Math.random() * 4000);
+      await sleep(3000 + Math.random() * 3000);
     }
     GM_setValue(jobKey, { active: false, startedAt: 0 });
     return { qty, collected };
@@ -661,8 +695,11 @@
     }
     const entries = [...byEid.entries()].map(([eid, url]) => [eid, url, null]);
 
+    // SeatGeek loads prices only when its Mapbox seat-map initializes, which is
+    // deferred while a tab is in the background. So open these FOREGROUND
+    // (active), and allow longer per-tab (map init + deals fetch is slow).
     const { qty } = await cycle("SeatGeek", "yk_sg_job", entries,
-      (eid) => "yk_sg_result_" + eid, true);
+      (eid) => "yk_sg_result_" + eid, true, { active: true, waits: 90 });
 
     // Rebuild results with gamePk resolved from each event's actual date/time.
     const collected = [];
