@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.0.0
+// @version      2.1.0
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -133,24 +133,92 @@
   }
 
   // Harvest home-game event URLs from the SeatGeek Yankees team page (real
-  // browser renders it), keyed loosely by date; the controller maps them.
+  // browser renders it). Primary source is the Next.js __NEXT_DATA__ blob
+  // (reliable); DOM anchors are a fallback. Always emits a rich diagnostic so
+  // the team-page structure is visible even when nothing is harvested.
   async function seatgeekHarvest() {
     for (let i = 0; i < 40; i++) {
-      if (document.querySelectorAll("a[href*='/tickets/']").length > 3) break;
+      const t = document.body ? document.body.innerText : "";
+      if (/\$\s*\d/.test(t) || document.querySelectorAll("a[href]").length > 40) break;
       await sleep(300);
     }
-    const rows = [];
-    document.querySelectorAll("a[href]").forEach((a) => {
-      const href = a.getAttribute("href") || "";
-      const text = (a.innerText || "").trim();
-      if (/\/\d{6,}(?:\?|$|\/)/.test(href) &&
-          /yankee stadium|bronx|yankees/i.test(text + " " + href)) {
-        const full = href.startsWith("http") ? href : "https://seatgeek.com" + href;
-        rows.push({ url: full.split("?")[0], text: text.slice(0, 80) });
+    const diag = { url: location.href };
+    try { diag.title = document.title; } catch (e) {}
+    const bodyText = document.body ? document.body.innerText : "";
+    diag.body_len = bodyText.length;
+    diag.blocked = /are you a robot|verify you are human|captcha|access denied|pardon the interruption/i.test(bodyText);
+
+    const rows = [], seen = new Set();
+    const pushRow = (url, text) => {
+      if (!url) return;
+      url = String(url).replace(/\\\//g, "/").split("?")[0];
+      if (!/^https?:\/\/(www\.)?seatgeek\.com\//.test(url)) return;
+      if (seen.has(url)) return;
+      seen.add(url); rows.push({ url, text: (text || "").slice(0, 90) });
+    };
+
+    // Primary: parse __NEXT_DATA__ and deep-walk for event-like objects.
+    const ndEl = document.getElementById("__NEXT_DATA__");
+    diag.next_present = !!ndEl;
+    let nd = null;
+    if (ndEl) {
+      diag.next_len = (ndEl.textContent || "").length;
+      try { nd = JSON.parse(ndEl.textContent); }
+      catch (e) { diag.next_parse_err = String(e).slice(0, 100); }
+    }
+    const eventSamples = [];
+    if (nd) {
+      const stack = [nd]; let steps = 0;
+      while (stack.length && steps < 300000) {
+        steps++;
+        const o = stack.pop();
+        if (!o || typeof o !== "object") continue;
+        const url = o.url || o.href;
+        const title = o.title || o.short_title || o.name;
+        const venue = o.venue || {};
+        const vname = (venue && (venue.name || venue.name_v2)) || "";
+        const vcity = (venue && venue.city) || "";
+        const looksEvent =
+          (typeof url === "string" && /seatgeek\.com\/.+\/\d{5,}/.test(url)) ||
+          (o.id && title && /yankee/i.test(String(title)));
+        if (looksEvent) {
+          const home = /yankee stadium/i.test(vname) || /bronx/i.test(vcity) ||
+            /yankees tickets|vs\.?\s*.*yankees|yankees\s*vs/i.test(String(title || url));
+          if (home && typeof url === "string") pushRow(url, title);
+          if (eventSamples.length < 6) eventSamples.push({
+            id: o.id, title: String(title).slice(0, 60), url: String(url).slice(0, 120),
+            vname, vcity, dt: o.datetime_utc || o.datetime_local || o.datetime,
+          });
+        }
+        for (const k in o) { const v = o[k]; if (v && typeof v === "object") stack.push(v); }
+      }
+    }
+    diag.next_event_samples = eventSamples;
+
+    // Secondary: regex event URLs straight out of the raw blob.
+    if (ndEl) {
+      const raw = ndEl.textContent || "";
+      const re = /"url":"(https:[^"]*?\/\d{5,})"/g;
+      let m, c = 0;
+      while ((m = re.exec(raw)) && c < 80) { c++; const u = m[1]; if (/yankee/i.test(u)) pushRow(u); }
+      diag.next_url_hits = c;
+    }
+
+    // Fallback + diagnostic: DOM anchors.
+    const anchors = [...document.querySelectorAll("a[href]")].map((a) => ({
+      href: a.getAttribute("href") || "", text: (a.innerText || "").trim().slice(0, 50),
+    }));
+    diag.anchor_count = anchors.length;
+    diag.anchor_samples = anchors.filter((a) => /\/\d{5,}/.test(a.href)).slice(0, 15);
+    anchors.forEach((a) => {
+      if (/\/\d{5,}(?:\?|$|\/)/.test(a.href) && /yankee|bronx/i.test(a.text + " " + a.href)) {
+        pushRow(a.href.startsWith("http") ? a.href : "https://seatgeek.com" + a.href, a.text);
       }
     });
-    console.log(`[collector/SeatGeek harvest] ${rows.length} event links`);
-    GM_setValue("yk_sg_harvest", { ts: Date.now(), rows });
+
+    diag.rows_found = rows.length;
+    console.log(`[collector/SeatGeek harvest] ${rows.length} event links`, diag);
+    GM_setValue("yk_sg_harvest", { ts: Date.now(), rows, diag });
   }
 
   async function seatgeekWorker() {
@@ -329,31 +397,43 @@
     for (let w = 0; w < 60; w++) { harvest = GM_getValue("yk_sg_harvest", null); if (harvest) break; await sleep(500); }
     try { htab.close(); } catch {}
     const rows = (harvest && harvest.rows) || [];
-    if (!rows.length) { setChip("SeatGeek: no games found on team page (see console)"); GM_setValue("yk_sg_job", { active: false, startedAt: 0 }); return 0; }
+    const harvestDiag = (harvest && harvest.diag) ||
+      { note: "harvest tab produced no result — the script may not have run on the team page (check @match / the page 403'd)" };
 
-    // 2) Cycle event pages. We don't know each game's gamePk from SeatGeek, so
-    //    the section rows carry no gamePk yet — publish keyed by SeatGeek URL +
-    //    a diagnostic so the parser and gamePk-matching can be finalized.
+    // Always publish the harvest diagnostic so the team-page structure is
+    // visible for tuning, even when zero games were harvested.
+    const publishDiag = (perEvent) => putFile(
+      `/contents/yankees-tickets/data/_seatgeek-diag.json`,
+      { fetchedAt: new Date().toISOString(), harvestDiag, harvested: rows, perEvent: perEvent || [] },
+      "SeatGeek collector diagnostic (tuning)");
+
+    if (!rows.length) {
+      await publishDiag([]);
+      GM_setValue("yk_sg_job", { active: false, startedAt: 0 });
+      setChip("SeatGeek: 0 games harvested — diagnostic published");
+      return 0;
+    }
+
+    // Cycle event pages. gamePk isn't known from SeatGeek yet — publish keyed by
+    // URL + per-event diagnostics so the parser + gamePk-matching can be finalized.
     const entries = rows.slice(0, 20).map((r) => {
-      const eid = (r.url.match(/\/(\d{6,})/) || [])[1] || r.url;
+      const eid = (r.url.match(/\/(\d{5,})/) || [])[1] || r.url;
       return [eid, r.url, null];
     });
     const { qty, collected } = await cycle("SeatGeek", "yk_sg_job", entries,
       (eid) => "yk_sg_result_" + eid, true);
 
-    // Publish a diagnostic snapshot (first-run tuning aid) + whatever we parsed.
     const diags = entries.map(([eid]) => {
       const r = GM_getValue("yk_sg_result_" + eid, null);
       return { eid, sections: r ? r.quotes.length : 0, diag: r ? r.diag : "no result" };
     });
-    await putFile(`/contents/yankees-tickets/data/_seatgeek-diag.json`,
-      { fetchedAt: new Date().toISOString(), harvested: rows, perEvent: diags },
-      "SeatGeek collector diagnostic (tuning)");
+    await publishDiag(diags);
     if (collected.length) {
       await putFile(`/contents/yankees-tickets/data/listings-seatgeek-${qty}.json`,
         { fetchedAt: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"), quotes: collected },
         `SeatGeek listings (blocks of ${qty}, browser collector)`);
     }
+    GM_setValue("yk_sg_job", { active: false, startedAt: 0 });
     return collected.length;
   }
 
