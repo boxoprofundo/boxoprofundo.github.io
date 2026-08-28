@@ -19,11 +19,10 @@ function authorized(req) {
 //
 // Typically ~1-2s (it's two sets of plain HTTP calls -- there is no browser
 // involved; see pikkit.js for why the original scraping approach was dropped).
+// The bet summary is public by owner's choice -- no token. /whoami and
+// /diag-statuses stay token-protected: they expose the account balance and
+// internals, not just tonight's action.
 app.get(['/', '/live-summary'], async (req, res) => {
-  if (!authorized(req)) {
-    return res.status(401).json({ ok: false, error: 'unauthorized' });
-  }
-
   try {
     const [live, settled, rawBoards] = await Promise.all([
       getLiveBets(process.env.PIKKIT_SESSION_ID),
