@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.7.0
+// @version      2.7.1
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -803,9 +803,35 @@
     } finally { running = false; }
   }
 
+  // Gentle single-game probe: opens ONE SeatGeek event tab and reports the full
+  // price-API URL it calls (event_listings_v2, with query). One page load — no
+  // flood — so it won't trip SeatGeek's CDN rate limit. Used to build a direct-
+  // fetch collector that avoids opening a foreground tab per game.
+  async function probeSeatGeekApi() {
+    const url = SEATGEEK_URLS[2];                 // 8/29 — known-good event
+    const eid = (url.match(/\/(\d{5,})/) || [])[1];
+    GM_deleteValue("yk_sg_result_" + eid);
+    GM_setValue("yk_sg_job", { active: true, startedAt: Date.now() });
+    setChip("Probing SeatGeek API (1 tab)…", true);
+    const tab = GM_openInTab(url + "?quantity=2", { active: true, insert: true });
+    let r = null;
+    for (let w = 0; w < 130; w++) { r = GM_getValue("yk_sg_result_" + eid, null); if (r) break; await sleep(500); }
+    try { tab.close(); } catch {}
+    GM_setValue("yk_sg_job", { active: false, startedAt: 0 });
+    const apiUrl = r && r.diag && r.diag.listings_api_url;
+    console.log("[collector/SeatGeek] listings_api_url =", apiUrl, "sections =", r && r.quotes && r.quotes.length, r && r.diag);
+    await putFile("/contents/yankees-tickets/data/_seatgeek-apiurl.json",
+      { fetchedAt: new Date().toISOString(), eid, apiUrl: apiUrl || null,
+        sections: r && r.quotes ? r.quotes.length : 0,
+        cap_urls: r && r.diag ? r.diag.cap_urls_all : null },
+      "SeatGeek API URL probe");
+    setChip(apiUrl ? "API URL captured ✓ (tell Claude)" : "API URL not captured — see console");
+  }
+
   GM_registerMenuCommand("Collect SeatGeek + StubHub now", runAll);
   GM_registerMenuCommand("Collect StubHub only", async () => { if (!running) { running = true; try { const n = await runStubHub(); setChip(`StubHub done: ${n}`); } finally { running = false; } } });
   GM_registerMenuCommand("Collect SeatGeek only", async () => { if (!running) { running = true; try { const n = await runSeatGeek(); setChip(`SeatGeek done: ${n}`); } finally { running = false; } } });
+  GM_registerMenuCommand("Probe SeatGeek API (1 game)", async () => { if (!running) { running = true; try { await probeSeatGeekApi(); } finally { running = false; } } });
 
   function wire() {
     document.querySelectorAll(".refresh-btn").forEach((b) => {
