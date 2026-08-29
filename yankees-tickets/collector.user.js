@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.6.0
+// @version      2.7.0
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -550,6 +550,10 @@
 
     diag.cap_count = SG_CAPTURES.length;
     diag.cap_urls_all = [...new Set(SG_CAP_URLS)].slice(0, 30);
+    // Full listings-API URL (with query) — enables a future direct-fetch path
+    // that avoids opening a foreground tab per game.
+    const apiCap = SG_CAPTURES.find((c) => /event_listings|\/api\/listings/i.test(c.url));
+    diag.listings_api_url = apiCap ? apiCap.url : null;
     diag.listing_count = listingCount;
     diag.sections = quotes.length;
     diag.sample_listing = sampleListing;
@@ -660,8 +664,10 @@
     opts = opts || {};
     const qty = qtyNow();
     const waits = opts.waits || 70;                 // result-poll iterations (×500ms)
+    const gapMin = opts.gapMin != null ? opts.gapMin : 3000;
+    const gapRand = opts.gapRand != null ? opts.gapRand : 3000;
     GM_setValue(jobKey, { active: true, startedAt: Date.now() });
-    entries.forEach(([k]) => GM_deleteValue(resultKey(k)));
+    if (!opts.keepResults) entries.forEach(([k]) => GM_deleteValue(resultKey(k)));
     const collected = [];
     for (let i = 0; i < entries.length; i++) {
       const [key, url, gamePk] = entries[i];
@@ -676,7 +682,7 @@
           collected.push(Object.assign({ gamePk, url: stampUrl ? url : q.url }, q, { gamePk, url: url }));
         }
       }
-      await sleep(3000 + Math.random() * 3000);
+      await sleep(gapMin + Math.random() * gapRand);
     }
     GM_setValue(jobKey, { active: false, startedAt: 0 });
     return { qty, collected };
@@ -729,10 +735,27 @@
     const entries = [...byEid.entries()].map(([eid, url]) => [eid, url, null]);
 
     // SeatGeek loads prices only when its Mapbox seat-map initializes, which is
-    // deferred while a tab is in the background. So open these FOREGROUND
-    // (active), and allow longer per-tab (map init + deals fetch is slow).
+    // deferred while a tab is in the background — so open these FOREGROUND
+    // (active). Give each tab a comfortable window (the worker itself needs up
+    // to ~46s) and space them out, since hammering SeatGeek trips DataDome
+    // (which redirects tabs away from the event page → the worker never runs).
+    const sgOpts = { active: true, waits: 120, gapMin: 7000, gapRand: 5000 };
     const { qty } = await cycle("SeatGeek", "yk_sg_job", entries,
-      (eid) => "yk_sg_result_" + eid, true, { active: true, waits: 90 });
+      (eid) => "yk_sg_result_" + eid, true, sgOpts);
+
+    // Retry pass: any event with no result (or zero sections) — usually a
+    // DataDome redirect or a slow tab that got cut off — gets one more try,
+    // keeping the good results already collected.
+    const missed = entries.filter(([eid]) => {
+      const r = GM_getValue("yk_sg_result_" + eid, null);
+      return !r || !r.quotes || !r.quotes.length;
+    });
+    if (missed.length) {
+      setChip(`SeatGeek retry ${missed.length}…`, true);
+      await cycle("SeatGeek retry", "yk_sg_job", missed,
+        (eid) => "yk_sg_result_" + eid, true,
+        Object.assign({}, sgOpts, { keepResults: true, gapMin: 10000, gapRand: 6000 }));
+    }
 
     // Rebuild results with gamePk resolved from each event's actual date/time.
     const collected = [];
