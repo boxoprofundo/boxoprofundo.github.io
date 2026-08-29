@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.7.1
+// @version      2.8.0
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -86,6 +86,27 @@
     SGU("9-23-2026", 17691596), SGU("9-24-2026", 17691597), SGU("9-25-2026", 17691598),
     SGU("9-26-2026", 17691599), SGU("9-27-2026", 17691600),
   ];
+  // Confirmed SeatGeek eventId -> gamePk (all validated by date/time resolution
+  // in earlier runs; doubleheaders split by the 1pm/7pm event). Used by the
+  // direct-API collector, which fetches listings by eventId.
+  const SG_EID_TO_PK = {
+    17691586: 823504, 17691587: 823501, 17691551: 823539, 17691588: 823502,
+    17691589: 823500, 17691590: 823497, 17691591: 823499, 17691592: 823498,
+    17691593: 823496, 17691594: 823495, 17691595: 823494, 17691545: 823543,
+    17691596: 823492, 17691597: 823493, 17691598: 823491, 17691599: 823489,
+    17691600: 823490,
+  };
+  // SeatGeek's public web client id (fixed) for the event_listings_v2 endpoint.
+  const SG_CLIENT_ID = "MTY2MnwxMzgzMzIwMTU4";
+  const uuid = () => (crypto && crypto.randomUUID ? crypto.randomUUID() :
+    "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0; return (c === "x" ? r : (r & 3) | 8).toString(16);
+    }));
+  const sgListingsUrl = (eid, qty) =>
+    "https://seatgeek.com/api/event_listings_v2?_include_seats=1&client_id=" + SG_CLIENT_ID +
+    "&event_page_view_id=" + uuid() + "&id=" + eid + "&quantity=" + qty +
+    "&sixpack_client_id=" + uuid();
+
   // Single-game dates -> gamePk (derived from the StubHub date slugs).
   const SG_PK_BY_DATE = {
     "2026-08-28": 823504, "2026-08-30": 823502, "2026-09-08": 823500,
@@ -119,6 +140,62 @@
     if (m) return m[0];
     const named = s.replace(/[^a-z0-9]+/g, " ").trim().toUpperCase();
     return named ? named.slice(0, 16) : null;
+  }
+
+  const SG_EID_TO_URL = {};
+  for (const u of SEATGEEK_URLS) { const m = u.match(/\/(\d{5,})/); if (m) SG_EID_TO_URL[m[1]] = u; }
+
+  // Parse a SeatGeek event_listings_v2 JSON body into lowest-per-section quotes.
+  // Rows use short keys: sr=section, s=section slug, p/pf/dp=price, q=available,
+  // sp=allowed split sizes. Returns [{provider, section, price, faceValue}].
+  function sgQuotesFromJson(root, qtyWanted) {
+    const bySec = {};
+    const num = (v) => {
+      if (v == null) return null;
+      if (typeof v === "object")
+        v = (v.total != null ? v.total : v.amount != null ? v.amount :
+             v.value != null ? v.value : v.price);
+      const n = typeof v === "string" ? parseFloat(v.replace(/[^\d.]/g, "")) : Number(v);
+      return (isFinite(n) && n > 3 && n < 100000) ? n : null;
+    };
+    const readPrice = (o) => {
+      for (const k of ["pf", "dp", "display_price", "price", "lowest_price",
+        "list_price", "total_price", "amount", "p"]) { const n = num(o[k]); if (n != null) return n; }
+      return null;
+    };
+    const stack = [root]; let steps = 0;
+    while (stack.length && steps < 1500000) {
+      steps++;
+      const o = stack.pop();
+      if (!o || typeof o !== "object") continue;
+      if (Array.isArray(o)) { for (const v of o) if (v && typeof v === "object") stack.push(v); continue; }
+      let secRaw = null;
+      if (typeof o.sr === "string" && o.sr) secRaw = o.sr;
+      else if (typeof o.s === "string" && o.s && (o.pf != null || o.dp != null || o.p != null)) secRaw = o.s;
+      else if (typeof o.section === "string" && o.section) secRaw = o.section;
+      if (secRaw && !/\{\{|\}\}/.test(secRaw)) {
+        const price = readPrice(o);
+        if (price != null) {
+          const q = typeof o.q === "number" ? o.q : null;
+          const sp = Array.isArray(o.sp) ? o.sp : null;
+          const okQty = (q == null || q >= qtyWanted) && (!sp || !sp.length || sp.includes(qtyWanted));
+          if (okQty) {
+            const sec = normSGSection(secRaw);
+            if (sec) {
+              const meta = JSON.stringify(o.deal_types || o.tags || o.notes || o.mk || "");
+              const obstructed = /obstruct|limited/i.test(meta);
+              if (!(sec in bySec) || price < bySec[sec].price) bySec[sec] = { price, obstructed };
+            }
+          }
+        }
+      }
+      for (const k in o) { const v = o[k]; if (v && typeof v === "object") stack.push(v); }
+    }
+    return Object.entries(bySec).map(([sec, v]) => ({
+      provider: "SeatGeek",
+      section: v.obstructed ? `${sec} (obstructed)` : sec,
+      price: Math.round(v.price * 100) / 100, faceValue: null,
+    }));
   }
 
   const host = location.host;
@@ -178,24 +255,65 @@
 
   /* ════════════════════════ SeatGeek worker ══════════════════════════════ */
   if (onSeatGeek) {
+    const isEvent = /\/\d{6,}(?:\?|$|\/)/.test(location.pathname);
+    const apiJob = GM_getValue("yk_sg_apijob", null);
+    const apiActive = apiJob && apiJob.active && (Date.now() - apiJob.startedAt) < JOB_TTL;
     const job = GM_getValue("yk_sg_job", null);
     const active = job && job.active && (Date.now() - job.startedAt) < JOB_TTL;
-    // The team page is used to harvest event URLs; event pages to scrape.
-    const isEvent = /\/\d{6,}(?:\?|$|\/)/.test(location.pathname);
-    if (active && isEvent) {
-      // SeatGeek loads per-section listings over the network AFTER page load —
-      // they're not in __NEXT_DATA__ — so install a page-context capture of
-      // fetch/XHR responses NOW (document-start), before the page calls them.
+    if (apiActive && isEvent) {
+      // Direct-API mode: this one tab establishes a real SeatGeek session (the
+      // page's own load passes DataDome + sets cookies), then fetches every
+      // game's listings straight from event_listings_v2 — no tab per game.
+      installSGNetHook();
+      seatgeekApiDriver(apiJob).catch((e) => console.error("[collector/SeatGeek api]", e));
+    } else if (active && isEvent) {
+      // Legacy per-tab mode (used by the single-game probe): capture the page's
+      // own network calls and parse them.
       installSGNetHook();
       seatgeekWorker().catch((e) => console.error("[collector/SeatGeek]", e));
     } else if (active && /yankees-tickets|new-york-yankees/.test(location.pathname)) {
-      // Harvest runs on the team page after render.
       if (document.readyState === "loading")
         document.addEventListener("DOMContentLoaded", () =>
           seatgeekHarvest().catch((e) => console.error("[collector/SeatGeek harvest]", e)));
       else seatgeekHarvest().catch((e) => console.error("[collector/SeatGeek harvest]", e));
     }
     return;
+  }
+
+  // Runs inside ONE SeatGeek event tab. Waits until the page's own session is
+  // live (its own event_listings_v2 call succeeds → DataDome passed), then
+  // fetches each game's listings directly (same-origin, cookies included) with
+  // gentle spacing. Posts one combined result for the controller to publish.
+  async function seatgeekApiDriver(job) {
+    const qty = job.qty || 2;
+    const eids = job.eids || [];
+    const w = (function () { try { return (typeof unsafeWindow !== "undefined") ? unsafeWindow : window; } catch (e) { return window; } })();
+
+    // Wait for the page's own listings call to land (session established), or a
+    // hard timeout — then also give DataDome a moment to settle.
+    for (let i = 0; i < 70; i++) {
+      if (SG_CAPTURES.some((c) => /event_listings/i.test(c.url))) break;
+      await sleep(500);
+    }
+    await sleep(1500);
+
+    const byEid = {}; const diag = { qty, fetched: [] };
+    for (const eid of eids) {
+      let status = 0, n = 0, ok = false, blocked = false;
+      try {
+        const res = await w.fetch(sgListingsUrl(eid, qty), { credentials: "include" });
+        status = res.status;
+        const txt = await res.text();
+        blocked = /datadome|captcha|are you a robot/i.test(txt.slice(0, 500));
+        let json = null; try { json = JSON.parse(txt); } catch (e) {}
+        if (json) { const quotes = sgQuotesFromJson(json, qty); byEid[eid] = quotes; n = quotes.length; ok = n > 0; }
+      } catch (e) { diag.err = String(e).slice(0, 140); }
+      diag.fetched.push({ eid, status, n, blocked });
+      GM_setValue("yk_sg_apiprogress", { done: diag.fetched.length, total: eids.length, eid, n });
+      await sleep(1200 + Math.random() * 1500);
+    }
+    console.log("[collector/SeatGeek api] done", diag);
+    GM_setValue("yk_sg_apiresult", { ts: Date.now(), byEid, diag });
   }
 
   // Wrap the PAGE's fetch/XHR to record responses. SeatGeek's CSP blocks an
@@ -701,87 +819,52 @@
   }
 
   async function runSeatGeek() {
-    // 1) Harvest event URLs from the team page in a background tab.
-    GM_deleteValue("yk_sg_harvest");
-    GM_setValue("yk_sg_job", { active: true, startedAt: Date.now() });
-    const htab = GM_openInTab("https://seatgeek.com/new-york-yankees-tickets", { active: false, insert: true });
-    let harvest = null;
-    for (let w = 0; w < 60; w++) { harvest = GM_getValue("yk_sg_harvest", null); if (harvest) break; await sleep(500); }
-    try { htab.close(); } catch {}
-    const rows = (harvest && harvest.rows) || [];
-    const harvestDiag = (harvest && harvest.diag) ||
-      { note: "harvest tab produced no result — the script may not have run on the team page (check @match / the page 403'd)" };
+    // Direct-API mode: open ONE SeatGeek event tab to establish a real session
+    // (its own page load passes DataDome + sets cookies), then that tab fetches
+    // every game's listings straight from event_listings_v2. No tab per game,
+    // so no CDN rate-limit flood.
+    const qty = qtyNow();
+    const eids = Object.keys(SG_EID_TO_PK).map(Number);
+    GM_deleteValue("yk_sg_apiresult");
+    GM_deleteValue("yk_sg_apiprogress");
+    GM_setValue("yk_sg_apijob", { active: true, startedAt: Date.now(), eids, qty });
 
-    // Always publish the harvest diagnostic so the team-page structure is
-    // visible for tuning, even when zero games were harvested.
-    const publishDiag = (perEvent) => putFile(
-      `/contents/yankees-tickets/data/_seatgeek-diag.json`,
-      { fetchedAt: new Date().toISOString(), harvestDiag, harvested: rows, perEvent: perEvent || [] },
-      "SeatGeek collector diagnostic (tuning)");
+    setChip("SeatGeek: opening session…", true);
+    const seedEid = 17691551;                        // known-good event
+    const seedUrl = (SG_EID_TO_URL[seedEid] || SEATGEEK_URLS[2]) + "?quantity=" + qty;
+    const tab = GM_openInTab(seedUrl, { active: true, insert: true });
 
-    // Event list = the static URL map (all 17 home games, incl. sequential
-    // guesses for 9/24–9/27) unioned with anything freshly harvested, deduped
-    // by eventId. gamePk is resolved per-event from the real date/time the
-    // worker reads off the page, so a wrong guess simply contributes nothing.
-    const byEid = new Map();
-    for (const u of SEATGEEK_URLS) {
-      const eid = (u.match(/\/(\d{5,})/) || [])[1];
-      if (eid) byEid.set(eid, u);
+    let res = null;
+    for (let w = 0; w < 260; w++) {                  // up to ~130s
+      res = GM_getValue("yk_sg_apiresult", null);
+      if (res) break;
+      const p = GM_getValue("yk_sg_apiprogress", null);
+      if (p) setChip(`SeatGeek: ${p.done}/${p.total} games…`, true);
+      await sleep(500);
     }
-    for (const r of rows) {
-      const eid = (r.url.match(/\/(\d{5,})/) || [])[1];
-      if (eid && !byEid.has(eid)) byEid.set(eid, r.url);
-    }
-    const entries = [...byEid.entries()].map(([eid, url]) => [eid, url, null]);
+    try { tab.close(); } catch {}
+    GM_setValue("yk_sg_apijob", { active: false, startedAt: 0 });
 
-    // SeatGeek loads prices only when its Mapbox seat-map initializes, which is
-    // deferred while a tab is in the background — so open these FOREGROUND
-    // (active). Give each tab a comfortable window (the worker itself needs up
-    // to ~46s) and space them out, since hammering SeatGeek trips DataDome
-    // (which redirects tabs away from the event page → the worker never runs).
-    const sgOpts = { active: true, waits: 120, gapMin: 7000, gapRand: 5000 };
-    const { qty } = await cycle("SeatGeek", "yk_sg_job", entries,
-      (eid) => "yk_sg_result_" + eid, true, sgOpts);
-
-    // Retry pass: any event with no result (or zero sections) — usually a
-    // DataDome redirect or a slow tab that got cut off — gets one more try,
-    // keeping the good results already collected.
-    const missed = entries.filter(([eid]) => {
-      const r = GM_getValue("yk_sg_result_" + eid, null);
-      return !r || !r.quotes || !r.quotes.length;
-    });
-    if (missed.length) {
-      setChip(`SeatGeek retry ${missed.length}…`, true);
-      await cycle("SeatGeek retry", "yk_sg_job", missed,
-        (eid) => "yk_sg_result_" + eid, true,
-        Object.assign({}, sgOpts, { keepResults: true, gapMin: 10000, gapRand: 6000 }));
-    }
-
-    // Rebuild results with gamePk resolved from each event's actual date/time.
+    const byEid = (res && res.byEid) || {};
     const collected = [];
-    const diags = entries.map(([eid, url]) => {
-      const r = GM_getValue("yk_sg_result_" + eid, null);
-      const pk = r ? sgGamePk(r.eventDate, r.eventHour) : null;
-      if (r && r.quotes) {
-        for (const q of r.quotes) {
-          if (pk) collected.push(Object.assign({}, q, { gamePk: pk, url }));
-        }
-      }
-      return {
-        eid, url, gamePk: pk,
-        date: r ? r.eventDate : null, hour: r ? r.eventHour : null,
-        sections: r ? r.quotes.length : 0,
-        matched: pk ? (r ? r.quotes.length : 0) : 0,
-        diag: r ? r.diag : "no result",
-      };
-    });
-    await publishDiag(diags);
+    for (const [eid, quotes] of Object.entries(byEid)) {
+      const pk = SG_EID_TO_PK[eid];
+      const url = SG_EID_TO_URL[eid] || `https://seatgeek.com/e/${eid}`;
+      if (!pk || !Array.isArray(quotes)) continue;
+      for (const q of quotes) collected.push(Object.assign({}, q, { gamePk: pk, url }));
+    }
+
+    await putFile(`/contents/yankees-tickets/data/_seatgeek-diag.json`,
+      { fetchedAt: new Date().toISOString(), mode: "direct-api",
+        result: res ? res.diag : "no result (session tab produced nothing)",
+        games: new Set(collected.map((q) => q.gamePk)).size, quotes: collected.length },
+      "SeatGeek collector diagnostic (direct API)");
+
     if (collected.length) {
       await putFile(`/contents/yankees-tickets/data/listings-seatgeek-${qty}.json`,
         { fetchedAt: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"), quotes: collected },
-        `SeatGeek listings (blocks of ${qty}, browser collector)`);
+        `SeatGeek listings (blocks of ${qty}, browser collector, direct API)`);
     }
-    GM_setValue("yk_sg_job", { active: false, startedAt: 0 });
     const games = new Set(collected.map((q) => q.gamePk)).size;
     setChip(`SeatGeek: ${collected.length} prices across ${games} games`);
     return collected.length;
