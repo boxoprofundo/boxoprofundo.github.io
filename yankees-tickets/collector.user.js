@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.5.0
+// @version      2.6.0
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -109,10 +109,16 @@
   function normSGSection(raw) {
     let s = String(raw || "").trim().toLowerCase();
     s = s.replace(/^(sections?|sec)[-_ ]+/, "");
+    // Premium/named areas: keep a readable name rather than reducing to a stray
+    // number (e.g. "legends-suite-12" must not become section "12").
+    if (/suite|mvp|legend|delta|club|lounge|porch|steak|audi|beam|ford|budweiser|party|deck|patio|standing|\bsro\b|premium|dugout/.test(s)) {
+      const named = s.replace(/[^a-z0-9]+/g, " ").trim().toUpperCase();
+      return named ? named.slice(0, 16) : null;
+    }
     const m = s.match(/\d{1,3}/);
     if (m) return m[0];
     const named = s.replace(/[^a-z0-9]+/g, " ").trim().toUpperCase();
-    return named ? named.slice(0, 14) : null;
+    return named ? named.slice(0, 16) : null;
   }
 
   const host = location.host;
@@ -374,25 +380,32 @@
     const diag = { url: location.href };
     const bySec = {};
     let sampleListing = null, sampleSection = null, listingCount = 0;
+    const qtyWanted = Math.max(1, parseInt(
+      new URLSearchParams(location.search).get("quantity"), 10) || 2);
 
-    const PRICE_KEYS = ["price", "pf", "display_price", "lowest_price",
-      "list_price", "p", "amount", "total_price", "dp", "sp", "ep"];
+    const num = (v) => {
+      if (v == null) return null;
+      if (typeof v === "object")
+        v = (v.total != null ? v.total : v.amount != null ? v.amount :
+             v.value != null ? v.value : v.price);
+      const n = typeof v === "string" ? parseFloat(v.replace(/[^\d.]/g, "")) : Number(v);
+      return (isFinite(n) && n > 3 && n < 100000) ? n : null;
+    };
+    // All-in per-ticket price, preferring fee-inclusive fields. SeatGeek's real
+    // event_listings_v2 objects use short keys: pf = price+fees, dp = display,
+    // p = base; long-form feeds use price / display_price / etc.
     const readPrice = (o) => {
-      for (const k of PRICE_KEYS) {
-        let v = o[k];
-        if (v == null) continue;
-        if (typeof v === "object")
-          v = (v.total != null ? v.total : v.amount != null ? v.amount :
-               v.value != null ? v.value : v.price);
-        const n = typeof v === "string" ? parseFloat(v.replace(/[^\d.]/g, "")) : Number(v);
-        if (isFinite(n) && n > 3 && n < 100000) return n;
-      }
+      const keys = ["pf", "dp", "display_price", "price", "lowest_price",
+        "list_price", "total_price", "amount", "p"];
+      for (const k of keys) { const n = num(o[k]); if (n != null) return n; }
       return null;
     };
-    // Deep-walk one parsed JSON root, folding any listing objects into bySec.
+    // Deep-walk one parsed JSON root, folding listing objects into bySec. Handles
+    // two shapes: (a) long-form { "section": "318", "price": … } and (b) the real
+    // SeatGeek API row { "sr":"136","s":"field level 136","q":2,"sp":[2],"pf":… }.
     const walk = (root) => {
       const stack = [root]; let steps = 0;
-      while (stack.length && steps < 800000) {
+      while (stack.length && steps < 1500000) {
         steps++;
         const o = stack.pop();
         if (!o || typeof o !== "object") continue;
@@ -400,20 +413,31 @@
           for (const v of o) if (v && typeof v === "object") stack.push(v);
           continue;
         }
-        const secRaw = (typeof o.section === "string" && o.section) ? o.section :
-          (typeof o.section_id === "string" && o.section_id) ? o.section_id : null;
+        // Section id: prefer the raw section number sr; fall back to s / section.
+        let secRaw = null;
+        if (typeof o.sr === "string" && o.sr) secRaw = o.sr;
+        else if (typeof o.s === "string" && o.s && (o.pf != null || o.dp != null || o.p != null)) secRaw = o.s;
+        else if (typeof o.section === "string" && o.section) secRaw = o.section;
+        else if (typeof o.section_id === "string" && o.section_id) secRaw = o.section_id;
         // Ignore i18n template strings like "Section {{section}}".
         if (secRaw && !/\{\{|\}\}/.test(secRaw)) {
           if (!sampleSection) sampleSection = JSON.stringify(o).slice(0, 900);
           const price = readPrice(o);
           if (price != null) {
-            listingCount++;
-            if (!sampleListing) sampleListing = JSON.stringify(o).slice(0, 900);
-            const sec = normSGSection(secRaw);
-            if (sec) {
-              const meta = JSON.stringify(o.deal_types || o.tags || o.notes || o.disclosures || o.dp || "");
-              const obstructed = /obstruct|limited/i.test(meta);
-              if (!(sec in bySec) || price < bySec[sec].price) bySec[sec] = { price, obstructed };
+            // Quantity filter: q = available seats, sp = allowed split sizes.
+            const q = typeof o.q === "number" ? o.q : null;
+            const sp = Array.isArray(o.sp) ? o.sp : null;
+            const okQty = (q == null || q >= qtyWanted) &&
+              (!sp || !sp.length || sp.includes(qtyWanted));
+            if (okQty) {
+              listingCount++;
+              if (!sampleListing) sampleListing = JSON.stringify(o).slice(0, 900);
+              const sec = normSGSection(secRaw);
+              if (sec) {
+                const meta = JSON.stringify(o.deal_types || o.tags || o.notes || o.disclosures || o.mk || "");
+                const obstructed = /obstruct|limited/i.test(meta);
+                if (!(sec in bySec) || price < bySec[sec].price) bySec[sec] = { price, obstructed };
+              }
             }
           }
         }
@@ -466,7 +490,16 @@
     let capIdx = 0;
     const seenScripts = new WeakSet();
     const gather = () => {
-      for (; capIdx < SG_CAPTURES.length; capIdx++) parseText(SG_CAPTURES[capIdx].body);
+      // Network bodies (e.g. event_listings_v2) are pure JSON with short-key
+      // rows that don't contain the literal "section" — always JSON-parse+walk;
+      // fall back to the brace/flight scanner only if it isn't clean JSON.
+      for (; capIdx < SG_CAPTURES.length; capIdx++) {
+        const body = SG_CAPTURES[capIdx].body;
+        let parsed = null;
+        try { parsed = JSON.parse(body); } catch (e) {}
+        if (parsed) walk(parsed);
+        else scanForListings(body, walk, 0);
+      }
       for (const s of document.querySelectorAll("script")) {
         if (seenScripts.has(s)) continue;
         seenScripts.add(s);
