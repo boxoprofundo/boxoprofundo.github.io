@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.8.0
+// @version      2.8.1
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
