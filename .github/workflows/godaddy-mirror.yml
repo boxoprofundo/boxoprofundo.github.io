@@ -1,0 +1,92 @@
+name: GoDaddy site mirror (one-shot)
+
+# One-shot archival job: mirrors everything publicly served by the GoDaddy
+# hosting for mikeboxer.com (all discoverable subdomains) and commits the
+# files to this branch under godaddy-archive/. Run manually; delete the
+# workflow once the hosting is sunset.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Discover mikeboxer.com hosts
+        id: hosts
+        run: |
+          set -x
+          # Known hosts plus anything in certificate-transparency logs.
+          printf '%s\n' mikeboxer.com www.mikeboxer.com acappella.mikeboxer.com > hosts.txt
+          curl -sS --max-time 60 'https://crt.sh/?q=%25.mikeboxer.com&output=json' \
+            | jq -r '.[].name_value' 2>/dev/null \
+            | tr '[:upper:]' '[:lower:]' | tr ' ' '\n' \
+            | grep -E '^[a-z0-9._-]+\.mikeboxer\.com$|^mikeboxer\.com$' \
+            | grep -v '^\*' >> hosts.txt || true
+          sort -u hosts.txt -o hosts.txt
+          echo "Candidate hosts:"; cat hosts.txt
+          # Keep only hosts that resolve and answer HTTP(S)
+          : > live-hosts.txt
+          while read -r h; do
+            if curl -sS -o /dev/null --max-time 20 -w '%{http_code}' "https://$h/" | grep -qE '^[23]|^40[13]'; then
+              echo "$h" >> live-hosts.txt
+            elif curl -sS -o /dev/null --max-time 20 -w '%{http_code}' "http://$h/" | grep -qE '^[23]|^40[13]'; then
+              echo "http-only:$h" >> live-hosts.txt
+            fi
+          done < hosts.txt
+          echo "Live hosts:"; cat live-hosts.txt
+
+      - name: Mirror each live host
+        run: |
+          mkdir -p godaddy-archive
+          ALL_DOMAINS=$(sed 's/^http-only://' live-hosts.txt | paste -sd, -)
+          while read -r entry; do
+            scheme=https; host=$entry
+            case "$entry" in http-only:*) scheme=http; host=${entry#http-only:};; esac
+            echo "=== Mirroring $scheme://$host/ ==="
+            # -e robots=off: this is the owner archiving their own site.
+            wget --mirror --page-requisites --adjust-extension \
+                 --no-check-certificate \
+                 --restrict-file-names=windows \
+                 --span-hosts --domains="$ALL_DOMAINS" \
+                 --reject-regex '.*(logout|wp-login|xmlrpc).*' \
+                 --tries=3 --timeout=30 --wait=0.2 --random-wait \
+                 --user-agent='Mozilla/5.0 (site owner archival; boxoprofundo@gmail.com)' \
+                 -P godaddy-archive \
+                 "$scheme://$host/" || echo "wget exited $? for $host (partial mirror kept)"
+            # Grab common unlinked files explicitly
+            for f in robots.txt sitemap.xml sitemap_index.xml favicon.ico; do
+              wget -q --timeout=20 --no-check-certificate -P "godaddy-archive/$host" "$scheme://$host/$f" || true
+            done
+          done < live-hosts.txt
+
+      - name: Manifest and size guard
+        run: |
+          cd godaddy-archive
+          find . -type f -printf '%s\t%p\n' | sort -k2 > MANIFEST.tsv
+          echo "Total files: $(wc -l < MANIFEST.tsv)"
+          echo "Total size: $(du -sh . | cut -f1)"
+          # GitHub rejects files >100MB; move any offenders to a list instead
+          find . -type f -size +95M -printf '%s\t%p\n' > ../oversize.txt || true
+          if [ -s ../oversize.txt ]; then
+            echo "OVERSIZE FILES (not committed, listed in OVERSIZE-NOT-COMMITTED.txt):"
+            cat ../oversize.txt
+            cp ../oversize.txt OVERSIZE-NOT-COMMITTED.txt
+            while IFS=$'\t' read -r sz p; do rm -f "$p"; done < ../oversize.txt
+          fi
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f godaddy-archive hosts.txt live-hosts.txt
+          git commit -m "Archive GoDaddy-hosted site files (mikeboxer.com mirror)" || { echo "Nothing to commit"; exit 0; }
+          git push origin "HEAD:${{ github.ref_name }}"
