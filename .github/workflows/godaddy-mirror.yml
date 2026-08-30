@@ -7,6 +7,11 @@ name: GoDaddy site mirror (one-shot)
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - claude/godaddy-file-migration-qs6x49
+    paths:
+      - .github/workflows/godaddy-mirror.yml
 
 permissions:
   contents: write
