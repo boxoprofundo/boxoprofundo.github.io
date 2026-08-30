@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NYY Aggregator — SeatGeek + StubHub collector
 // @namespace    boxoprofundo.github.io/yankees-tickets
-// @version      2.8.1
+// @version      2.9.0
 // @description  Scrapes SeatGeek and StubHub Yankees prices from YOUR real logged-in browser (where they render normally) and publishes them to the aggregator. Both sites block automated browsers, so this is the only way to get their per-section prices.
 // @author       boxoprofundo
 // @updateURL    https://boxoprofundo.github.io/yankees-tickets/collector.user.js
@@ -288,30 +288,64 @@
     const qty = job.qty || 2;
     const eids = job.eids || [];
     const w = (function () { try { return (typeof unsafeWindow !== "undefined") ? unsafeWindow : window; } catch (e) { return window; } })();
+    const diag = { qty, fetched: [] };
 
-    // Wait for the page's own listings call to land (session established), or a
-    // hard timeout — then also give DataDome a moment to settle.
-    for (let i = 0; i < 70; i++) {
-      if (SG_CAPTURES.some((c) => /event_listings/i.test(c.url))) break;
+    // Is the seed page itself a DataDome / CDN block page?
+    const pageBlocked = () => {
+      try {
+        const t = (document.body ? document.body.innerText : "") + " " + (document.title || "");
+        return /are you a robot|verify you are human|access denied|pardon the interruption|max restarts|error 5\d\d|unusual (traffic|activity)/i.test(t);
+      } catch (e) { return false; }
+    };
+
+    // Brief wait for the page's own listings call (session established), bailing
+    // early if the seed page is clearly a block page.
+    for (let i = 0; i < 40; i++) {                    // up to ~20s
+      if (SG_CAPTURES.some((c) => /event_listings/i.test(c.url))) { diag.saw_listings = true; break; }
+      if (i > 6 && pageBlocked()) { diag.seed_blocked = true; break; }
       await sleep(500);
     }
-    await sleep(1500);
 
-    const byEid = {}; const diag = { qty, fetched: [] };
-    for (const eid of eids) {
-      let status = 0, n = 0, ok = false, blocked = false;
+    // One fetch with a hard 9s timeout so a stalled (blocked) connection can
+    // never hang the whole run.
+    const fetchOne = async (eid) => {
+      const ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+      const to = ctrl ? setTimeout(() => { try { ctrl.abort(); } catch (e) {} }, 9000) : null;
       try {
-        const res = await w.fetch(sgListingsUrl(eid, qty), { credentials: "include" });
-        status = res.status;
+        const res = await w.fetch(sgListingsUrl(eid, qty),
+          ctrl ? { credentials: "include", signal: ctrl.signal } : { credentials: "include" });
         const txt = await res.text();
-        blocked = /datadome|captcha|are you a robot/i.test(txt.slice(0, 500));
+        if (to) clearTimeout(to);
+        const blocked = /datadome|captcha|are you a robot|max restarts|^\s*<(!doctype|html)/i.test(txt.slice(0, 200));
         let json = null; try { json = JSON.parse(txt); } catch (e) {}
-        if (json) { const quotes = sgQuotesFromJson(json, qty); byEid[eid] = quotes; n = quotes.length; ok = n > 0; }
-      } catch (e) { diag.err = String(e).slice(0, 140); }
-      diag.fetched.push({ eid, status, n, blocked });
-      GM_setValue("yk_sg_apiprogress", { done: diag.fetched.length, total: eids.length, eid, n });
-      await sleep(1200 + Math.random() * 1500);
+        const quotes = json ? sgQuotesFromJson(json, qty) : [];
+        return { status: res.status, n: quotes.length, blocked, quotes };
+      } catch (e) {
+        if (to) clearTimeout(to);
+        const timeout = e && (e.name === "AbortError" || /abort/i.test(String(e)));
+        return { status: timeout ? "timeout" : "error", n: 0, blocked: false, quotes: [] };
+      }
+    };
+
+    const byEid = {}; let consecFail = 0;
+    for (let idx = 0; idx < eids.length; idx++) {
+      const eid = eids[idx];
+      const r = await fetchOne(eid);
+      if (r.n > 0) byEid[eid] = r.quotes;
+      diag.fetched.push({ eid, status: r.status, n: r.n, blocked: r.blocked });
+      GM_setValue("yk_sg_apiprogress", { done: idx + 1, total: eids.length, eid, n: r.n });
+      const fail = r.n === 0 && (r.blocked || r.status === "timeout" || r.status === "error" ||
+        (typeof r.status === "number" && r.status >= 400));
+      consecFail = fail ? consecFail + 1 : 0;
+      // If the first handful all fail and nothing has come back, it's a block —
+      // stop early rather than grinding through 17 stalled calls.
+      if (consecFail >= 3 && Object.keys(byEid).length === 0) { diag.aborted_early = true; break; }
+      await sleep(700 + Math.random() * 600);
     }
+
+    diag.blocked = Object.keys(byEid).length === 0 && (diag.seed_blocked ||
+      diag.fetched.some((f) => f.blocked || f.status === "timeout" ||
+        f.status === 403 || f.status === 503));
     console.log("[collector/SeatGeek api] done", diag);
     GM_setValue("yk_sg_apiresult", { ts: Date.now(), byEid, diag });
   }
@@ -835,7 +869,7 @@
     const tab = GM_openInTab(seedUrl, { active: true, insert: true });
 
     let res = null;
-    for (let w = 0; w < 260; w++) {                  // up to ~130s
+    for (let w = 0; w < 400; w++) {                  // up to ~200s
       res = GM_getValue("yk_sg_apiresult", null);
       if (res) break;
       const p = GM_getValue("yk_sg_apiprogress", null);
@@ -866,7 +900,14 @@
         `SeatGeek listings (blocks of ${qty}, browser collector, direct API)`);
     }
     const games = new Set(collected.map((q) => q.gamePk)).size;
-    setChip(`SeatGeek: ${collected.length} prices across ${games} games`);
+    if (collected.length) {
+      setChip(`SeatGeek: ${collected.length} prices across ${games} games`);
+    } else if (!res || (res.diag && res.diag.blocked) || (res.diag && res.diag.seed_blocked)) {
+      // Distinguish an active bot-block from a genuine empty result.
+      setChip("SeatGeek: blocked by DataDome — try later or another network");
+    } else {
+      setChip("SeatGeek: 0 (no listings found)");
+    }
     return collected.length;
   }
 
