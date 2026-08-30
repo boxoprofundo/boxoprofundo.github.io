@@ -1,0 +1,109 @@
+name: GoDaddy FTP backup (one-shot)
+
+# Pulls the entire GoDaddy hosting account over FTP/FTPS from a GitHub Actions
+# runner (which has open internet; the domain is blocked elsewhere), tars it,
+# encrypts it with your passphrase, and uploads it as an ENCRYPTED workflow
+# artifact. Nothing is ever committed to this public repo.
+#
+# Required repo secrets (Settings -> Secrets and variables -> Actions -> New):
+#   GODADDY_FTP_HOST    e.g. the server hostname/IP from cPanel -> FTP Accounts
+#                       -> "Configure FTP Client" (looks like
+#                       a2plcpnlXXXX.prod.iad2.secureserver.net, or the IP)
+#   GODADDY_FTP_USER    your FTP / cPanel username (was: mikebox@mikeboxer.com)
+#   GODADDY_FTP_PASS    that FTP account's password
+#   BACKUP_PASSPHRASE   any strong passphrase you choose; you'll need it to
+#                       decrypt the download
+# Optional:
+#   GODADDY_REMOTE_DIR  remote path to mirror (default "." = the login's home
+#                       dir, which includes public_html and everything else)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - claude/godaddy-file-migration-qs6x49
+    paths:
+      - .github/workflows/godaddy-ftp-backup.yml
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Preflight (check secrets are set)
+        id: pre
+        env:
+          FTP_HOST: ${{ secrets.GODADDY_FTP_HOST }}
+          FTP_USER: ${{ secrets.GODADDY_FTP_USER }}
+          FTP_PASS: ${{ secrets.GODADDY_FTP_PASS }}
+          PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          missing=0
+          for v in FTP_HOST FTP_USER FTP_PASS PASSPHRASE; do
+            if [ -z "${!v}" ]; then echo "::warning::secret $v is not set"; missing=1; fi
+          done
+          if [ "$missing" = "1" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Set the required secrets, then re-run this workflow. Skipping for now."
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install lftp
+        if: steps.pre.outputs.ready == 'true'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Mirror account over FTP/FTPS
+        if: steps.pre.outputs.ready == 'true'
+        env:
+          FTP_HOST: ${{ secrets.GODADDY_FTP_HOST }}
+          FTP_USER: ${{ secrets.GODADDY_FTP_USER }}
+          FTP_PASS: ${{ secrets.GODADDY_FTP_PASS }}
+          REMOTE_DIR: ${{ secrets.GODADDY_REMOTE_DIR }}
+        run: |
+          set -e
+          mkdir -p mirror
+          : "${REMOTE_DIR:=.}"
+          # Try FTPS first, allow fallback to plain FTP; passive mode for runners.
+          lftp <<EOF
+          set ftp:ssl-allow true
+          set ftp:ssl-force false
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate no
+          set ftp:passive-mode on
+          set net:max-retries 3
+          set net:timeout 25
+          set mirror:parallel-transfer-count 3
+          open -u "$FTP_USER","$FTP_PASS" "$FTP_HOST"
+          mirror --continue --no-perms --verbose "$REMOTE_DIR" mirror
+          bye
+          EOF
+          echo "---- mirror summary ----"
+          echo "files: $(find mirror -type f | wc -l)"
+          echo "size:  $(du -sh mirror | cut -f1)"
+
+      - name: Tar + encrypt
+        if: steps.pre.outputs.ready == 'true'
+        env:
+          PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          set -e
+          stamp=$(date -u +%Y%m%d)
+          tar czf - -C mirror . \
+            | openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt \
+                -pass env:PASSPHRASE \
+                -out "godaddy-mikeboxer-backup-${stamp}.tar.gz.enc"
+          echo "encrypted archive:"
+          ls -lh godaddy-mikeboxer-backup-*.tar.gz.enc
+
+      - name: Upload encrypted artifact
+        if: steps.pre.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: godaddy-backup-encrypted
+          path: godaddy-mikeboxer-backup-*.tar.gz.enc
+          retention-days: 7
+          if-no-files-found: error
