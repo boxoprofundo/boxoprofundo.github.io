@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hammers Super Bowl Squares</title>
-<meta name="description" content="Buy Super Bowl squares at $20 each to support the Hammers baseball team.">
+<title>Hammers Thanksgiving Boxes</title>
+<meta name="description" content="Buy Thanksgiving Day football boxes at $20 each to support the NY Hammers 12U baseball team.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -151,11 +151,11 @@
 
 <header class="board">
   <div class="wrap">
-    <div class="eyebrow">Hammers Baseball Fundraiser</div>
-    <h1>Super Bowl Squares</h1>
-    <p class="lede">$20 a square. Half the pot goes back to the winners and half goes to the team.</p>
+    <div class="eyebrow">NY Hammers 12U Fundraiser</div>
+    <h1>Thanksgiving Day Boxes</h1>
+    <p class="lede">Chiefs at Bills, Thursday, November 26. $20 a box. Half the pot goes back to the winners and half goes to the team.</p>
     <div class="tally" aria-live="polite">
-      <span class="chip" id="chip-left">100 squares</span>
+      <span class="chip" id="chip-left">99 boxes</span>
       <span class="chip">$1,000 in prizes</span>
     </div>
   </div>
@@ -167,7 +167,7 @@
     <p class="notice" id="preview-note" hidden>Preview mode: this page isn't connected to the sign-up sheet yet, so nothing you enter is saved.</p>
 
     <section class="card" id="signup-card" aria-labelledby="signup-h">
-      <h2 id="signup-h">Get your squares</h2>
+      <h2 id="signup-h">Get your boxes</h2>
       <p class="notice" id="closed-note" hidden>Sign-ups are closed. Thanks for supporting the team!</p>
       <form id="signup" novalidate>
         <div class="field">
@@ -184,22 +184,20 @@
             <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30">
           </div>
         </div>
-        <p class="hint" style="margin:-8px 0 0">Give us an email or a phone number so we can tell you where your squares are.</p>
+        <p class="hint" style="margin:-8px 0 0">Give us an email or a phone number so we can tell you where your boxes are.</p>
 
         <div class="field">
           <label for="player">Which player are you supporting?</label>
-          <select id="player" name="player">
-            <option value="The whole team">The whole team</option>
-          </select>
+          <select id="player" name="player" required></select>
         </div>
 
         <div class="field">
-          <label id="qty-label">How many squares?</label>
+          <label id="qty-label">How many boxes?</label>
           <div class="qty">
             <div class="stepper" role="group" aria-labelledby="qty-label">
-              <button type="button" id="minus" aria-label="One fewer square">−</button>
+              <button type="button" id="minus" aria-label="One fewer box">−</button>
               <output id="qty" aria-live="polite">1</output>
-              <button type="button" id="plus" aria-label="One more square">+</button>
+              <button type="button" id="plus" aria-label="One more box">+</button>
             </div>
             <span class="total" id="total">$20</span>
           </div>
@@ -226,7 +224,7 @@
         </div>
 
         <p class="error" id="error" role="alert"></p>
-        <button class="primary" id="submit" type="submit">Reserve my squares</button>
+        <button class="primary" id="submit" type="submit">Reserve my boxes</button>
       </form>
 
       <div class="done" id="done" hidden>
@@ -234,7 +232,7 @@
         <h2 style="margin:0">You're in. Now send your payment.</h2>
         <div class="bignum" id="done-amount"></div>
         <div id="pay-steps" class="done" style="animation:none"></div>
-        <p class="hint" id="done-after">Your squares are reserved. They count once the team receives your payment. We'll let you know where your squares are on the board before the game.</p>
+        <p class="hint" id="done-after">Your boxes are reserved. They count once the team receives your payment. We'll let you know where your boxes are on the board before the game.</p>
         <a class="btn alt" href="#" id="again">Sign up someone else</a>
       </div>
     </section>
@@ -249,9 +247,9 @@
       </div>
       <ul class="rules">
         <li>The board is a 10 by 10 grid, one team across the top and the other down the side.</li>
-        <li>At the end of each quarter, the last digit of each team's score determines the winning square.</li>
+        <li>At the end of each quarter, the last digit of each team's score determines the winning box.</li>
       </ul>
-      <p class="example">Example: if it's <strong>17 to 24</strong> at halftime, the square at <strong>7</strong> and <strong>4</strong> wins $250.</p>
+      <p class="example">Example: if it's <strong>Chiefs 17, Bills 24</strong> at halftime, the box where <strong>7</strong> and <strong>4</strong> meet wins $250.</p>
     </section>
 
   </div>
@@ -263,7 +261,7 @@
 /* ---------- Settings: fill these in ---------- */
 const CONFIG = {
   // The Apps Script web app URL (ends in /exec). Leave empty to run in preview mode.
-  apiUrl: "",
+  apiUrl: "https://script.google.com/macros/s/AKfycbyt_hwYe2ZycOXZhySjPxMBeI5r6OHsvTGWYKKlS1Fwh5N5q4F62nqxeMn2Q91V-E8m/exec",
   venmo: "",          // Venmo username, without the @
   paypal: "",         // paypal.me name, e.g. "MikeBoxer" for paypal.me/MikeBoxer
   zelle: "",          // phone or email registered with Zelle
@@ -271,20 +269,26 @@ const CONFIG = {
   checksPayableTo: "",// who checks are made out to
   cashCheckNote: "Hand it to Coach or any team parent at practice.",
   contact: "",        // shown in the footer, e.g. an email address
-  price: 20,          // fallback until the sheet answers
-  total: 100
+  price: 20           // fallback until the sheet answers
 };
 /* --------------------------------------------- */
 
 const $ = (id) => document.getElementById(id);
 const money = (n) => "$" + Number(n).toLocaleString("en-US");
-let price = CONFIG.price, left = CONFIG.total, maxPer = 20, qty = 1;
+let price = CONFIG.price, left = 99, players = [], qty = 1;
+const PREVIEW_PLAYERS = ["Max Boxer", "Michael Chin", "Owen Huber", "Zachary Liu", "Lukas Mariano", "Dylan McGeough", "Yadi Molina", "Matthew Pineda", "Jayden Williams"].map((name) => ({ name, left: 11 }));
 
 $("contact").textContent = CONFIG.contact || "Ask any Hammers coach or team parent.";
 
+function playerLeft() {
+  const p = players.find((x) => x.name === $("player").value);
+  return p ? p.left : 0;
+}
+
 function renderQty() {
-  const cap = Math.max(1, Math.min(maxPer, left));
+  const cap = Math.max(1, playerLeft());
   if (qty > cap) qty = cap;
+  if (qty < 1) qty = 1;
   $("qty").textContent = qty;
   $("total").textContent = money(qty * price);
   $("minus").disabled = qty <= 1;
@@ -292,24 +296,29 @@ function renderQty() {
 }
 $("minus").onclick = () => { qty--; renderQty(); };
 $("plus").onclick = () => { qty++; renderQty(); };
+$("player").addEventListener("change", renderQty);
 
 function renderLeft() {
-  $("chip-left").textContent = left === 1 ? "1 square left" : left + " squares left";
+  $("chip-left").textContent = left === 1 ? "1 box left" : left + " boxes left";
 }
 
 function setPlayers(list) {
+  players = list;
   const sel = $("player");
   const keep = sel.value;
   sel.innerHTML = "";
-  const opt = (v) => { const o = document.createElement("option"); o.value = o.textContent = v; sel.appendChild(o); };
-  if (list.length) {
-    const ph = document.createElement("option");
-    ph.value = ""; ph.textContent = "Choose a player"; ph.disabled = true; ph.selected = true;
-    sel.appendChild(ph);
-  }
-  list.forEach(opt);
-  opt("The whole team");
-  if ([...sel.options].some((o) => o.value === keep && keep)) sel.value = keep;
+  const ph = document.createElement("option");
+  ph.value = ""; ph.textContent = "Choose a player"; ph.disabled = true; ph.selected = true;
+  sel.appendChild(ph);
+  list.forEach((p) => {
+    const o = document.createElement("option");
+    o.value = p.name;
+    o.textContent = p.left > 0 ? p.name + " (" + p.left + " left)" : p.name + " (sold out)";
+    o.disabled = p.left <= 0;
+    sel.appendChild(o);
+  });
+  const still = list.find((p) => p.name === keep && p.left > 0);
+  if (still) sel.value = keep;
 }
 
 function closeSignups() {
@@ -320,19 +329,19 @@ function closeSignups() {
 async function loadStatus() {
   if (!CONFIG.apiUrl) {
     $("preview-note").hidden = false;
-    setPlayers(["Example Player 1", "Example Player 2"]);
+    setPlayers(PREVIEW_PLAYERS);
     renderLeft(); renderQty();
     return;
   }
   try {
     const r = await fetch(CONFIG.apiUrl, { method: "GET" });
     const s = await r.json();
-    price = s.price; left = s.left; maxPer = s.maxPerSignup || maxPer;
+    price = s.price; left = s.left;
     setPlayers(s.players || []);
     renderLeft(); renderQty();
     if (!s.open) closeSignups();
   } catch (e) {
-    renderLeft(); renderQty();
+    $("error").textContent = "We couldn't load the player list. Please refresh the page.";
   }
 }
 
@@ -355,7 +364,7 @@ function payStep(method, amount, ref) {
     const a = document.createElement("a"); a.className = "btn"; a.href = href; a.target = "_blank"; a.rel = "noopener";
     a.textContent = label; box.appendChild(a);
   };
-  const note = "Hammers squares " + ref;
+  const note = "Hammers boxes " + ref;
 
   if (method === "Venmo" && CONFIG.venmo) {
     link("https://venmo.com/" + encodeURIComponent(CONFIG.venmo) + "?txn=pay&amount=" + amount + "&note=" + encodeURIComponent(note), "Pay " + money(amount) + " on Venmo");
@@ -388,19 +397,19 @@ $("signup").addEventListener("submit", async (ev) => {
   const el = (n) => f.elements.namedItem(n);
   const data = {
     name: el("name").value.trim(), email: el("email").value.trim(), phone: el("phone").value.trim(),
-    player: el("player").value, squares: qty, method: el("method").value, notes: el("notes").value.trim(), website: el("website").value
+    player: el("player").value, boxes: qty, method: el("method").value, notes: el("notes").value.trim(), website: el("website").value
   };
   const err = $("error"); err.textContent = "";
   if (!data.name) { err.textContent = "Please enter your name."; el("name").focus(); return; }
   if (!data.email && !data.phone) { err.textContent = "Please enter an email or a phone number."; el("email").focus(); return; }
   if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { err.textContent = "That email address doesn't look right."; el("email").focus(); return; }
-  if (!data.player) { err.textContent = "Please choose a player, or The whole team."; el("player").focus(); return; }
+  if (!data.player) { err.textContent = "Please choose a player."; el("player").focus(); return; }
 
   const btn = $("submit"); btn.disabled = true; btn.textContent = "Saving…";
   let res;
   try {
     if (!CONFIG.apiUrl) {
-      res = { ok: true, reference: "HAM-PREVIEW", amount: qty * price, squares: qty, left: left - qty };
+      res = { ok: true, reference: "HAM-PREVIEW", amount: qty * price, boxes: qty, player: data.player, left: playerLeft() - qty };
     } else {
       const r = await fetch(CONFIG.apiUrl, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(data) });
       res = await r.json();
@@ -408,11 +417,13 @@ $("signup").addEventListener("submit", async (ev) => {
   } catch (e) {
     res = { ok: false, error: "We couldn't reach the sign-up sheet. Check your connection and try again." };
   }
-  btn.disabled = false; btn.textContent = "Reserve my squares";
+  btn.disabled = false; btn.textContent = "Reserve my boxes";
   if (!res.ok) { err.textContent = res.error || "Something went wrong. Please try again."; loadStatus(); return; }
 
-  left = res.left; renderLeft();
-  $("done-ref").textContent = "Reference " + res.reference + " · " + res.squares + (res.squares === 1 ? " square" : " squares");
+  left -= res.boxes; renderLeft();
+  const pl = players.find((x) => x.name === res.player); if (pl) pl.left = res.left;
+  setPlayers(players);
+  $("done-ref").textContent = "Reference " + res.reference + " · " + res.boxes + (res.boxes === 1 ? " box" : " boxes") + " for " + res.player;
   $("done-amount").textContent = money(res.amount);
   const steps = $("pay-steps"); steps.innerHTML = "";
   steps.appendChild(payStep(data.method, res.amount, res.reference));
