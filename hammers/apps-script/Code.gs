@@ -62,7 +62,7 @@ function doPost(e) {
     switch (body.action) {
       case 'createOrder': return json_(createOrder_(body));
       case 'captureOrder': return json_(captureOrder_(body));
-      case 'reserveCash': return json_(reserve_(body, 'Cash or check', ST.cash));
+      case 'reserveCash': return json_(reserve_(body, body.payWith === 'Check' ? 'Check' : body.payWith === 'Cash' ? 'Cash' : 'Cash or check', ST.cash));
       case 'reserveZelle': return json_(reserve_(body, 'Zelle', ST.zelle));
       case 'markReceived': return json_(markReceived_(body));
       default: return json_({ ok: false, error: 'Unknown request.' });
