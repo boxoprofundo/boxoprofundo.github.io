@@ -10,10 +10,7 @@
  *   Summary!B5  price per box
  *   Summary!B6  boxes on the board (100)
  *   Summary!B7  sign-ups open (TRUE / FALSE)
- *   Summary!B8  PayPal fee, percent (e.g. 3.49)
- *   Summary!B9  PayPal fee, fixed per payment (e.g. 0.49)
- *   The online processing fee is set so it covers PayPal's whole cost:
- *   fee = (boxes total + fixed) / (1 - percent) - boxes total, rounded up to the cent.
+ *   Summary!B8  online processing fee per box (added to Venmo, PayPal and card payments)
  *   Players!A2:A  player names shown on the page
  *   Players!G2:G  each family's private key for the cash/check page
  *
@@ -82,20 +79,13 @@ function doPost(e) {
 
 function settings_() {
   var sum = SpreadsheetApp.getActive().getSheetByName(SUMMARY);
-  var v = sum.getRange('B5:B9').getValues();
+  var v = sum.getRange('B5:B8').getValues();
   return {
     price: Number(v[0][0]) || 20,
     total: Number(v[1][0]) || 100,
     open: v[2][0] === true,
-    feePct: v[3][0] === '' ? 3.49 : Number(v[3][0]),
-    feeFixed: v[4][0] === '' ? 0.49 : Number(v[4][0])
+    feePerBox: v[3][0] === '' ? 1.25 : Number(v[3][0])
   };
-}
-
-/** Processing fee that makes PayPal's cut come out of the fee, not the boxes. */
-function feeFor_(base, s) {
-  var gross = (base + s.feeFixed) / (1 - s.feePct / 100);
-  return Math.ceil(Math.round((gross - base) * 10000) / 100) / 100;
 }
 
 function players_() {
@@ -136,7 +126,7 @@ function status_() {
   var left = Math.max(0, s.total - sold_(rows_()));
   var props = PropertiesService.getScriptProperties();
   return {
-    ok: true, open: s.open && left > 0, price: s.price, total: s.total, left: left, feePct: s.feePct, feeFixed: s.feeFixed,
+    ok: true, open: s.open && left > 0, price: s.price, total: s.total, left: left, feePerBox: s.feePerBox,
     players: players_().map(function (p) { return p.name; }),
     paypal: { clientId: props.getProperty('PAYPAL_CLIENT_ID') || '', env: props.getProperty('PAYPAL_ENV') || 'sandbox' },
     zelle: ZELLE_TO
@@ -235,7 +225,7 @@ function createOrder_(body) {
   var d = validate_(body, s, rows);
   if (d.error) return { ok: false, error: d.error };
   var boxesTotal = d.boxes * s.price;
-  var fee = feeFor_(boxesTotal, s);
+  var fee = Math.round(d.boxes * s.feePerBox * 100) / 100;
   var r = appendSignup_(d, 'Online (pending)', ST.awaiting, fee, '');
 
   var order = paypal_('post', '/v2/checkout/orders', {
