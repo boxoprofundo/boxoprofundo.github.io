@@ -360,7 +360,7 @@ function checkZelleEmails() {
       t.getMessages().forEach(function (m) {
         if (used[m.getId()]) return;
         if (m.getFrom().toLowerCase().indexOf(from.toLowerCase()) < 0) return;
-        var text = m.getPlainBody().replace(/\s+/g, ' ');
+        var text = zelleText_(m);
         var memo = (/Memo (.*?)(?: [A-Z][A-Z .,&'-]+ is registered|$)/.exec(text) || [])[1] || '';
         var amt = Number(((/Amount \$([\d,]+\.\d{2})/.exec(text) || [])[1] || '0').replace(/,/g, ''));
         var ref = (/HAM[- ]?(\d{4})/i.exec(memo) || [])[1];
@@ -378,6 +378,13 @@ function checkZelleEmails() {
   } finally {
     lock.releaseLock();
   }
+}
+
+/** Email text as one line: table pipes, markup and extra spaces removed, so
+ *  "| Amount | $40.00 |" and "Amount $40.00" both read as "Amount $40.00". */
+function zelleText_(m) {
+  var raw = m.getPlainBody() || m.getBody().replace(/<[^>]+>/g, ' ');
+  return raw.replace(/&nbsp;|&#160;/g, ' ').replace(/[|*#]/g, ' ').replace(/\s+/g, ' ');
 }
 
 /** Run once from the editor: checks Zelle emails every 10 minutes. */
